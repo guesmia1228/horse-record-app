@@ -24,4 +24,4 @@ class User_model{
   }
 
 //
-}
+} 

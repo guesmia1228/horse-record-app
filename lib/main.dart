@@ -29,7 +29,7 @@ void main() async{
 
   WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp();
-  await initializeService();
+//  await initializeService();
   // NotificationService().initNotification();
   // tz.initializeTimeZones();
 
@@ -41,7 +41,27 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      home:Home(),
+      home: Scaffold(
+        body: Home(),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.notifications),
+              label: 'Notifications',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Settings',
+            ),
+            
+          ],
+          
+        ),
+      ),
       debugShowCheckedModeBanner: false,
       builder: EasyLoading.init(),
     );
@@ -211,8 +231,6 @@ hour_timer(var service)async{
           }
 
         }
-
-
 
 
 

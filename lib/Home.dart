@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hourses/Appointment.dart';
 import 'package:hourses/Date_added_hourses.dart';
 import 'package:hourses/Setting.dart';
 import 'package:hourses/Shedulaining.dart';
@@ -13,7 +14,7 @@ import 'package:hourses/helper/notifi_service.dart';
 import 'package:hourses/model/Shedule_model.dart';
 import 'package:intl/intl.dart';
 import 'package:telephony/telephony.dart';
-
+import 'package:hourses/Appointment.dart';
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -59,11 +60,6 @@ class _HomeState extends State<Home> {
                   getWeekDays();
                 }
             });
-
-
-
-
-
           },),txt_color: Colors.white),
 
           SizedBox(height: 30,),
@@ -84,6 +80,21 @@ class _HomeState extends State<Home> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
 
+      InkWell(
+          onTap: () {
+            week_showing=week_showing-selected_week;
+            show_d1_list=false;
+            show_d2_list=false;
+            show_d3_list=false;
+            show_d4_list=false;
+            show_d5_list=false;
+            show_d6_list=false;
+            show_d7_list=false;
+            getWeekDays();
+          },
+            child: Icon(Icons.apps,size: 30,),
+            ),
+
         InkWell(
           onTap: () {
             week_showing=week_showing-selected_week;
@@ -96,10 +107,11 @@ class _HomeState extends State<Home> {
             show_d7_list=false;
             getWeekDays();
           },
-            child: Icon(Icons.arrow_back,size: 50,)),
+            child: Icon(Icons.arrow_back,size: 50,),
+            ),
 
         SizedBox(width: 20,),
-
+       
         Container(
           width: 50,height: 50,
           decoration: BoxDecoration(
@@ -166,7 +178,20 @@ class _HomeState extends State<Home> {
             getWeekDays();
           },
             child: Icon(Icons.arrow_forward,size: 50,)),
-
+        InkWell(
+          onTap: () {
+            week_showing=week_showing-selected_week;
+            show_d1_list=false;
+            show_d2_list=false;
+            show_d3_list=false;
+            show_d4_list=false;
+            show_d5_list=false;
+            show_d6_list=false;
+            show_d7_list=false;
+            getWeekDays();
+          },
+            child: Icon(Icons.calendar_today,size: 30,),
+            ),
     ],);
   }
 
@@ -250,7 +275,10 @@ class _HomeState extends State<Home> {
 
         ),
         SizedBox(width: 5,),
-        Container(
+        SizedBox(
+
+        width: 200,
+        child: Container(
           color: mode?Colors.grey:Colors.red,
           child: Padding(
             padding: const EdgeInsets.only(left: 30,right: 30),
@@ -305,6 +333,7 @@ class _HomeState extends State<Home> {
               ],),
             ),
           ),
+        ),                 
         ),
         SizedBox(width: 5,),
         Container(
@@ -345,16 +374,31 @@ class _HomeState extends State<Home> {
         
         return Column(children: [
           Row(
+             
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {
+                  // Add code to handle deletion here
+                  // For example: deleteEntry(model);
+                },
+              ),
               MyText(txt: model.hourses.toString()+' HD', color: Colors.black, txtSize: 20),
               SizedBox(width: 10,),
               InkWell(
                   onTap: () {
-                    Get.to(Date_added_hourses(shedule_modle: model, weekDay: dateTime,),transition: Transition.circularReveal,duration: Duration(seconds: 1));
+                    Get.to(Appointment(shedule_modle: model, weekDay: dateTime,),transition: Transition.circularReveal,duration: Duration(seconds: 1));
                   },
                   child: MyText(txt: model.time.toString()+' - '+model.owner_name, color: Colors.black, txtSize: 20)),
+             IconButton(
+                icon: Icon(Icons.edit),
+                onPressed: () {
+                  // Add code to handle deletion here
+                  // For example: deleteEntry(model);
+                },
+              ),
             ],),
           Text(model.reason)
 

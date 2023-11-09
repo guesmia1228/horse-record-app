@@ -118,6 +118,7 @@ class _Date_added_hoursesState extends State<Date_added_hourses> {
           itemBuilder: (context, index) {
 
            return ListTile(
+            
              leading: MyText(txt: (index+1).toString(), color: Colors.black, txtSize: 20),
              title: MyText(txt: list[index].name, color: Colors.red, txtSize: 20),
              trailing: IconButton(onPressed: () async{
@@ -126,7 +127,6 @@ class _Date_added_hoursesState extends State<Date_added_hourses> {
                getList();
              }, icon: Icon(Icons.delete)),
            );
-
 
           },),
     );
@@ -142,6 +142,4 @@ class _Date_added_hoursesState extends State<Date_added_hourses> {
     });
 
   }
-
-
 }
