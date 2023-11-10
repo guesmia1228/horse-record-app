@@ -207,9 +207,11 @@ class _HomeState extends State<Home> {
 
             days_view(weekDays[0],d1h,d1m),
 
+
             Container(
               child: show_d1_list?days_list_view(shedule_list_d1,weekDays[0]):Container(),
             ),
+
             SizedBox(height: 5,),
             days_view(weekDays[1],d2h,d2m),
 
@@ -285,7 +287,6 @@ class _HomeState extends State<Home> {
             child: InkWell(
               onTap: () async{
 
-
                 if(dateTime.millisecondsSinceEpoch==weekDays[0].millisecondsSinceEpoch) {
                   shedule_list_d1=await praf_handler.get_shedule_list(my_helper.shedule+dateTime.millisecondsSinceEpoch.toString());
                   show_d1_list=!show_d1_list;
@@ -314,9 +315,6 @@ class _HomeState extends State<Home> {
                   shedule_list_d7=await praf_handler.get_shedule_list(my_helper.shedule+dateTime.millisecondsSinceEpoch.toString());
                   show_d7_list=!show_d7_list;
                 }
-
-
-
 
                 setState(() {
 
@@ -347,7 +345,6 @@ class _HomeState extends State<Home> {
                if(value!=null)
                  {
                    getWeekDays();
-
                  }
              });
 
@@ -387,26 +384,26 @@ class _HomeState extends State<Home> {
               ),
               MyText(txt: model.hourses.toString()+' HD', color: Colors.black, txtSize: 20),
               SizedBox(width: 10,),
+
               InkWell(
                   onTap: () {
                     Get.to(Appointment(shedule_modle: model, weekDay: dateTime,),transition: Transition.circularReveal,duration: Duration(seconds: 1));
                   },
                   child: MyText(txt: model.time.toString()+' - '+model.owner_name, color: Colors.black, txtSize: 20)),
-             IconButton(
+ 
+              IconButton(
                 icon: Icon(Icons.edit),
                 onPressed: () {
                   // Add code to handle deletion here
                   // For example: deleteEntry(model);
-                },
+               },
               ),
+
             ],),
           Text(model.reason)
 
         ],);
 
-
-        
-        
         },);
   }
 

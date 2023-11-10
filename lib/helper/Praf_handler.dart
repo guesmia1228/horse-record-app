@@ -50,6 +50,7 @@ class praf_handler{
     List<String> list=await get_list_json(key);
     list.add(value);
     sharedPreferences.setStringList(key, list);
+    print("add_list=========================1");
   }
 
   static get_shedule_list(String key)async{

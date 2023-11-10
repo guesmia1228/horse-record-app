@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:hourses/Add_comment.dart';
 import 'package:hourses/Add_hourses.dart';
 import 'package:hourses/helper/My_Button.dart';
 import 'package:hourses/helper/My_Text.dart';
@@ -18,6 +19,7 @@ import 'package:age_calculator/age_calculator.dart';
 import 'package:age_calculator/age_calculator.dart';
 import 'package:intl/intl.dart';
 import 'package:telephony/telephony.dart';
+import 'package:hourses/Add_comment.dart';
 
 class Appointment extends StatefulWidget {
   final Shedule_modle shedule_modle;
@@ -88,7 +90,8 @@ class _AppointmentState extends State<Appointment> {
 //                      MyText(txt: 'Current Horses', color: Colors.black, txtSize: 25,fontWeight: FontWeight.bold,),
 //                      SizedBox(height: 10,),
                       list_view_appointment(),
-                      SizedBox(height: 10,),/*
+                      SizedBox(height: 10,),
+/*
                       My_Btn(txt: 'Add', btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () {
 
                         Get.to(Owner_hourses(shedule_modle: shedule_modle, weekDay: weekDay, added_horses: list_appointment,)
@@ -147,6 +150,7 @@ class _AppointmentState extends State<Appointment> {
                                        jsonEncode(element.toJson()));
                                  }
                               });
+                              print("inkwell=========================2");
                               getList_appointment();
 
 //                              Navigator.pop(context,true);
@@ -354,7 +358,18 @@ class _AppointmentState extends State<Appointment> {
 
                getList_appointment();
              }, icon: Icon(Icons.delete)),
+               onTap: () async{
+
+                Get.to(Add_comment(shedule_modle: shedule_modle, weekDay: weekDay),transition: Transition.circularReveal,duration: Duration(seconds: 1))!.then((value) {
+                if(value!=null)
+                  {
+                    getList();
+                  }
+              });
+
+             },
            );
+
 
           },),
     );
