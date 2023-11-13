@@ -275,6 +275,7 @@ class _AppointmentState extends State<Appointment> {
     // TODO: implement initState
     super.initState();
     getList();
+    getList_appointment();
   }
 
   List<Horse_model> selected_horse=[];
@@ -286,7 +287,7 @@ class _AppointmentState extends State<Appointment> {
           itemCount: list.length,
           itemBuilder: (context, index) {
 
-
+            
            return ListTile(
              onTap: () async{
 
