@@ -25,6 +25,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
 
+  DateTime selected_date=DateTime.now();
 
   @override
   void initState() {
@@ -82,26 +83,26 @@ class _HomeState extends State<Home> {
 
       InkWell(
           onTap: () async{
-
-         /*   DateTime? pickedDate = await showDatePicker(
+            DateTime? pickedDate = await showDatePicker(
               context: context,
-              initialDate: selectedDate, // Use selectedDate as the initial date
+              initialDate: selected_date, // Use selectedDate as the initial date
               firstDate: DateTime(1990),
               lastDate: DateTime(2025),
             );
 
             if (pickedDate != null) {
               // Update selectedDate with the picked date
-              selectedDate = pickedDate;
+              selected_date = pickedDate;
+              getWeekDays();
 
-              String formattedDate = DateFormat.yMd().format(selectedDate);
+/*              String formattedDate = DateFormat.yMd().format(selectedDate);
 
               // Set the selected date in the TextFormField
               dateController.text = formattedDate;
-
+*/
               // Find out the age based on today's date
               setState(() {});
-            }            */
+            }        
 /*            week_showing=week_showing-selected_week;
             show_d1_list=false;
             show_d2_list=false;
@@ -200,14 +201,7 @@ class _HomeState extends State<Home> {
             child: Icon(Icons.arrow_forward,size: 50,)),
         InkWell(
           onTap: () {
-            week_showing=week_showing-selected_week;
-            show_d1_list=false;
-            show_d2_list=false;
-            show_d3_list=false;
-            show_d4_list=false;
-            show_d5_list=false;
-            show_d6_list=false;
-            show_d7_list=false;
+            selected_date = DateTime.now();
             getWeekDays();
           },
             child: Icon(Icons.calendar_today,size: 30,),
@@ -433,7 +427,7 @@ class _HomeState extends State<Home> {
   int d1h=0,d2h=0,d3h=0,d4h=0,d5h=0,d6h=0,d7h=0;
   bool d1m=true,d2m=true,d3m=true,d4m=true,d5m=true,d6m=true,d7m=true;
   getWeekDays()async{
-    weekDays=await my_Methods.get_days_in_week(week_showing);
+    weekDays=await my_Methods.get_days_in_week(selected_date,week_showing);
     
     d1h=await praf_handler.get_int(my_helper.hourse+weekDays[0].millisecondsSinceEpoch.toString());
     d2h=await praf_handler.get_int(my_helper.hourse+weekDays[1].millisecondsSinceEpoch.toString());

@@ -408,6 +408,7 @@ class _Add_commentState extends State<Add_comment> {
 
                                       EasyLoading.showSuccess('added');
                                       Future.delayed(Duration(seconds: 1)).then((value) => getHistoryList());
+                                      
                                     }
                                   },)),
                                 ),
