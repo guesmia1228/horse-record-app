@@ -26,11 +26,35 @@ class _HomeState extends State<Home> {
 
 
   DateTime selected_date=DateTime.now();
+  bool show_d1_list=false,show_d2_list=false,show_d3_list=false,show_d4_list=false
+  ,show_d5_list=false,show_d6_list=false,show_d7_list=false;
+  List<Shedule_modle> shedule_list_d1=[],shedule_list_d2=[],shedule_list_d3=[],
+      shedule_list_d4=[],shedule_list_d5=[],shedule_list_d6=[],shedule_list_d7=[];
+     int _manualstateincreasement = 0;    
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    String selected_date1 = DateFormat('yyyy-MM-dd 00:00:00.000').format(selected_date);
+ //           selected_date = DateTime.now();
+
+    selected_date = DateFormat('yyyy-MM-dd 00:00:00.000').parse(selected_date1);   
+/*
+    getSelectedWeeks().then((){
+      //The `then` is Triggered once the Future completes without errors
+      //And here I can update my var _counter.
+      
+      //The setState method forces a rebuild of the Widget tree 
+      //Which will update the view with the new value of `_counter`
+      setState((){
+      });
+    });*/
+    
+      setState((){
+        
+      });
+
     getSelectedWeeks();
     getWeekDays();
   }
@@ -93,6 +117,16 @@ class _HomeState extends State<Home> {
             if (pickedDate != null) {
               // Update selectedDate with the picked date
               selected_date = pickedDate;
+            print(selected_date);
+            week_showing=1;
+            selected_week=1;
+            show_d1_list=false;
+            show_d2_list=false;
+            show_d3_list=false;
+            show_d4_list=false;
+            show_d5_list=false;
+            show_d6_list=false;
+            show_d7_list=false;
               getWeekDays();
 
 /*              String formattedDate = DateFormat.yMd().format(selectedDate);
@@ -103,6 +137,7 @@ class _HomeState extends State<Home> {
               // Find out the age based on today's date
               setState(() {});
             }        
+            print("show_date_picker");
 /*            week_showing=week_showing-selected_week;
             show_d1_list=false;
             show_d2_list=false;
@@ -197,12 +232,32 @@ class _HomeState extends State<Home> {
             show_d6_list=false;
             show_d7_list=false;
             getWeekDays();
+              setState(() {});
+
           },
             child: Icon(Icons.arrow_forward,size: 50,)),
         InkWell(
           onTap: () {
-            selected_date = DateTime.now();
+            week_showing=1;
+            selected_week=1;
+
+            selected_date  = DateTime.now();
+            String selected_date1 = DateFormat('yyyy-MM-dd 00:00:00.000').format(selected_date);
+ //           selected_date = DateTime.now();
+
+            selected_date = DateFormat('yyyy-MM-dd 00:00:00.000').parse(selected_date1);            
+            print(selected_date); 
+            show_d1_list=false;
+            show_d2_list=false;
+            show_d3_list=false;
+            show_d4_list=false;
+            show_d5_list=false;
+            show_d6_list=false;
+            show_d7_list=false;
+
             getWeekDays();
+           setState(() {});
+
           },
             child: Icon(Icons.calendar_today,size: 30,),
             ),
@@ -271,11 +326,8 @@ class _HomeState extends State<Home> {
   }
 
 
-  bool show_d1_list=false,show_d2_list=false,show_d3_list=false,show_d4_list=false
-  ,show_d5_list=false,show_d6_list=false,show_d7_list=false;
-  List<Shedule_modle> shedule_list_d1=[],shedule_list_d2=[],shedule_list_d3=[],
-      shedule_list_d4=[],shedule_list_d5=[],shedule_list_d6=[],shedule_list_d7=[];
   Widget days_view(DateTime dateTime,int hours,bool mode){
+    print("update_friend");
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -301,7 +353,8 @@ class _HomeState extends State<Home> {
             child: InkWell(
               onTap: () async{
 
-                if(dateTime.millisecondsSinceEpoch==weekDays[0].millisecondsSinceEpoch) {
+                if(dateTime.millisecondsSinceEpoch==weekDays[0].millisecondsSinceEpoch) 
+                {
                   shedule_list_d1=await praf_handler.get_shedule_list(my_helper.shedule+dateTime.millisecondsSinceEpoch.toString());
                   show_d1_list=!show_d1_list;
                 }
@@ -327,6 +380,8 @@ class _HomeState extends State<Home> {
                 }
                 else if(dateTime.millisecondsSinceEpoch==weekDays[6].millisecondsSinceEpoch) {
                   shedule_list_d7=await praf_handler.get_shedule_list(my_helper.shedule+dateTime.millisecondsSinceEpoch.toString());
+                  print("show_me");
+                  print(my_helper.shedule+dateTime.millisecondsSinceEpoch.toString());
                   show_d7_list=!show_d7_list;
                 }
 
@@ -391,23 +446,65 @@ class _HomeState extends State<Home> {
             children: [
               IconButton(
                 icon: Icon(Icons.delete),
-                onPressed: () {
-                  // Add code to handle deletion here
-                  // For example: deleteEntry(model);
+                onPressed: () async{
+                  await praf_handler.del_list_item_from_schedule(my_helper.shedule+ dateTime.millisecondsSinceEpoch.toString(),index);
+                  print("foool===RRS=======");
+
+                  int hours;
+                  hours=await praf_handler.get_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString());
+                  hours-=model.hourses;
+
+                  praf_handler.set_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString(), hours);
+                  getWeekDays();
+              
+                  setState(() {
+                    _manualstateincreasement ++;
+                  });
                 },
               ),
-              MyText(txt: model.hourses.toString()+' HD', color: Colors.black, txtSize: 20),
               SizedBox(width: 10,),
 
               InkWell(
-                  onTap: () {
-                    Get.to(Appointment(shedule_modle: model, weekDay: dateTime,),transition: Transition.circularReveal,duration: Duration(seconds: 1));
-                  },
-                  child: MyText(txt: model.time.toString()+' - '+model.owner_name, color: Colors.black, txtSize: 20)),
- 
+                onTap: () {
+                  Get.to(
+                    Appointment(
+                      shedule_modle: model,
+                      weekDay: dateTime,
+                    ),
+                    transition: Transition.circularReveal,
+                    duration: Duration(seconds: 1),
+                  );
+                },
+                child: RichText(
+                  text: TextSpan(
+                    text: model.time.toString() + ' - ',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: model.owner_name,
+                        style: TextStyle(
+                          color: Colors.blue, // Set color to blue
+                          decoration: TextDecoration.underline, // Underline the text
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              MyText(txt: ' - ' +model.hourses.toString()+' hd', color: Colors.black, txtSize: 20),
+
               IconButton(
                 icon: Icon(Icons.edit),
                 onPressed: () {
+                   Get.to(Sheduling(weekDay: dateTime),transition: Transition.circularReveal,duration: Duration(seconds: 1))!.then((value) {
+                    if(value!=null)
+                      {
+                        getWeekDays();
+                      }
+                  });
                   // Add code to handle deletion here
                   // For example: deleteEntry(model);
                },

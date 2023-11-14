@@ -59,7 +59,7 @@ class _Add_hoursesState extends State<Add_hourses> {
                 padding: const EdgeInsets.only(left: 40,right: 40,top: 10,bottom: 10),
                 child: Column(children: [
 
-                  My_Text_Field(controler: name, label: 'Hourse Name'),
+                  My_Text_Field(controler: name, label: 'Horse Name'),
                   SizedBox(height: 10,),
 
                   TextButton(onPressed: () async{

@@ -73,8 +73,6 @@ class _Add_commentState extends State<Add_comment> {
             ),
         ShowHorse(),
 
-
-
         ],
 
 
@@ -99,7 +97,7 @@ class _Add_commentState extends State<Add_comment> {
 
             return Column(
               children: [
-               ShowHorseName(list[index].name, true),
+               ShowHorseName(index,list[index].name, true),
                Container(
                 child: list[index].name == show_flag ? ShowHorseDetail(list[index].name):Container(),
      //           shedule_list_d1=await praf_handler.get_shedule_list(list[index].name);
@@ -136,101 +134,12 @@ class _Add_commentState extends State<Add_comment> {
                 icon: Icon(Icons.delete),
                 onPressed: () {
                   // Add code to handle deletion here
-                   showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text('Set Comment'),
-                    content: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        // Add your form fields here
-//                        MyTextField(controller: nameController, label: 'Horse Name'),
-                      /*               
-                         Container(
-                            width: double.infinity,
-                            color: Colors.grey,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 40,right: 40,top: 10,bottom: 10),
-                              child: Column(children: [
-
-                                My_Text_Field(controler: name, label: 'Hourse Name'),
-                                SizedBox(height: 10,),
-
-                                TextButton(onPressed: () async{
-
-                                  DateTime? picked_time=await showDatePicker(context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(1990), lastDate: DateTime(2025));
-
-                                  if(picked_time!=null){
-
-                                    yearBorn_String=DateFormat.yMd().format(picked_time);
-
-                                    // Find out your age as of today's date 2021-03-08
-                                    DateDuration duration = AgeCalculator.age(picked_time);
-                                    print('Your age is $duration');
-
-//                                    age.text=duration.toString();
-
-                                    setState(() {
-
-                                    });
-
-                                  }
-
-
-                                }, child: Text('Year born $yearBorn_String',style: TextStyle(color: Colors.black),)),
-                                SizedBox(height: 10,),
-//                                My_Text_Field(controler: age, label: 'Age'),
-                                SizedBox(height: 10,),
-
-                              ],),
-                            ),
-                          ),*/
-                      ],
-                    ),
-                    actions: <Widget>[
-                      ElevatedButton(
-                        onPressed: () async{
-                          // Your 'Add' functionality here
-                          // You can access the entered data using nameController.text and ageController.text
-                          // Perform your data validation and saving logic here
-                          // Then close the dialog
-                           /*        bool? permissionsGranted = await Telephony.instance.requestPhoneAndSmsPermissions;
-                          if(!permissionsGranted!)
-                            {
-                              EasyLoading.showError('give permisson');
-                              return;
-                            }
-                   
-                          Horse_model model=Horse_model(name: name.text, year_born: year_born.text, age: age.text,
-                              owner_name: shedule_modle.owner_name, owner_nbr: shedule_modle.owner_phone);
-                          String s=jsonEncode(model.toJson());
-                          await praf_handler.add_list(shedule_modle.owner_name+my_helper.all_horses, s);
-
-                          getList();
+            // For example: deleteEntry(model);
+                  praf_handler.del_list_item(name, index);
+//                  ShowHorse();
+                  setState(() {
                     
-                          Navigator.of(context).pop();  */
-                        },
-                        child: Text('Add'),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          // Close the dialog
-                          Navigator.of(context).pop();
-                        },
-                        child: Text('Cancel'),
-                      ),
-                    ],
-                  );
-                },
-              ).then((value) {
-                if (value != null) {
-                  getList();
-                }
-              });
-                  // For example: deleteEntry(model);
+                  });
                 },
               ),
 //              MyText(txt: model.hourses.toString()+' HD', color: Colors.black, txtSize: 20),
@@ -265,7 +174,7 @@ class _Add_commentState extends State<Add_comment> {
   DateTime selectedDate=DateTime.now();
   XFile? xfile;
 
-   Widget ShowHorseName(String name,bool mode){
+   Widget ShowHorseName(int index, String name,bool mode){
     print("name=====================name");
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -278,7 +187,7 @@ class _Add_commentState extends State<Add_comment> {
             color: Colors.red,
 
           ),
-          child: Center(child: MyText(txt: "1", color: Colors.black, txtSize: 20,fontWeight: FontWeight.bold)),
+          child: Center(child: MyText(txt: (index+1).toString(), color: Colors.black, txtSize: 20,fontWeight: FontWeight.bold)),
 
         ),
         SizedBox(width: 5,),
@@ -408,7 +317,7 @@ class _Add_commentState extends State<Add_comment> {
 
                                       EasyLoading.showSuccess('added');
                                       Future.delayed(Duration(seconds: 1)).then((value) => getHistoryList());
-                                      
+
                                     }
                                   },)),
                                 ),
@@ -549,12 +458,7 @@ class _Add_commentState extends State<Add_comment> {
 
           ),
           child: Center(child: IconButton(onPressed: () async{
-/*             Get.to(Sheduling(weekDay: dateTime),transition: Transition.circularReveal,duration: Duration(seconds: 1))!.then((value) {
-               if(value!=null)
-                 {
-                   getWeekDays();
-                 }
-             });*/
+            
 
           }, icon: Icon(Icons.delete,color: Colors.black,size: 20,))),
 

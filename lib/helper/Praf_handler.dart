@@ -52,7 +52,14 @@ class praf_handler{
     sharedPreferences.setStringList(key, list);
     print("add_list=========================1");
   }
+  static del_list_item_from_schedule(String key,int pos) async{
+      SharedPreferences sharedPreferences=await my_Praf();
 
+    List<String> list=await get_list_json(key);
+    list.removeAt(pos);
+    sharedPreferences.setStringList(key, list);
+
+  }
   static get_shedule_list(String key)async{
 
 
