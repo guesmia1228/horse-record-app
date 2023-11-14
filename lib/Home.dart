@@ -36,9 +36,7 @@ class _HomeState extends State<Home> {
   int d1h = 0, d2h = 0, d3h = 0, d4h = 0, d5h = 0, d6h = 0, d7h = 0;
   bool d1m = true, d2m = true, d3m = true, d4m = true, d5m = true, d6m = true, d7m = true;
   int w1 = 1, w2 = 2, w3 = 3, week_showing = 1;
-
-  int horseHourse = 0;
-  
+  int full=0;
   getWeekDays() async{
     weekDays=await my_Methods.get_days_in_week(selected_date,week_showing);
     d1h=await praf_handler.get_int(my_helper.hourse+weekDays[0].millisecondsSinceEpoch.toString());
@@ -70,6 +68,16 @@ class _HomeState extends State<Home> {
     getWeekDays();
     setState(() {});
   }
+  init_value() async{
+    setState(() {
+  show_d1_list = false; show_d2_list = false; show_d3_list = false; show_d4_list = false;
+       show_d5_list = false; show_d6_list = false; show_d7_list = false;
+    shedule_list_d1 = []; shedule_list_d2 = []; shedule_list_d3 = [];
+      shedule_list_d4 = []; shedule_list_d5 = []; shedule_list_d6 = []; shedule_list_d7 = [];
+       d1h = 0; d2h = 0; d3h = 0; d4h = 0; d5h = 0; d6h = 0; d7h = 0;
+
+    });
+   }
 
   @override
   void initState() {
@@ -78,7 +86,6 @@ class _HomeState extends State<Home> {
     String selected_date1 = DateFormat('yyyy-MM-dd 00:00:00.000').format(selected_date);
     selected_date = DateFormat('yyyy-MM-dd 00:00:00.000').parse(selected_date1);
     
-    horseHourse = -1;
     getSelectedWeeks();
     getWeekDays();
   }
@@ -283,7 +290,7 @@ class _HomeState extends State<Home> {
           ),
           width: 50,
           height: 50,
-          child: Center(child: MyText(txt: hours.toString(), color: Colors.black, txtSize: 25,fontWeight: FontWeight.bold)),
+          child: Center(child: MyText(txt: (hours).toString(), color: Colors.black, txtSize: 25,fontWeight: FontWeight.bold)),
         ),
         SizedBox(width: 5,),
         SizedBox(
@@ -340,10 +347,21 @@ class _HomeState extends State<Home> {
             child: IconButton(
               icon: Icon(Icons.add,color: Colors.black,size: 30,),
               onPressed: () async{
-                Get.to(Sheduling(weekDay: dateTime),transition: Transition.circularReveal,duration: Duration(seconds: 1))!.then((value) {
+                Get.to(Sheduling(weekDay: dateTime,edit_value:false),transition: Transition.circularReveal,duration: Duration(seconds: 1))!.then((value) async {
                   if(value!=null)
                     {
-                      getWeekDays();
+                     int h=await praf_handler.get_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString());
+                      print("mother");
+                      print(h);
+                    setState((){
+                      hours=h;                     
+                      print(full);
+                    });
+                    init_value();
+                    getWeekDays();
+//                      init_value();                     
+                     setState(() {});
+
                     }
                 });
               }, 
@@ -368,16 +386,20 @@ class _HomeState extends State<Home> {
               children: [
                 IconButton(
                   icon: Icon(Icons.delete),
-                  onPressed: () async{
-                    await praf_handler.del_list_item_from_schedule(my_helper.shedule+ dateTime.millisecondsSinceEpoch.toString(),index);
-                    int hours;
+                  onPressed: () async{  
+                   await praf_handler.del_list_item_from_schedule(my_helper.shedule+ dateTime.millisecondsSinceEpoch.toString(), index);
+                   int hours;
                     hours=await praf_handler.get_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString());
+                    hours-=model.hourses;
                     praf_handler.set_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString(), hours);
-
-                    //Not sure
+                    
                     setState(() {
+                      if (index >= 0 && index < list.length) {
+                        list.removeAt(index);
+                      }
                     });
-                    //getWeekDays();
+                    init_value();
+                    getWeekDays();
                   },
                 ),
                 SizedBox(width: 10,),
@@ -415,7 +437,7 @@ class _HomeState extends State<Home> {
                 IconButton(
                   icon: Icon(Icons.edit),
                   onPressed: () {
-                    Get.to(Sheduling(weekDay: dateTime),transition: Transition.circularReveal,duration: Duration(seconds: 1))!.then((value) {
+                    Get.to(Sheduling(weekDay: dateTime,edit_value:true),transition: Transition.circularReveal,duration: Duration(seconds: 1))!.then((value) {
                       if(value!=null){
                         getWeekDays();
                       }

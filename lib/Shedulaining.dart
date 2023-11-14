@@ -15,16 +15,16 @@ import 'package:intl/intl.dart';
 
 class Sheduling extends StatefulWidget {
   final DateTime weekDay;
-  const Sheduling({super.key, required this.weekDay});
-
+  final bool edit_value;
+  const Sheduling({super.key, required this.weekDay, required this.edit_value});
   @override
-  State<Sheduling> createState() => _ShedulingState(weekDay);
+  State<Sheduling> createState() => _ShedulingState(weekDay,edit_value);
 }
 
 class _ShedulingState extends State<Sheduling> {
   final DateTime weekDay;
-
-  _ShedulingState(this.weekDay);
+  bool edit_value;
+  _ShedulingState(this.weekDay,this.edit_value);
   Contact? contact;
   bool alert_on=true;
 
