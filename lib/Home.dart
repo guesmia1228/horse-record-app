@@ -15,6 +15,8 @@ import 'package:hourses/model/Shedule_model.dart';
 import 'package:intl/intl.dart';
 import 'package:telephony/telephony.dart';
 import 'package:hourses/Appointment.dart';
+
+
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -30,11 +32,12 @@ class _HomeState extends State<Home> {
   List<Shedule_modle> shedule_list_d1 = [], shedule_list_d2 = [], shedule_list_d3 = [],
       shedule_list_d4 = [], shedule_list_d5 = [], shedule_list_d6 = [], shedule_list_d7 = [];
   int selected_week = 1;
-  
   List<DateTime> weekDays = [];
   int d1h = 0, d2h = 0, d3h = 0, d4h = 0, d5h = 0, d6h = 0, d7h = 0;
   bool d1m = true, d2m = true, d3m = true, d4m = true, d5m = true, d6m = true, d7m = true;
   int w1 = 1, w2 = 2, w3 = 3, week_showing = 1;
+
+  int horseHourse = 0;
   
   getWeekDays() async{
     weekDays=await my_Methods.get_days_in_week(selected_date,week_showing);
@@ -71,11 +74,11 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    String selected_date1 = DateFormat('yyyy-MM-dd 00:00:00.000').format(selected_date);
-    selected_date = DateFormat('yyyy-MM-dd 00:00:00.000').parse(selected_date1);   
-    
-    setState((){});
 
+    String selected_date1 = DateFormat('yyyy-MM-dd 00:00:00.000').format(selected_date);
+    selected_date = DateFormat('yyyy-MM-dd 00:00:00.000').parse(selected_date1);
+    
+    horseHourse = -1;
     getSelectedWeeks();
     getWeekDays();
   }
@@ -105,6 +108,8 @@ class _HomeState extends State<Home> {
               show_d6_list=false;
               show_d7_list=false;
               getWeekDays();
+
+              //Not sure
               setState(() {});
             }        
           },
@@ -188,6 +193,8 @@ class _HomeState extends State<Home> {
             show_d6_list=false;
             show_d7_list=false;
             getWeekDays();
+
+            //Not sure
             setState(() {});
           }
         ),
@@ -207,6 +214,8 @@ class _HomeState extends State<Home> {
             show_d6_list=false;
             show_d7_list=false;
             getWeekDays();
+
+            //Not sure
             setState(() {});
           }
         ),
@@ -363,11 +372,12 @@ class _HomeState extends State<Home> {
                     await praf_handler.del_list_item_from_schedule(my_helper.shedule+ dateTime.millisecondsSinceEpoch.toString(),index);
                     int hours;
                     hours=await praf_handler.get_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString());
-                    hours-=model.hourses;
                     praf_handler.set_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString(), hours);
 
-                    getWeekDays();
-                    setState(() {});
+                    //Not sure
+                    setState(() {
+                    });
+                    //getWeekDays();
                   },
                 ),
                 SizedBox(width: 10,),
