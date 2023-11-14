@@ -151,7 +151,7 @@ class _ShedulingState extends State<Sheduling> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: My_Btn(txt: 'Submit', btn_color: Colors.yellow, btn_size: 00, gestureDetector: GestureDetector(onTap: () async{
+                child: My_Btn(txt: edit_value? 'Change':'Submit', btn_color: Colors.yellow, btn_size: 00, gestureDetector: GestureDetector(onTap: () async{
 
 
                   if(mode==2){

@@ -37,6 +37,7 @@ class _HomeState extends State<Home> {
   bool d1m = true, d2m = true, d3m = true, d4m = true, d5m = true, d6m = true, d7m = true;
   int w1 = 1, w2 = 2, w3 = 3, week_showing = 1;
   int full=0;
+  List<int> horse_num = [];
   getWeekDays() async{
     weekDays=await my_Methods.get_days_in_week(selected_date,week_showing);
     d1h=await praf_handler.get_int(my_helper.hourse+weekDays[0].millisecondsSinceEpoch.toString());
@@ -69,14 +70,11 @@ class _HomeState extends State<Home> {
     setState(() {});
   }
   init_value() async{
-    setState(() {
   show_d1_list = false; show_d2_list = false; show_d3_list = false; show_d4_list = false;
        show_d5_list = false; show_d6_list = false; show_d7_list = false;
     shedule_list_d1 = []; shedule_list_d2 = []; shedule_list_d3 = [];
       shedule_list_d4 = []; shedule_list_d5 = []; shedule_list_d6 = []; shedule_list_d7 = [];
-       d1h = 0; d2h = 0; d3h = 0; d4h = 0; d5h = 0; d6h = 0; d7h = 0;
 
-    });
    }
 
   @override
@@ -85,7 +83,7 @@ class _HomeState extends State<Home> {
 
     String selected_date1 = DateFormat('yyyy-MM-dd 00:00:00.000').format(selected_date);
     selected_date = DateFormat('yyyy-MM-dd 00:00:00.000').parse(selected_date1);
-    
+
     getSelectedWeeks();
     getWeekDays();
   }
@@ -238,39 +236,39 @@ class _HomeState extends State<Home> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            days_view(weekDays[0], d1h, d1m),
+            days_view(weekDays[0], d1h, d1m,0),
             Container(
-              child: show_d1_list ? days_list_view(shedule_list_d1,weekDays[0]) : Container(),
+              child: show_d1_list ? days_list_view(shedule_list_d1,weekDays[0],0) : Container(),
             ),
             SizedBox(height: 5),
-            days_view(weekDays[1], d2h, d2m),
+            days_view(weekDays[1], d2h, d2m,1),
             Container(
-              child: show_d2_list ? days_list_view(shedule_list_d2,weekDays[1]) : Container(),
+              child: show_d2_list ? days_list_view(shedule_list_d2,weekDays[1],1) : Container(),
             ),
             SizedBox(height: 5),
-            days_view(weekDays[2], d3h, d3m),
+            days_view(weekDays[2], d3h, d3m,2),
             Container(
-              child: show_d3_list ? days_list_view(shedule_list_d3,weekDays[2]) : Container(),
+              child: show_d3_list ? days_list_view(shedule_list_d3,weekDays[2],2) : Container(),
             ),
             SizedBox(height: 5),
-            days_view(weekDays[3], d4h, d4m),
+            days_view(weekDays[3], d4h, d4m,3),
             Container(
-              child: show_d4_list ? days_list_view(shedule_list_d4,weekDays[3]) : Container(),
+              child: show_d4_list ? days_list_view(shedule_list_d4,weekDays[3],3) : Container(),
             ),
             SizedBox(height: 5),
-            days_view(weekDays[4], d5h, d5m),
+            days_view(weekDays[4], d5h, d5m,4),
             Container(
-              child: show_d5_list?days_list_view(shedule_list_d5,weekDays[4]):Container(),
+              child: show_d5_list?days_list_view(shedule_list_d5,weekDays[4],4):Container(),
             ),
             SizedBox(height: 5),
-            days_view(weekDays[5], d6h, d6m),
+            days_view(weekDays[5], d6h, d6m,5),
             Container(
-              child: show_d6_list?days_list_view(shedule_list_d6,weekDays[5]):Container(),
+              child: show_d6_list?days_list_view(shedule_list_d6,weekDays[5],5):Container(),
             ),
             SizedBox(height: 5),
-            days_view(weekDays[6], d7h, d7m),
+            days_view(weekDays[6], d7h, d7m,6),
             Container(
-              child: show_d7_list ? days_list_view(shedule_list_d7,weekDays[6]) : Container(),
+              child: show_d7_list ? days_list_view(shedule_list_d7,weekDays[6],6) : Container(),
             ),
             SizedBox(height: 5),
           ],
@@ -279,7 +277,9 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget days_view(DateTime dateTime,int hours,bool mode){
+  Widget days_view(DateTime dateTime,int hours,bool mode,int index_num){
+    print("horse_num");
+    print(horse_num);
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -290,7 +290,7 @@ class _HomeState extends State<Home> {
           ),
           width: 50,
           height: 50,
-          child: Center(child: MyText(txt: (hours).toString(), color: Colors.black, txtSize: 25,fontWeight: FontWeight.bold)),
+          child: Center(child: MyText(txt: (horse_num[index_num]).toString(), color: Colors.black, txtSize: 25,fontWeight: FontWeight.bold)),
         ),
         SizedBox(width: 5,),
         SizedBox(
@@ -347,21 +347,20 @@ class _HomeState extends State<Home> {
             child: IconButton(
               icon: Icon(Icons.add,color: Colors.black,size: 30,),
               onPressed: () async{
-                Get.to(Sheduling(weekDay: dateTime,edit_value:false),transition: Transition.circularReveal,duration: Duration(seconds: 1))!.then((value) async {
+                Get.to(Sheduling(weekDay: dateTime, edit_value: false),transition: Transition.circularReveal,duration: Duration(seconds: 1))!.then((value) async {
                   if(value!=null)
                     {
                      int h=await praf_handler.get_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString());
                       print("mother");
                       print(h);
                     setState((){
+                      horse_num[index_num]=h;
                       hours=h;                     
                       print(full);
                     });
-                    init_value();
+//                    init_value();
                     getWeekDays();
 //                      init_value();                     
-                     setState(() {});
-
                     }
                 });
               }, 
@@ -372,7 +371,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget days_list_view(List<Shedule_modle> list,DateTime dateTime){
+  Widget days_list_view(List<Shedule_modle> list,DateTime dateTime,int index_h){
     return ListView.builder(
       physics: NeverScrollableScrollPhysics(),
       itemCount: list.length,
@@ -397,9 +396,10 @@ class _HomeState extends State<Home> {
                       if (index >= 0 && index < list.length) {
                         list.removeAt(index);
                       }
+                      horse_num[index_h]=hours;
                     });
-                    init_value();
-                    getWeekDays();
+//                    init_value();
+//                    getWeekDays();
                   },
                 ),
                 SizedBox(width: 10,),
@@ -436,9 +436,21 @@ class _HomeState extends State<Home> {
                 MyText(txt: ' - ' +model.hourses.toString()+' hd', color: Colors.black, txtSize: 20),
                 IconButton(
                   icon: Icon(Icons.edit),
-                  onPressed: () {
-                    Get.to(Sheduling(weekDay: dateTime,edit_value:true),transition: Transition.circularReveal,duration: Duration(seconds: 1))!.then((value) {
+                  onPressed: () async{
+                    await praf_handler.del_list_item_from_schedule(my_helper.shedule+ dateTime.millisecondsSinceEpoch.toString(), index);
+                    int hours;
+                    hours=await praf_handler.get_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString());
+                    hours-=model.hourses;
+                    praf_handler.set_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString(), hours);                    
+                    Get.to(Sheduling(weekDay: dateTime, edit_value:true),transition: Transition.circularReveal,duration: Duration(seconds: 1))!.then((value) async{
                       if(value!=null){
+                  int h=await praf_handler.get_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString());
+                      print("mother");
+                      print(h);
+                    setState((){
+                      hours=h;                     
+                      print(full);
+                    });                        
                         getWeekDays();
                       }
                     });
@@ -454,6 +466,15 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+
+    int hours = 0;
+    horse_num = List<int>.filled(7, 0);
+    
+     void updateHours(int newHours) {
+    setState(() {
+      hours = newHours;
+    });
+  }
     return Scaffold(
       backgroundColor: my_helper.backgroundColor,
       appBar: AppBar(

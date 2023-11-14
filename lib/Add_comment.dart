@@ -138,7 +138,9 @@ class _Add_commentState extends State<Add_comment> {
                   praf_handler.del_list_item(name, index);
 //                  ShowHorse();
                   setState(() {
-                    
+                       if (index >= 0 && index < my_cmnts_list.length) {
+                        my_cmnts_list.removeAt(index);
+                      }
                   });
                 },
               ),
@@ -260,11 +262,11 @@ class _Add_commentState extends State<Add_comment> {
                                 readOnly: true,
                                 controller: dateController,
                                 onTap: () async {
-                                  DateTime selectedDate = DateTime.now(); // Initialize selectedDate with today's date
+                                  DateTime selectedDate1 = DateTime.now(); // Initialize selectedDate with today's date
 
                                   DateTime? pickedDate = await showDatePicker(
                                     context: context,
-                                    initialDate: selectedDate, // Use selectedDate as the initial date
+                                    initialDate: selectedDate1, // Use selectedDate as the initial date
                                     firstDate: DateTime(1990),
                                     lastDate: DateTime(2025),
                                   );
@@ -347,7 +349,7 @@ class _Add_commentState extends State<Add_comment> {
                                           }, child: Text('No')),
                                           TextButton(onPressed: () {
                                             Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img: path!, owner_name: shedule_modle.owner_name,
-                                                time_of_cmnt: DateTime.now().millisecondsSinceEpoch, img_picked: false);
+                                                time_of_cmnt: selectedDate.millisecondsSinceEpoch, img_picked: false);
 //                                            praf_handler.add_list(horse_model.name+horse_model.age, jsonEncode(horse_cmnt_model.toJson()));
                                             praf_handler.add_list(name, jsonEncode(horse_cmnt_model.toJson()));
                                             
@@ -400,6 +402,7 @@ class _Add_commentState extends State<Add_comment> {
                           // Then close the dialog
                          if(xfile!=null)
                                     {
+                                      print(selectedDate);
 /*                                      Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img: xfile.path, owner_name: shedule_modle.owner_name,
                                           time_of_cmnt: DateTime.now().millisecondsSinceEpoch, img_picked: true);
                                       praf_handler.add_list(horse_model.name+horse_model.age, jsonEncode(horse_cmnt_model.toJson()));*/
@@ -458,7 +461,6 @@ class _Add_commentState extends State<Add_comment> {
 
           ),
           child: Center(child: IconButton(onPressed: () async{
-            
 
           }, icon: Icon(Icons.delete,color: Colors.black,size: 20,))),
 
