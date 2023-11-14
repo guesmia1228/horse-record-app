@@ -107,7 +107,6 @@ class _HomeState extends State<Home> {
               getWeekDays();
               setState(() {});
             }        
-            print("show_date_picker");
           },
           child: Icon(Icons.apps,size: 30,),
         ),
