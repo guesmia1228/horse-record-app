@@ -25,6 +25,5 @@ class Horse_cmnt_model{
       "img_picked": this.img_picked,
     };
   }
-
 //
 }

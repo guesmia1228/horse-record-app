@@ -56,8 +56,6 @@ class _Owner_hoursesState extends State<Owner_hourses> {
                   MyText(txt: shedule_modle.time, color: Colors.black, txtSize: 25,fontWeight: FontWeight.bold),
                   Spacer(),
                   MyText(txt: list.length.toString()+' Head', color: Colors.black, txtSize: 25,fontWeight: FontWeight.bold),
-
-
                 ],),
               ),
             ),
@@ -150,11 +148,11 @@ class _Owner_hoursesState extends State<Owner_hourses> {
                    EasyLoading.showError('already added');
 
                  }
-               else{
+               else
+               {
                  await praf_handler.add_list(shedule_modle.owner_name+shedule_modle.owner_phone+weekDay.millisecondsSinceEpoch.toString(), jsonEncode(list[index].toJson()));
                  Navigator.pop(context,true);
                }
-
 
              },
              leading: MyText(txt: (index+1).toString(), color: Colors.black, txtSize: 20),

@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
+import 'package:get/get.dart';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
@@ -11,6 +13,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:hourses/Home.dart';
 import 'package:hourses/Login.dart';
+import 'package:hourses/Setting.dart';
 import 'package:hourses/helper/My_Button.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
 import 'package:hourses/helper/Praf_handler.dart';
@@ -28,8 +31,10 @@ import 'package:timezone/data/latest.dart' as tz;
 void main() async{
 
   WidgetsFlutterBinding.ensureInitialized();
+  final int _selectedIndex;
+
   // await Firebase.initializeApp();
-  await initializeService();
+  //  await initializeService();
   // NotificationService().initNotification();
   // tz.initializeTimeZones();
 
@@ -38,10 +43,16 @@ void main() async{
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+
   @override
+  final int _selectedIndex=0;
+
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      home:Home(),
+      home: Scaffold(
+        body: Home(),
+      
+      ),
       debugShowCheckedModeBanner: false,
       builder: EasyLoading.init(),
     );
@@ -85,6 +96,7 @@ Future<void> initializeService() async {
   await service.configure(
     androidConfiguration: AndroidConfiguration(
       // this will be executed when app is in foreground or background in separated isolate
+      
       onStart: onStart,
 
       // auto start service
@@ -211,8 +223,6 @@ hour_timer(var service)async{
           }
 
         }
-
-
 
 
 

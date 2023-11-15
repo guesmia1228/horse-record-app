@@ -25,17 +25,18 @@ class my_Methods
     return FirebaseAuth.instance.currentUser!.uid.toString();
   }
 
-  static get_days_in_week(int week_nbr)async{
+  static get_days_in_week(DateTime date, int week_nbr)async{
 
 
     List<DateTime> weekdays = [];
 
-    int year = DateTime.now().year;
+//    int year = DateTime.now().year-1;
 
     int firstDayOfWeek = (week_nbr-1) * 7;
     final extraDuration = Duration(days: firstDayOfWeek);
 
-    final startDate = DateTime(year);
+//    final startDate = DateTime(year);
+    final startDate = date;
 
     final dates = startDate.add(extraDuration);
     for (var i = 0; i < 7; i++) {

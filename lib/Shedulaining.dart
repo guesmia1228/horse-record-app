@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:awesome_notifications/awesome_notifications.dart';
+//import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -12,19 +12,21 @@ import 'package:hourses/helper/Praf_handler.dart';
 import 'package:hourses/helper/my_helper.dart';
 import 'package:hourses/model/Shedule_model.dart';
 import 'package:intl/intl.dart';
+import 'package:hourses/Setting.dart';
+import 'package:hourses/Home.dart';
 
 class Sheduling extends StatefulWidget {
   final DateTime weekDay;
-  const Sheduling({super.key, required this.weekDay});
-
+  final bool edit_value;
+  const Sheduling({super.key, required this.weekDay, required this.edit_value});
   @override
-  State<Sheduling> createState() => _ShedulingState(weekDay);
+  State<Sheduling> createState() => _ShedulingState(weekDay,edit_value);
 }
 
 class _ShedulingState extends State<Sheduling> {
   final DateTime weekDay;
-
-  _ShedulingState(this.weekDay);
+  bool edit_value;
+  _ShedulingState(this.weekDay,this.edit_value);
   Contact? contact;
   bool alert_on=true;
 
@@ -69,10 +71,49 @@ class _ShedulingState extends State<Sheduling> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+             appBar: AppBar(
+        backgroundColor: Colors.red,
+        title: MyText(txt: "Appointment", color: Colors.white, txtSize: 30,fontWeight: FontWeight.bold),
+      ),
+       bottomNavigationBar: BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.people),
+              label: 'Owners',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Settings',
+            ),
+            
+          ],
+           currentIndex: 0,
+          onTap: (int index) async{
+          if(index==0)
+          {
+            Get.to(Home())!.then((value){
+
+            });
+          }
+          if (index == 2) {
+            Get.to(Setting())!.then((value) {
+              if(value!=null)
+                {
+//                  getSelectedWeeks();
+//                  getWeekDays();   
+                }
+            });
+          }
+        },
+        ),
+
       body: SingleChildScrollView(
         child: Column(children: [
 
-          SizedBox(height: 60,),
           Center(
             child:mode==2?Container(): My_Btn(txt: 'Owner Search', btn_color: Colors.grey, btn_size: 300, gestureDetector: GestureDetector(onTap: () async{
 
@@ -114,16 +155,8 @@ class _ShedulingState extends State<Sheduling> {
               )),
             ),
           ),
-          SizedBox(height: 10,),
           grid_time(),
         
-        
-
-          SizedBox(height: 10,),
-
-
-
-
           mode==2?Container():Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
@@ -131,13 +164,14 @@ class _ShedulingState extends State<Sheduling> {
               color: Colors.black,
               child: Center(child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: MyText(txt: '# of Hourses', color: Colors.white, txtSize: 20,fontWeight: FontWeight.bold),
+                child: MyText(txt: '# of Horses', color: Colors.white, txtSize: 20,fontWeight: FontWeight.bold),
               )),
             ),
           ),
-          SizedBox(height: 10,),
+//          SizedBox(height: 10,),
+
           grid_hourses(),
-          SizedBox(height: 10,),
+//          SizedBox(height: 10,),
           Row(children: [
             Expanded(
               child: Padding(
@@ -158,7 +192,7 @@ class _ShedulingState extends State<Sheduling> {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: My_Btn(txt: 'Submit', btn_color: Colors.yellow, btn_size: 00, gestureDetector: GestureDetector(onTap: () async{
+                child: My_Btn(txt: edit_value? 'Change':'Submit', btn_color: Colors.yellow, btn_size: 00, gestureDetector: GestureDetector(onTap: () async{
 
 
                   if(mode==2){
@@ -168,8 +202,10 @@ class _ShedulingState extends State<Sheduling> {
                          alert_on: alert_on, reason: reason.text, shedule_time: manual_selected_shedule_time.millisecondsSinceEpoch);
 
                     String s=jsonEncode(model.toJson());
+                    
                     praf_handler.add_list(my_helper.shedule+weekDay.millisecondsSinceEpoch.toString(), s);
-
+                      print("another====fool====");
+                      print(my_helper.shedule+weekDay.millisecondsSinceEpoch.toString());
                     // int h=await praf_handler.get_int(my_helper.hourse+weekDay.millisecondsSinceEpoch.toString());
                     //
                     // h=h+hourses;
@@ -190,13 +226,17 @@ class _ShedulingState extends State<Sheduling> {
 
                       String s=jsonEncode(model.toJson());
                       praf_handler.add_list(my_helper.shedule+weekDay.millisecondsSinceEpoch.toString(), s);
-
+                      print("another====fool====");
+                      print(my_helper.shedule+weekDay.millisecondsSinceEpoch.toString());
                       int h=await praf_handler.get_int(my_helper.hourse+weekDay.millisecondsSinceEpoch.toString());
 
                       h=h+hourses;
 
-                      praf_handler.set_int(my_helper.hourse+weekDay.millisecondsSinceEpoch.toString(), h);
-                      praf_handler.set_bool(my_helper.day_mode+weekDay.millisecondsSinceEpoch.toString(),
+ 
+                     await praf_handler.set_int(my_helper.hourse+weekDay.millisecondsSinceEpoch.toString(), h);
+                      print(my_helper.hourse+weekDay.millisecondsSinceEpoch.toString());
+                    //   print(await praf_handler.get_int(my_helper.hourse+weekDay.millisecondsSinceEpoch.toString()));
+                      await praf_handler.set_bool(my_helper.day_mode+weekDay.millisecondsSinceEpoch.toString(),
                           mode==1?true:false);
 
                       Navigator.pop(context,true);
@@ -206,8 +246,6 @@ class _ShedulingState extends State<Sheduling> {
                       EasyLoading.showError('select owner');
                     }
                   }
-
-
 
                   
                 },),txt_color: Colors.black),
@@ -227,7 +265,7 @@ class _ShedulingState extends State<Sheduling> {
 
   Widget grid_time(){
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(2.0),
       child: Column(
         children: [
 
@@ -273,16 +311,29 @@ class _ShedulingState extends State<Sheduling> {
             },),
           
           Row(children: [
-            Expanded(
+           Expanded(
               child: Center(
-                child: TextButton(onPressed: () {
-                  am_select=true;
-                  pm_select=false;
-                  set_digital_time(selectedTime, mnt);
-
-                  setState(() {
-                  });
-                }, child: Text('AM',style: TextStyle(color: am_select?Colors.blue:Colors.black),)),
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle, // Make it a circle
+                    color: Colors.yellow, // Set circle color to yellow
+                  ),
+                  padding: EdgeInsets.all(4), // Add padding to create space around the circle
+                  child: TextButton(
+                    onPressed: () {
+                      am_select = true;
+                      pm_select = false;
+                      set_digital_time(selectedTime, mnt);
+                      setState(() {});
+                    },
+                    child: Text(
+                      'AM',
+                      style: TextStyle(
+                        color: am_select ? Colors.blue : Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ),
             Spacer(),
@@ -291,12 +342,12 @@ class _ShedulingState extends State<Sheduling> {
                 mnt=30;
 
                 if(selectedTime>7) {
-                    pm_select=true;
-                    am_select=false;
+                    pm_select=false;
+                    am_select=true;
                     set_digital_time(selectedTime+12, mnt);
                   }else{
-                  pm_select=false;
-                  am_select=true;
+                  pm_select=true;
+                  am_select=false;
                   set_digital_time(selectedTime, mnt);
 
                 }
@@ -317,14 +368,27 @@ class _ShedulingState extends State<Sheduling> {
             Spacer(),
             Expanded(
               child: Center(
-                child: TextButton(onPressed: () {
-
-                  am_select=false;
-                  pm_select=true;
-                  set_digital_time(selectedTime+12, mnt);
-                  setState(() {
-                  });
-                }, child: Text('PM',style: TextStyle(color: pm_select?Colors.blue:Colors.black),)),
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle, // Make it a circle
+                    color: Colors.yellow, // Set circle color to yellow
+                  ),
+                  padding: EdgeInsets.all(4), // Add padding to create space around the circle
+                  child: TextButton(
+                    onPressed: () {
+                      am_select = false;
+                      pm_select = true;
+                      set_digital_time(selectedTime + 12, mnt);
+                      setState(() {});
+                    },
+                    child: Text(
+                      'PM',
+                      style: TextStyle(
+                        color: pm_select ? Colors.blue : Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ),
           ],),
@@ -370,7 +434,7 @@ class _ShedulingState extends State<Sheduling> {
   int hourses=1;
   Widget grid_hourses(){
     return mode==2?Container():Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(2.0),
       child: GridView.builder(
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
@@ -403,3 +467,4 @@ class _ShedulingState extends State<Sheduling> {
   }
 
 }
+

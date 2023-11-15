@@ -59,7 +59,7 @@ class _Add_hoursesState extends State<Add_hourses> {
                 padding: const EdgeInsets.only(left: 40,right: 40,top: 10,bottom: 10),
                 child: Column(children: [
 
-                  My_Text_Field(controler: name, label: 'Hourse Name'),
+                  My_Text_Field(controler: name, label: 'Horse Name'),
                   SizedBox(height: 10,),
 
                   TextButton(onPressed: () async{
@@ -137,12 +137,7 @@ class _Add_hoursesState extends State<Add_hourses> {
             My_Btn(txt: 'Save', btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () {
               Navigator.pop(context,true);
             },)),
-
-
-
           ],
-
-
         ),
       ),
     );
@@ -180,7 +175,6 @@ class _Add_hoursesState extends State<Add_hourses> {
         shrinkWrap: true,
           itemCount: list.length,
           itemBuilder: (context, index) {
-
            return ListTile(
              leading: MyText(txt: (index+1).toString(), color: Colors.black, txtSize: 20),
              title: InkWell(
@@ -190,7 +184,6 @@ class _Add_hoursesState extends State<Add_hourses> {
                  child: MyText(txt: list[index].name, color: Colors.red, txtSize: 20)),
              trailing: IconButton(onPressed: () async{
                await praf_handler.del_list_item(shedule_modle.owner_name+shedule_modle.owner_phone, index);
-
                getList();
              }, icon: Icon(Icons.delete)),
            );
@@ -210,6 +203,5 @@ class _Add_hoursesState extends State<Add_hourses> {
     });
 
   }
-
 
 }
