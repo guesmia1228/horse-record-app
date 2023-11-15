@@ -20,6 +20,8 @@ import 'package:age_calculator/age_calculator.dart';
 import 'package:intl/intl.dart';
 import 'package:telephony/telephony.dart';
 import 'package:hourses/Add_comment.dart';
+import 'package:hourses/Setting.dart';
+import 'package:hourses/Home.dart';
 
 class Appointment extends StatefulWidget {
   final Shedule_modle shedule_modle;
@@ -40,7 +42,7 @@ class _AppointmentState extends State<Appointment> {
 
   String yearBorn_String='';
   DateTime selectedDate=DateTime.now();
-
+  int _selectedIndex=1;
   _AppointmentState(this.shedule_modle, this.weekDay);
 
   @override
@@ -50,7 +52,39 @@ class _AppointmentState extends State<Appointment> {
         backgroundColor: Colors.red,
         title: MyText(txt: shedule_modle.owner_name, color: Colors.white, txtSize: 38,fontWeight: FontWeight.bold),
       ),
+       bottomNavigationBar: BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.people),
+              label: 'Owners',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Settings',
+            ),
+            
+          ],
+           currentIndex: _selectedIndex,
+          onTap: (int index) async{
+         if(index==0)
+          {
+            Get.to(Home())!.then((value){
 
+            });
+          }            
+          if (index == 2) {
+            Get.to(Setting())!.then((value) {
+              if(value!=null)
+                {
+                }
+            });
+          }
+        },
+        ),
       body: Padding(
         padding: const EdgeInsets.all(28.0),
         child: Column(
@@ -113,21 +147,8 @@ class _AppointmentState extends State<Appointment> {
             ),
 
             SizedBox(height: 5,),
-            /*
-            My_Btn(txt: 'Call', btn_color: Colors.green, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
-
-              var url = Uri.parse("tel:"+shedule_modle.owner_phone);
-              await launchUrl(url);
-             
-
-
-            },)),
-            SizedBox(height: 5,),
-            My_Btn(txt: 'Message', btn_color: Colors.green, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
-              var url = Uri.parse('sms:'+shedule_modle.owner_phone+'?body=hello%20there');
-              await launchUrl(url);
-            },)),
-          */
+            
+        
             Expanded(
               child: Container(
                 width: double.infinity,
@@ -191,50 +212,65 @@ class _AppointmentState extends State<Appointment> {
                                 SizedBox(height: 10,),
 
 
-                                TextFormField(
-                                readOnly: true,
-                                controller: dateController,
-                                onTap: () async {
-                                  DateTime selectedDate1 = DateTime.now(); // Initialize selectedDate with today's date
+                                  TextFormField(
+                                  readOnly: true,
+                                  controller: dateController,
+                                  onTap: () async {
+                                    DateTime selectedDate1 = DateTime.now(); // Initialize selectedDate with today's date
 
-                                  DateTime? pickedDate = await showDatePicker(
-                                    context: context,
-                                    initialDate: selectedDate1, // Use selectedDate as the initial date
-                                    firstDate: DateTime(1990),
-                                    lastDate: DateTime(2025),
-                                  );
+                                    DateTime? pickedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: selectedDate1, // Use selectedDate as the initial date
+                                      firstDate: DateTime(1990),
+                                      lastDate: DateTime(2025),
+                                    );
 
-                                  if (pickedDate != null) {
-                                    // Update selectedDate with the picked date
-                                    selectedDate = pickedDate;
+                                    if (pickedDate != null) {
+                                      // Update selectedDate with the picked date
+                                      selectedDate = pickedDate;
 
-                                    String selectedYear = DateFormat('yyyy').format(selectedDate);
+                                      String selectedYear = DateFormat('yyyy').format(selectedDate);
 
-                                    String formattedDate = '01-01-' + selectedYear;
-                                    // Set the selected date in the TextFormField
-                                    dateController.text = formattedDate;
+                                      String formattedDate = '01-01-' + selectedYear;
+                                      // Set the selected date in the TextFormField
+                                      dateController.text = formattedDate;
 
-                                     yearBorn_String=DateFormat.yMd().format(pickedDate);
+                                      yearBorn_String=DateFormat.yMd().format(pickedDate);
 
-                                    // Find out your age as of today's date 2021-03-08
-                                    DateDuration duration = AgeCalculator.age(pickedDate);
-                                    print('Your age is $duration');
+                                      // Find out your age as of today's date 2021-03-08
+                                      DateDuration duration = AgeCalculator.age(pickedDate);
+                                      print('Your age is $duration');
 
-                                    age.text='${duration.years + 1}';
+                                      age.text='${duration.years + 1}';
 
-                                    setState(() {
+                                      setState(() {
 
-                                    });
+                                      });
 
-                                    // Find out the age based on today's date
-                                    setState(() {});
+                                      // Find out the age based on today's date
+                                      setState(() {});
+                                    }
                                   }
-                                }
-                              ),   
+                                ),   
 
-                           
-                                SizedBox(height: 10,),
-                                My_Text_Field(controler: age, label: 'Age'),
+                            
+                                  SizedBox(height: 10,),
+                                TextFormField(
+                                    controller: age, // The controller for the age text field
+                                    decoration: InputDecoration(
+                                      labelText: 'Age', // The label for the age text field
+                                    ),
+                                    onChanged: (value) { // Event handler for when the value of the age field changes
+                                      if (value.isNotEmpty) { // Check if the value is not empty
+                                        int enteredAge = int.tryParse(value) ?? 0; // Convert the entered value to an integer or default to 0
+                                        DateTime today = DateTime.now(); // Get the current date
+                                        int currentYear = today.year; // Extract the current year
+                                        int birthYear = currentYear - enteredAge + 1; // Calculate the birth year based on the entered age
+                                        String formattedDate = '01-01-$birthYear'; // Format the birth date as '01-01-YYYY'
+                                        dateController.text = formattedDate; // Set the birth date in the date text field
+                                      }
+                                    },
+                                  ),
                                 SizedBox(height: 10,),
 
                               ],),
@@ -282,7 +318,20 @@ class _AppointmentState extends State<Appointment> {
               });
             },)),
 
+  /*
+         My_Btn(txt: 'Call', btn_color: Colors.green, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
 
+              var url = Uri.parse("tel:"+shedule_modle.owner_phone);
+              await launchUrl(url);
+             
+
+
+            },)),
+            My_Btn(txt: 'Message', btn_color: Colors.green, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
+              var url = Uri.parse('sms:'+shedule_modle.owner_phone+'?body=hello%20there');
+              await launchUrl(url);
+            },)),
+          */
 
           ],
 
@@ -331,8 +380,17 @@ class _AppointmentState extends State<Appointment> {
 
              },
              leading: MyText(txt: (index+1).toString(), color: Colors.black, txtSize: 20),
-             title: MyText(txt: list[index].name + "                  " +list[index].age  + " years", color: Colors.red, txtSize: 20),
-
+             title: SizedBox(
+                width: double.infinity,  // Ensure the title takes the remaining space
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align the components horizontally
+                  crossAxisAlignment: CrossAxisAlignment.center, // Center align vertically
+                  children: <Widget>[
+                    MyText(txt: list[index].name, color: Colors.red, txtSize: 20),
+                    MyText(txt: list[index].age + " years", color: Colors.blue, txtSize: 20),
+                  ],
+                ),
+              ),
            );
 
 

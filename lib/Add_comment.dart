@@ -24,6 +24,9 @@ import 'package:hourses/model/Horse_model.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:hourses/Setting.dart';
+import 'package:hourses/Home.dart';
+
 class Add_comment extends StatefulWidget {
   final Shedule_modle shedule_modle;
   final DateTime weekDay;
@@ -57,6 +60,42 @@ class _Add_commentState extends State<Add_comment> {
         backgroundColor: Colors.red,
         title: MyText(txt: shedule_modle.owner_name, color: Colors.white, txtSize: 38,fontWeight: FontWeight.bold),
       ),
+
+       bottomNavigationBar: BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.people),
+              label: 'Owners',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Settings',
+            ),
+            
+          ],
+           currentIndex: 0,
+          onTap: (int index) async{
+          if(index==0)
+          {
+            Get.to(Home())!.then((value){
+
+            });
+          }
+          if (index == 2) {
+            Get.to(Setting())!.then((value) {
+              if(value!=null)
+                {
+//                  getSelectedWeeks();
+//                  getWeekDays();   
+                }
+            });
+          }
+        },
+        ),
       body: Column(
 
 //      mainAxisAlignment: MainAxisAlignment.center, // Center the content vertically
@@ -410,7 +449,7 @@ class _Add_commentState extends State<Add_comment> {
                             }
                            if(res!=null)
                                     {
-                                      Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img: res.files.single.path!, owner_name: name,
+                                      Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img: res?.files?.isNotEmpty == true ? res!.files.single.path! : "defaultPath", owner_name: name,
                                           time_of_cmnt: selectedDate.millisecondsSinceEpoch, img_picked: false);
 //                                      praf_handler.add_list(horse_model.name+horse_model.age, jsonEncode(horse_cmnt_model.toJson()));
                                       praf_handler.add_list(name, jsonEncode(horse_cmnt_model.toJson()));
@@ -462,6 +501,7 @@ class _Add_commentState extends State<Add_comment> {
 
           ),
           child: Center(child: IconButton(onPressed: () async{
+//            await praf_handler.del_list_item(shedule_modle.owner_name+my_helper.all_horses,index);
 
           }, icon: Icon(Icons.delete,color: Colors.black,size: 20,))),
 

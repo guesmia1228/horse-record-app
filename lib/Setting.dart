@@ -6,6 +6,7 @@ import 'package:hourses/helper/My_Text.dart';
 import 'package:hourses/helper/Praf_handler.dart';
 import 'package:hourses/helper/my_helper.dart';
 import 'package:intl/intl.dart';
+import 'package:get/get.dart';
 
 class Setting extends StatefulWidget {
   const Setting({super.key});
@@ -44,7 +45,33 @@ class _SettingState extends State<Setting> {
         backgroundColor: Colors.red,
         title: MyText(txt: 'Setting', color: Colors.white, txtSize: 18),
       ),
-
+bottomNavigationBar: BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.people),
+              label: 'Owners',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Settings',
+            ),
+            
+          ],
+           currentIndex: 2,
+          onTap: (int index) async{
+          if (index == 2) {
+            Get.to(Setting())!.then((value) {
+              if(value!=null)
+                {
+                }
+            });
+          }
+        },
+        ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -54,7 +81,7 @@ class _SettingState extends State<Setting> {
 
             shedule_alert(),
 
-            SizedBox(height: 20,),
+            SizedBox(height: 10,),
 
 
             TextButton(onPressed: () async{
@@ -87,7 +114,7 @@ class _SettingState extends State<Setting> {
   }
   Widget week_days(){
     return Column(children: [
-      SizedBox(height: 20,),
+      SizedBox(height: 10,),
       Center(child: MyText(txt: 'Enter Week days', color: Colors.black, txtSize: 20)),
       SizedBox(height: 10,),
 

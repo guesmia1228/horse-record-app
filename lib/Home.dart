@@ -470,13 +470,20 @@ class _HomeState extends State<Home> {
                       praf_handler.set_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString(), hours);                    
                       Get.to(Sheduling(weekDay: dateTime, edit_value:true),transition: Transition.circularReveal,duration: Duration(seconds: 1))!.then((value) async{
                         if(value!=null){
-                    int h=await praf_handler.get_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString());
-                        print("mother");
-                        print(h);
-                      setState((){
-                        hours=h;                     
-                        print(full);
-                      });                        
+                        int h=await praf_handler.get_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString());
+                        print(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString());
+                          print("mother");
+                          print(h);
+                        setState((){
+                          horse_num[index_h]=h;
+                          hours=h;                     
+                          print(horse_num[index_h]);
+    //                      print(horse_num);
+                          print(index_h);
+                          print("===mother===");
+                          print(horse_num[index_h]);
+                        });  
+                        init_value();
                           getWeekDays();
                         }
                       });
@@ -507,12 +514,42 @@ class _HomeState extends State<Home> {
         backgroundColor: Colors.red,
         title: MyText(txt: 'Home', color: Colors.white, txtSize: 18,fontWeight: FontWeight.bold),
       ),
+  bottomNavigationBar: BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.people),
+              label: 'Owners',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Settings',
+            ),
+            
+          ],
+          currentIndex: 0,
+          onTap: (int index) async{
+          if (index == 2) {
+            Get.to(Setting())!.then((value) {
+              if(value!=null)
+                {
+                  getSelectedWeeks();
+                  getWeekDays();                  
+                }
+            });
+          }
+        },
+        ),      
       body: Column(
         children: [
           SizedBox(height: 20),
           selected_weeks(),
           SizedBox(height: 50),
           week_days(),
+          /*
           My_Btn(txt: 'Setting', btn_color: Colors.red, btn_size: 100, gestureDetector: GestureDetector(onTap: () async{
             Get.to(Setting())!.then((value) {
               if(value!=null)
@@ -523,6 +560,7 @@ class _HomeState extends State<Home> {
             });
           },),txt_color: Colors.white),
           SizedBox(height: 30,),
+          */
         ],
       )
     );

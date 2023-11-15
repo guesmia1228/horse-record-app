@@ -12,6 +12,8 @@ import 'package:hourses/helper/Praf_handler.dart';
 import 'package:hourses/helper/my_helper.dart';
 import 'package:hourses/model/Shedule_model.dart';
 import 'package:intl/intl.dart';
+import 'package:hourses/Setting.dart';
+import 'package:hourses/Home.dart';
 
 class Sheduling extends StatefulWidget {
   final DateTime weekDay;
@@ -69,10 +71,49 @@ class _ShedulingState extends State<Sheduling> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+             appBar: AppBar(
+        backgroundColor: Colors.red,
+        title: MyText(txt: "Appointment", color: Colors.white, txtSize: 30,fontWeight: FontWeight.bold),
+      ),
+       bottomNavigationBar: BottomNavigationBar(
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.people),
+              label: 'Owners',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              label: 'Settings',
+            ),
+            
+          ],
+           currentIndex: 0,
+          onTap: (int index) async{
+          if(index==0)
+          {
+            Get.to(Home())!.then((value){
+
+            });
+          }
+          if (index == 2) {
+            Get.to(Setting())!.then((value) {
+              if(value!=null)
+                {
+//                  getSelectedWeeks();
+//                  getWeekDays();   
+                }
+            });
+          }
+        },
+        ),
+
       body: SingleChildScrollView(
         child: Column(children: [
 
-          SizedBox(height: 60,),
           Center(
             child:mode==2?Container(): My_Btn(txt: 'Owner Search', btn_color: Colors.grey, btn_size: 300, gestureDetector: GestureDetector(onTap: () async{
 
