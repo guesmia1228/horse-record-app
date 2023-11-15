@@ -24,6 +24,7 @@ import 'package:hourses/Add_comment.dart';
 class Appointment extends StatefulWidget {
   final Shedule_modle shedule_modle;
   final DateTime weekDay;
+  
   const Appointment({super.key, required this.shedule_modle, required this.weekDay});
 
   @override
@@ -33,9 +34,12 @@ class Appointment extends StatefulWidget {
 class _AppointmentState extends State<Appointment> {
   final Shedule_modle shedule_modle;
   final DateTime weekDay;
+  TextEditingController dateController = TextEditingController(text: DateFormat.yMd().format(DateTime.now()));
+
   final name=TextEditingController(),year_born=TextEditingController(),age=TextEditingController();
 
   String yearBorn_String='';
+  DateTime selectedDate=DateTime.now();
 
   _AppointmentState(this.shedule_modle, this.weekDay);
 
@@ -72,7 +76,8 @@ class _AppointmentState extends State<Appointment> {
                 child: Row(children: [
                   MyText(txt: DateFormat('M-d-yyyy').format(weekDay), color: Colors.black, txtSize: 25,fontWeight: FontWeight.bold),
                   Spacer(),
-                  MyText(txt: list.length.toString()+' hd', color: Colors.black, txtSize: 25,fontWeight: FontWeight.bold),
+                  MyText(txt: list_appointment.length.toString()+'/', color: Colors.black, txtSize: 25,fontWeight: FontWeight.bold),
+                  MyText(txt: shedule_modle.hourses.toString()+' hd', color: Colors.black, txtSize: 25,fontWeight: FontWeight.bold),
                 ],),
               ),
             ),
@@ -185,30 +190,49 @@ class _AppointmentState extends State<Appointment> {
                                 My_Text_Field(controler: name, label: 'Horse Name'),
                                 SizedBox(height: 10,),
 
-                                TextButton(onPressed: () async{
 
-                                  DateTime? picked_time=await showDatePicker(context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(1990), lastDate: DateTime(2025));
+                                TextFormField(
+                                readOnly: true,
+                                controller: dateController,
+                                onTap: () async {
+                                  DateTime selectedDate1 = DateTime.now(); // Initialize selectedDate with today's date
 
-                                  if(picked_time!=null){
+                                  DateTime? pickedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: selectedDate1, // Use selectedDate as the initial date
+                                    firstDate: DateTime(1990),
+                                    lastDate: DateTime(2025),
+                                  );
 
-                                    yearBorn_String=DateFormat.yMd().format(picked_time);
+                                  if (pickedDate != null) {
+                                    // Update selectedDate with the picked date
+                                    selectedDate = pickedDate;
+
+                                    String selectedYear = DateFormat('yyyy').format(selectedDate);
+
+                                    String formattedDate = '01-01-' + selectedYear;
+                                    // Set the selected date in the TextFormField
+                                    dateController.text = formattedDate;
+
+                                     yearBorn_String=DateFormat.yMd().format(pickedDate);
 
                                     // Find out your age as of today's date 2021-03-08
-                                    DateDuration duration = AgeCalculator.age(picked_time);
+                                    DateDuration duration = AgeCalculator.age(pickedDate);
                                     print('Your age is $duration');
 
-                                    age.text=duration.toString();
+                                    age.text='${duration.years + 1}';
 
                                     setState(() {
 
                                     });
 
+                                    // Find out the age based on today's date
+                                    setState(() {});
                                   }
+                                }
+                              ),   
 
-
-                                }, child: Text('Year born $yearBorn_String',style: TextStyle(color: Colors.black),)),
+                           
                                 SizedBox(height: 10,),
                                 My_Text_Field(controler: age, label: 'Age'),
                                 SizedBox(height: 10,),
@@ -307,7 +331,7 @@ class _AppointmentState extends State<Appointment> {
 
              },
              leading: MyText(txt: (index+1).toString(), color: Colors.black, txtSize: 20),
-             title: MyText(txt: list[index].name, color: Colors.red, txtSize: 20),
+             title: MyText(txt: list[index].name + "                  " +list[index].age  + " years", color: Colors.red, txtSize: 20),
 
            );
 
@@ -358,7 +382,11 @@ class _AppointmentState extends State<Appointment> {
              title: MyText(txt: list_appointment[index].name, color: Colors.black, txtSize: 20),
              trailing: IconButton(onPressed: () async{
                await praf_handler.del_list_item(shedule_modle.owner_name+shedule_modle.owner_phone+weekDay.millisecondsSinceEpoch.toString(), index);
-
+               setState(() {
+                  if (index >= 0 && index < list_appointment.length) {
+                          list_appointment.removeAt(index);
+                        }
+               });
                getList_appointment();
              }, icon: Icon(Icons.delete)),
                onTap: () async{

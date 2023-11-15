@@ -175,7 +175,7 @@ class _Add_commentState extends State<Add_comment> {
   final cmnt=TextEditingController();
   DateTime selectedDate=DateTime.now();
   XFile? xfile;
-
+  FilePickerResult? res;
    Widget ShowHorseName(int index, String name,bool mode){
     print("name=====================name");
     return Row(
@@ -309,18 +309,8 @@ class _Add_commentState extends State<Add_comment> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: My_Btn(txt: 'Upload MP3', btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
 
-                                    FilePickerResult? res=await FilePicker.platform.pickFiles();
-                                    if(res!=null)
-                                    {
-                                      Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img: res.files.single.path!, owner_name: shedule_modle.owner_name,
-                                          time_of_cmnt: DateTime.now().millisecondsSinceEpoch, img_picked: false);
-//                                      praf_handler.add_list(horse_model.name+horse_model.age, jsonEncode(horse_cmnt_model.toJson()));
-                                      praf_handler.add_list(name, jsonEncode(horse_cmnt_model.toJson()));
-
-                                      EasyLoading.showSuccess('added');
-                                      Future.delayed(Duration(seconds: 1)).then((value) => getHistoryList());
-
-                                    }
+                                    res=await FilePicker.platform.pickFiles();
+                                   
                                   },)),
                                 ),
                               ),
@@ -418,6 +408,17 @@ class _Add_commentState extends State<Add_comment> {
                               EasyLoading.showError('give permisson');
                               return;
                             }
+                           if(res!=null)
+                                    {
+                                      Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img: res.files.single.path!, owner_name: name,
+                                          time_of_cmnt: selectedDate.millisecondsSinceEpoch, img_picked: false);
+//                                      praf_handler.add_list(horse_model.name+horse_model.age, jsonEncode(horse_cmnt_model.toJson()));
+                                      praf_handler.add_list(name, jsonEncode(horse_cmnt_model.toJson()));
+
+                                      EasyLoading.showSuccess('added');
+                                      Future.delayed(Duration(seconds: 1)).then((value) => getHistoryList());
+
+                                    }                            
 //                          Horse_model model=Horse_model(name: name.text, year_born: year_born.text, age: age.text,
   //                            owner_name: shedule_modle.owner_name, owner_nbr: shedule_modle.owner_phone);
 //                          String s=jsonEncode(model.toJson());

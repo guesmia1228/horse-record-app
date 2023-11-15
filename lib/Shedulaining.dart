@@ -191,8 +191,11 @@ class _ShedulingState extends State<Sheduling> {
 
                       h=h+hourses;
 
-                      praf_handler.set_int(my_helper.hourse+weekDay.millisecondsSinceEpoch.toString(), h);
-                      praf_handler.set_bool(my_helper.day_mode+weekDay.millisecondsSinceEpoch.toString(),
+ 
+                     await praf_handler.set_int(my_helper.hourse+weekDay.millisecondsSinceEpoch.toString(), h);
+                      print(my_helper.hourse+weekDay.millisecondsSinceEpoch.toString());
+                    //   print(await praf_handler.get_int(my_helper.hourse+weekDay.millisecondsSinceEpoch.toString()));
+                      await praf_handler.set_bool(my_helper.day_mode+weekDay.millisecondsSinceEpoch.toString(),
                           mode==1?true:false);
 
                       Navigator.pop(context,true);

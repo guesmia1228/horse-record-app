@@ -37,9 +37,10 @@ class _HomeState extends State<Home> {
   bool d1m = true, d2m = true, d3m = true, d4m = true, d5m = true, d6m = true, d7m = true;
   int w1 = 1, w2 = 2, w3 = 3, week_showing = 1;
   int full=0;
-  List<int> horse_num = [];
+  List<int> horse_num =    List<int>.filled(7, 0);
   getWeekDays() async{
     weekDays=await my_Methods.get_days_in_week(selected_date,week_showing);
+
     d1h=await praf_handler.get_int(my_helper.hourse+weekDays[0].millisecondsSinceEpoch.toString());
     d2h=await praf_handler.get_int(my_helper.hourse+weekDays[1].millisecondsSinceEpoch.toString());
     d3h=await praf_handler.get_int(my_helper.hourse+weekDays[2].millisecondsSinceEpoch.toString());
@@ -47,6 +48,14 @@ class _HomeState extends State<Home> {
     d5h=await praf_handler.get_int(my_helper.hourse+weekDays[4].millisecondsSinceEpoch.toString());
     d6h=await praf_handler.get_int(my_helper.hourse+weekDays[5].millisecondsSinceEpoch.toString());
     d7h=await praf_handler.get_int(my_helper.hourse+weekDays[6].millisecondsSinceEpoch.toString());
+    horse_num[0]=d1h;
+    horse_num[1]=d2h;
+    horse_num[2]=d3h;
+    horse_num[3]=d4h;
+    horse_num[4]=d5h;
+    horse_num[5]=d6h;
+    horse_num[6]=d7h;
+
     d1m=await praf_handler.get_bool(my_helper.day_mode+weekDays[0].millisecondsSinceEpoch.toString());
     d2m=await praf_handler.get_bool(my_helper.day_mode+weekDays[1].millisecondsSinceEpoch.toString());
     d3m=await praf_handler.get_bool(my_helper.day_mode+weekDays[2].millisecondsSinceEpoch.toString());
@@ -278,8 +287,6 @@ class _HomeState extends State<Home> {
   }
 
   Widget days_view(DateTime dateTime,int hours,bool mode,int index_num){
-    print("horse_num");
-    print(horse_num);
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -351,14 +358,19 @@ class _HomeState extends State<Home> {
                   if(value!=null)
                     {
                      int h=await praf_handler.get_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString());
+                     print(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString());
                       print("mother");
                       print(h);
                     setState((){
                       horse_num[index_num]=h;
                       hours=h;                     
-                      print(full);
+                      print(horse_num[index_num]);
+//                      print(horse_num);
+                      print(index_num);
+                      print("===mother===");
+                      print(horse_num[index_num]);
                     });
-//                    init_value();
+                    init_value();
                     getWeekDays();
 //                      init_value();                     
                     }
@@ -378,88 +390,103 @@ class _HomeState extends State<Home> {
         shrinkWrap: true,
         itemBuilder: (context, index) {
           Shedule_modle model=list[index];
-          return Column(children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
+          return 
+          Container(
+            width: 200,            
+            child:Column(              
               children: [
-                IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () async{  
-                   await praf_handler.del_list_item_from_schedule(my_helper.shedule+ dateTime.millisecondsSinceEpoch.toString(), index);
-                   int hours;
-                    hours=await praf_handler.get_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString());
-                    hours-=model.hourses;
-                    praf_handler.set_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString(), hours);
-                    
-                    setState(() {
-                      if (index >= 0 && index < list.length) {
-                        list.removeAt(index);
-                      }
-                      horse_num[index_h]=hours;
-                    });
-//                    init_value();
-//                    getWeekDays();
-                  },
-                ),
-                SizedBox(width: 10,),
-                InkWell(
-                  onTap: () {
-                    Get.to(
-                      Appointment(
-                        shedule_modle: model,
-                        weekDay: dateTime,
-                      ),
-                      transition: Transition.circularReveal,
-                      duration: Duration(seconds: 1),
-                    );
-                  },
-                  child: RichText(
-                    text: TextSpan(
-                      text: model.time.toString() + ' - ',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                      ),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: model.owner_name,
-                          style: TextStyle(
-                            color: Colors.blue, // Set color to blue
-                            decoration: TextDecoration.underline, // Underline the text
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                MyText(txt: ' - ' +model.hourses.toString()+' hd', color: Colors.black, txtSize: 20),
-                IconButton(
-                  icon: Icon(Icons.edit),
-                  onPressed: () async{
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () async{  
                     await praf_handler.del_list_item_from_schedule(my_helper.shedule+ dateTime.millisecondsSinceEpoch.toString(), index);
                     int hours;
-                    hours=await praf_handler.get_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString());
-                    hours-=model.hourses;
-                    praf_handler.set_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString(), hours);                    
-                    Get.to(Sheduling(weekDay: dateTime, edit_value:true),transition: Transition.circularReveal,duration: Duration(seconds: 1))!.then((value) async{
-                      if(value!=null){
-                  int h=await praf_handler.get_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString());
-                      print("mother");
-                      print(h);
-                    setState((){
-                      hours=h;                     
-                      print(full);
-                    });                        
-                        getWeekDays();
-                      }
-                    });
-                  },
-                ),
-              ],
-            ),
-            Text(model.reason)
-          ],);
+                      hours=await praf_handler.get_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString());
+                      hours-=model.hourses;
+                      praf_handler.set_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString(), hours);
+                      
+                      setState(() {
+                        if (index >= 0 && index < list.length) {
+                          list.removeAt(index);
+                        }
+                        horse_num[index_h]=hours;
+                      });
+  //                    init_value();
+  //                    getWeekDays();
+                    },
+                  ),
+                  SizedBox(width: 10,),
+
+                  InkWell(
+                      onTap: () {
+                        Get.to(
+                          Appointment(
+                            shedule_modle: model,
+                            weekDay: dateTime,
+                          ),
+                          transition: Transition.circularReveal,
+                          duration: Duration(seconds: 1),
+                        );
+                      },
+                      child: RichText(
+                        text: TextSpan(
+                          text: model.time.toString() + ' - ',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: model.owner_name,
+                              style: TextStyle(
+                                color: Colors.blue,
+                                decoration: TextDecoration.underline,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  Container(
+                    width: 70,
+                    padding: EdgeInsets.zero,
+                    alignment: Alignment.centerRight,
+                    child: MyText(
+                      txt: ' - ' + model.hourses.toString() + ' hd',
+                      color: Colors.black,
+                      txtSize: 20,
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.edit),
+                    onPressed: () async{
+                      await praf_handler.del_list_item_from_schedule(my_helper.shedule+ dateTime.millisecondsSinceEpoch.toString(), index);
+                      int hours;
+                      hours=await praf_handler.get_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString());
+                      hours-=model.hourses;
+                      praf_handler.set_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString(), hours);                    
+                      Get.to(Sheduling(weekDay: dateTime, edit_value:true),transition: Transition.circularReveal,duration: Duration(seconds: 1))!.then((value) async{
+                        if(value!=null){
+                    int h=await praf_handler.get_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString());
+                        print("mother");
+                        print(h);
+                      setState((){
+                        hours=h;                     
+                        print(full);
+                      });                        
+                          getWeekDays();
+                        }
+                      });
+                    },
+                  ),
+                ],
+              ),
+              Text(model.reason)
+            ],)
+          );
         },
       );
   }
@@ -468,7 +495,6 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
 
     int hours = 0;
-    horse_num = List<int>.filled(7, 0);
     
      void updateHours(int newHours) {
     setState(() {
