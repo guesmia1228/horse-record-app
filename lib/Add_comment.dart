@@ -493,7 +493,7 @@ class _Add_commentState extends State<Add_comment> {
 
           }, icon: Icon(Icons.add,color: Colors.black,size: 20,))),
 
-        ),
+        ),/*
         Container(
           width: 30,height: 30,
           decoration: BoxDecoration(
@@ -505,7 +505,7 @@ class _Add_commentState extends State<Add_comment> {
 
           }, icon: Icon(Icons.delete,color: Colors.black,size: 20,))),
 
-        ),
+        ),*/
         Container(
                 width: 30,height: 30,
                 decoration: BoxDecoration(

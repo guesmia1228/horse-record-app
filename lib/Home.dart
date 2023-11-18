@@ -297,7 +297,7 @@ class _HomeState extends State<Home> {
           ),
           width: 50,
           height: 50,
-          child: Center(child: MyText(txt: (horse_num[index_num]).toString(), color: Colors.black, txtSize: 25,fontWeight: FontWeight.bold)),
+          child: Center(child: MyText(txt: (horse_num[index_num]).toString(), color: Colors.black, txtSize: 20,fontWeight: FontWeight.bold)),
         ),
         SizedBox(width: 5,),
         SizedBox(
@@ -309,8 +309,8 @@ class _HomeState extends State<Home> {
               child: InkWell(
                 child: Column(
                   children: [
-                    MyText(txt: DateFormat.EEEE().format(dateTime), color: Colors.black, txtSize: 20),
-                    MyText(txt: DateFormat.yMMMd().format(dateTime), color: Colors.black, txtSize: 20),
+                    MyText(txt: DateFormat.EEEE().format(dateTime), color: Colors.black, txtSize: 15),
+                    MyText(txt: DateFormat.yMMMd().format(dateTime), color: Colors.black, txtSize: 15),
                   ],
                 ),
                 onTap: () async{
@@ -436,7 +436,7 @@ class _HomeState extends State<Home> {
                           text: model.time.toString() + ' - ',
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 20,
+                            fontSize: 15,
                           ),
                           children: <TextSpan>[
                             TextSpan(

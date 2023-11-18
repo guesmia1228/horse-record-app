@@ -50,7 +50,7 @@ class _AppointmentState extends State<Appointment> {
     return Scaffold(
        appBar: AppBar(
         backgroundColor: Colors.red,
-        title: MyText(txt: shedule_modle.owner_name, color: Colors.white, txtSize: 38,fontWeight: FontWeight.bold),
+        title: MyText(txt: shedule_modle.owner_name, color: Colors.white, txtSize: 20,fontWeight: FontWeight.bold),
       ),
        bottomNavigationBar: BottomNavigationBar(
           items: const [
@@ -108,10 +108,10 @@ class _AppointmentState extends State<Appointment> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 40,right: 40,top: 10,bottom: 10),
                 child: Row(children: [
-                  MyText(txt: DateFormat('M-d-yyyy').format(weekDay), color: Colors.black, txtSize: 25,fontWeight: FontWeight.bold),
+                  MyText(txt: DateFormat('M-d-yyyy').format(weekDay), color: Colors.black, txtSize: 20,fontWeight: FontWeight.bold),
                   Spacer(),
-                  MyText(txt: list_appointment.length.toString()+'/', color: Colors.black, txtSize: 25,fontWeight: FontWeight.bold),
-                  MyText(txt: shedule_modle.hourses.toString()+' hd', color: Colors.black, txtSize: 25,fontWeight: FontWeight.bold),
+                  MyText(txt: list_appointment.length.toString()+'/', color: Colors.black, txtSize: 20,fontWeight: FontWeight.bold),
+                  MyText(txt: shedule_modle.hourses.toString()+' hd', color: Colors.black, txtSize: 20,fontWeight: FontWeight.bold),
                 ],),
               ),
             ),
@@ -285,12 +285,13 @@ class _AppointmentState extends State<Appointment> {
                           // You can access the entered data using nameController.text and ageController.text
                           // Perform your data validation and saving logic here
                           // Then close the dialog
+                          /*
                             bool? permissionsGranted = await Telephony.instance.requestPhoneAndSmsPermissions;
                           if(!permissionsGranted!)
                             {
                               EasyLoading.showError('give permisson');
                               return;
-                            }
+                            }*/
                           Horse_model model=Horse_model(name: name.text, year_born: year_born.text, age: age.text,
                               owner_name: shedule_modle.owner_name, owner_nbr: shedule_modle.owner_phone);
                           String s=jsonEncode(model.toJson());
@@ -318,20 +319,36 @@ class _AppointmentState extends State<Appointment> {
               });
             },)),
 
-  /*
-         My_Btn(txt: 'Call', btn_color: Colors.green, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
+  
+         Row(
+            children: [
+              My_Btn(
+                txt: 'Call',
+                btn_color: Colors.green,
+                btn_size: 160,
+                gestureDetector: GestureDetector(
+                  onTap: () async {
+                    var url = Uri.parse("tel:"+shedule_modle.owner_phone);
+                    await launchUrl(url);
+                  },
+                ),
+              ),
+              SizedBox(width: 8), // Adjust the spacing between the buttons as needed
+              My_Btn(
+                txt: 'Message',
+                btn_color: Colors.green,
+                btn_size: 160,
+                gestureDetector: GestureDetector(
+                  onTap: () async {
+                    var url = Uri.parse('sms:'+shedule_modle.owner_phone+'?body=%20');
+                    await launchUrl(url);
+                  },
+                ),
+              ),
+            ],
+          )
 
-              var url = Uri.parse("tel:"+shedule_modle.owner_phone);
-              await launchUrl(url);
-             
-
-
-            },)),
-            My_Btn(txt: 'Message', btn_color: Colors.green, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
-              var url = Uri.parse('sms:'+shedule_modle.owner_phone+'?body=hello%20there');
-              await launchUrl(url);
-            },)),
-          */
+          
 
           ],
 

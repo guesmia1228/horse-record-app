@@ -34,7 +34,7 @@ void main() async{
   final int _selectedIndex;
 
   // await Firebase.initializeApp();
-  //  await initializeService();
+    await initializeService();
   // NotificationService().initNotification();
   // tz.initializeTimeZones();
 
@@ -79,7 +79,7 @@ Future<void> initializeService() async {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   FlutterLocalNotificationsPlugin();
 
-  // if (Platform.isIOS || Platform.isAndroid) {
+   //if (Platform.isIOS || Platform.isAndroid) {
   //   await flutterLocalNotificationsPlugin.initialize(
   //     const InitializationSettings(
   //       iOS: DarwinInitializationSettings(),
@@ -149,7 +149,7 @@ void onStart(ServiceInstance service) async {
 
   );
 
-  if (service is AndroidServiceInstance) {
+//  if (service is AndroidServiceInstance) {
     service.on('setAsForeground').listen((event) {
       service.setAsForegroundService();
     });
@@ -157,7 +157,7 @@ void onStart(ServiceInstance service) async {
     service.on('setAsBackground').listen((event) {
       service.setAsBackgroundService();
     });
-  }
+//  }
 
   service.on('stopService').listen((event) {
     service.stopSelf();
@@ -171,7 +171,7 @@ void onStart(ServiceInstance service) async {
 
 hour_timer(var service)async{
   Timer.periodic(const Duration(minutes: 1), (timer) async {
-    if (service is AndroidServiceInstance) {
+//    if (service is AndroidServiceInstance) {
       if (await service.isForegroundService()) {
 
 
@@ -183,16 +183,20 @@ hour_timer(var service)async{
 
 
         DateTime hour_before_time=DateTime.now();
-        hour_before_time=hour_before_time.add(Duration(hours: hour_befor));
+        hour_before_time=hour_before_time.add(Duration(minutes: hour_befor));
         shedule_list=await praf_handler.get_shedule_list(my_helper.shedule+hour_before_time.millisecondsSinceEpoch.toString());
+            print("fool");
 
         shedule_list.forEach((element) {
           if(element.alert_on){
 
             String b=DateFormat('dd/MM/yyyy HH:mm').format(hour_before_time);
             String c=DateFormat('dd/MM/yyyy HH:mm').format(DateTime.fromMillisecondsSinceEpoch(element.shedule_time));
+           print('B: ${b}');
+           print('B: ${c}');
+
             if(b==c)
-            send_noti(element.time, 'hour before alert');
+              send_noti(element.time, 'hour before alert');
           }
         });
 
@@ -227,7 +231,7 @@ hour_timer(var service)async{
 
 
       }
-    }
+//    }
 
     /// you can see this log in logcat
     print('FLUTTER BACKGROUND SERVICE: ${DateTime.now()}');
