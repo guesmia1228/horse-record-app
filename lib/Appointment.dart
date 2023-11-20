@@ -22,6 +22,8 @@ import 'package:telephony/telephony.dart';
 import 'package:hourses/Add_comment.dart';
 import 'package:hourses/Setting.dart';
 import 'package:hourses/Home.dart';
+import 'package:hourses/OwnerPage.dart';
+import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 
 class Appointment extends StatefulWidget {
   final Shedule_modle shedule_modle;
@@ -41,6 +43,7 @@ class _AppointmentState extends State<Appointment> {
   final name=TextEditingController(),year_born=TextEditingController(),age=TextEditingController();
 
   String yearBorn_String='';
+    Contact ?contact;
   DateTime selectedDate=DateTime.now();
   int _selectedIndex=1;
   _AppointmentState(this.shedule_modle, this.weekDay);
@@ -75,7 +78,7 @@ class _AppointmentState extends State<Appointment> {
             Get.to(Home())!.then((value){
 
             });
-          }            
+          }      
           if (index == 2) {
             Get.to(Setting())!.then((value) {
               if(value!=null)
@@ -83,7 +86,21 @@ class _AppointmentState extends State<Appointment> {
                 }
             });
           }
-        },
+       if (index == 1) {
+             contact=await FlutterContactPicker().selectContact();
+    
+             if (contact != null) {
+              Get.to(OwnerPage(contact: contact!))!.then((value) {
+                if (value != null) {
+                  // Perform additional actions here based on the returned value
+                  // For example:
+                  // getSelectedWeeks();
+                  // getWeekDays(); 
+                }
+              });
+            }
+       
+        }}
         ),
       body: Padding(
         padding: const EdgeInsets.all(28.0),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hourses/Appointment.dart';
 import 'package:hourses/Date_added_hourses.dart';
+import 'package:hourses/OwnerPage.dart';
 import 'package:hourses/Setting.dart';
 import 'package:hourses/Shedulaining.dart';
 import 'package:hourses/helper/My_Button.dart';
@@ -15,7 +16,9 @@ import 'package:hourses/model/Shedule_model.dart';
 import 'package:intl/intl.dart';
 import 'package:telephony/telephony.dart';
 import 'package:hourses/Appointment.dart';
-
+import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
+import 'package:hourses/OwnerPage.dart';
+import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -25,6 +28,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  Contact ?contact;
 
   DateTime selected_date = DateTime.now();
   bool show_d1_list = false, show_d2_list = false, show_d3_list = false, show_d4_list = false,
@@ -450,13 +454,13 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                   Container(
-                    width: 70,
+                    width: 45,
                     padding: EdgeInsets.zero,
                     alignment: Alignment.centerRight,
                     child: MyText(
                       txt: '-' + model.hourses.toString() + ' hd',
                       color: Colors.black,
-                      txtSize: 20,
+                      txtSize: 15,
                     ),
                   ),
                   IconButton(
@@ -539,6 +543,32 @@ class _HomeState extends State<Home> {
                   getWeekDays();                  
                 }
             });
+          }
+          if (index == 1) {
+             contact=await FlutterContactPicker().selectContact();
+    
+             if (contact != null) {
+              Get.to(OwnerPage(contact: contact!))!.then((value) {
+                if (value != null) {
+                  // Perform additional actions here based on the returned value
+                  // For example:
+                  // getSelectedWeeks();
+                  // getWeekDays(); 
+                }
+              });
+            } else {
+              // Handle the case where contact is null
+              // For example: show an error message or take alternative action
+            }
+             
+            /*
+            Get.to(Con())!.then((value) {
+              if(value!=null)
+                {
+                  getSelectedWeeks();
+                  getWeekDays();                  
+                }
+            });*/
           }
         },
         ),      

@@ -15,6 +15,9 @@ import 'package:intl/intl.dart';
 import 'package:hourses/Setting.dart';
 import 'package:hourses/Home.dart';
 import 'package:hourses/model/Shedule_model1.dart';
+import 'package:hourses/OwnerPage.dart';
+
+
 class Sheduling extends StatefulWidget {
   final DateTime weekDay;
   final bool edit_value;
@@ -24,10 +27,11 @@ class Sheduling extends StatefulWidget {
 }
 
 class _ShedulingState extends State<Sheduling> {
+      Contact ?contact;
+
   final DateTime weekDay;
   bool edit_value;
   _ShedulingState(this.weekDay,this.edit_value);
-  Contact? contact;
   bool alert_on=true;
 
   String fixed_digital_time='09:30 AM';
@@ -99,6 +103,21 @@ class _ShedulingState extends State<Sheduling> {
 
             });
           }
+            if (index == 1) {
+             contact=await FlutterContactPicker().selectContact();
+    
+             if (contact != null) {
+              Get.to(OwnerPage(contact: contact!))!.then((value) {
+                if (value != null) {
+                  // Perform additional actions here based on the returned value
+                  // For example:
+                  // getSelectedWeeks();
+                  // getWeekDays(); 
+                }
+              });
+            }
+       
+        }
           if (index == 2) {
             Get.to(Setting())!.then((value) {
               if(value!=null)
