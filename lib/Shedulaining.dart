@@ -14,7 +14,7 @@ import 'package:hourses/model/Shedule_model.dart';
 import 'package:intl/intl.dart';
 import 'package:hourses/Setting.dart';
 import 'package:hourses/Home.dart';
-
+import 'package:hourses/model/Shedule_model1.dart';
 class Sheduling extends StatefulWidget {
   final DateTime weekDay;
   final bool edit_value;
@@ -204,8 +204,17 @@ class _ShedulingState extends State<Sheduling> {
                     String s=jsonEncode(model.toJson());
                     
                     praf_handler.add_list(my_helper.shedule+weekDay.millisecondsSinceEpoch.toString(), s);
+
+                    Shedule_model1 model1=Shedule_model1(hourses: hourses, date:weekDay.toIso8601String(), time: fixed_digital_time,
+                        owner_name: '',
+                        owner_phone:'',
+                         alert_on: alert_on, reason: reason.text, shedule_time: manual_selected_shedule_time.millisecondsSinceEpoch);
+
+                    String s1=jsonEncode(model1.toJson());
+                    await praf_handler.add_list(my_helper.shedule_total, s1);
+
                       print("another====fool====");
-                      print(my_helper.shedule+weekDay.millisecondsSinceEpoch.toString());
+//                      print(my_helper.shedule_total,s1);
                     // int h=await praf_handler.get_int(my_helper.hourse+weekDay.millisecondsSinceEpoch.toString());
                     //
                     // h=h+hourses;
@@ -235,6 +244,15 @@ class _ShedulingState extends State<Sheduling> {
  
                      await praf_handler.set_int(my_helper.hourse+weekDay.millisecondsSinceEpoch.toString(), h);
                       print(my_helper.hourse+weekDay.millisecondsSinceEpoch.toString());
+
+
+                     Shedule_model1 model1=Shedule_model1(hourses: h, date:weekDay.toIso8601String(), time: fixed_digital_time,
+                        owner_name: '',
+                        owner_phone:'',
+                         alert_on: alert_on, reason: reason.text, shedule_time: manual_selected_shedule_time.millisecondsSinceEpoch);
+
+                    String s1=jsonEncode(model1.toJson());
+                    await praf_handler.add_list(my_helper.shedule_total, s1);
                     //   print(await praf_handler.get_int(my_helper.hourse+weekDay.millisecondsSinceEpoch.toString()));
                       await praf_handler.set_bool(my_helper.day_mode+weekDay.millisecondsSinceEpoch.toString(),
                           mode==1?true:false);

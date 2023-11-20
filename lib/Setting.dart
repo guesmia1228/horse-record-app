@@ -18,7 +18,7 @@ class Setting extends StatefulWidget {
 class _SettingState extends State<Setting> {
 
   final w1=TextEditingController(),w2=TextEditingController(),w3=TextEditingController();
-
+  
   String fixed_digital_time='09:30 AM';
 
   getFixedDigitalTime()async{
@@ -240,6 +240,7 @@ bottomNavigationBar: BottomNavigationBar(
     ],);
   }
   var noti_txt=TextEditingController();
+  var month_txt = TextEditingController();  
   int noti_time=1;// 1 for year 2 for month 3 for day
   Widget noti(){
     return Column(children: [
@@ -268,26 +269,26 @@ bottomNavigationBar: BottomNavigationBar(
       ),
 
       SizedBox(height: 10,),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+       Row(
         children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: month_txt,
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+                decoration: InputDecoration(
+                    labelText: 'months'
+                ),
+              ),
+            ),
+          ),
 
-          RadioMenuButton(value: 365, groupValue: noti_time, onChanged: (value) {
-            setState(() {
-              noti_time=value!;
-            });
-          }, child: Text('year')),
-          RadioMenuButton(value: 30, groupValue: noti_time, onChanged: (value) {
-            setState(() {
-              noti_time=value!;
-            });
-          }, child: Text('month')),
-          RadioMenuButton(value: 1, groupValue: noti_time, onChanged: (value) {
-            setState(() {
-              noti_time=value!;
-            });
-          }, child: Text('day')),
-      ],),
+
+        ],
+      ),
+
 
       SizedBox(height: 30,),
       My_Btn(txt: 'Save', btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () {
@@ -297,8 +298,11 @@ bottomNavigationBar: BottomNavigationBar(
         }
         else{
 
-          var dt=DateTime.now();
-          dt=dt.add(Duration(days: noti_time));
+          DateTime dt=DateTime.now();
+//          dt=dt.add(Duration(days: noti_time));
+          String monthTxt = month_txt.text;  // Assuming monthTxtController is your TextEditingController
+          int month = int.tryParse(monthTxt) ?? 0;
+          dt= DateTime(dt.year, dt.month + month , 1, 1 , 9 ,0 );
           print(dt);
 
           praf_handler.set_int(my_helper.noti_duration, dt.millisecondsSinceEpoch);

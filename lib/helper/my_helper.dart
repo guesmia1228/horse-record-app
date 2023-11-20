@@ -7,7 +7,7 @@ class my_helper{
 
   static String db='hourse';
   static String users_table=db+'/users';
-
+  static String shedule_total="shedule_total";
   static String w1='w1';
   static String w2='w2';
   static String w3='w3';

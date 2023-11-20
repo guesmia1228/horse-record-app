@@ -295,8 +295,8 @@ class _HomeState extends State<Home> {
           decoration: BoxDecoration(
             color: Colors.red
           ),
-          width: 50,
-          height: 50,
+          width: 30,
+          height: 30,
           child: Center(child: MyText(txt: (horse_num[index_num]).toString(), color: Colors.black, txtSize: 20,fontWeight: FontWeight.bold)),
         ),
         SizedBox(width: 5,),
@@ -346,13 +346,13 @@ class _HomeState extends State<Home> {
         ),
         SizedBox(width: 5,),
         Container(
-          width: 50,height: 50,
+          width: 30,height: 30,
           decoration: BoxDecoration(
             color: Colors.red,
           ),
           child: Center(
             child: IconButton(
-              icon: Icon(Icons.add,color: Colors.black,size: 30,),
+              icon: Icon(Icons.add,color: Colors.black,size: 15,),
               onPressed: () async{
                 Get.to(Sheduling(weekDay: dateTime, edit_value: false),transition: Transition.circularReveal,duration: Duration(seconds: 1))!.then((value) async {
                   if(value!=null)
@@ -418,7 +418,6 @@ class _HomeState extends State<Home> {
   //                    getWeekDays();
                     },
                   ),
-                  SizedBox(width: 10,),
 
                   InkWell(
                       onTap: () {
@@ -433,7 +432,7 @@ class _HomeState extends State<Home> {
                       },
                       child: RichText(
                         text: TextSpan(
-                          text: model.time.toString() + ' - ',
+                          text: model.time.toString() + '-',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 15,
@@ -455,7 +454,7 @@ class _HomeState extends State<Home> {
                     padding: EdgeInsets.zero,
                     alignment: Alignment.centerRight,
                     child: MyText(
-                      txt: ' - ' + model.hourses.toString() + ' hd',
+                      txt: '-' + model.hourses.toString() + ' hd',
                       color: Colors.black,
                       txtSize: 20,
                     ),

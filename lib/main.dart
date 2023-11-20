@@ -22,19 +22,31 @@ import 'package:hourses/model/Horse_model.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:telephony/telephony.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'helper/notifi_service.dart';
 import 'model/Shedule_model.dart';
 
 import 'package:timezone/data/latest.dart' as tz;
 
+import 'dart:convert';
+import 'dart:io' show Platform;
+
+
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+
+  final String applicationName= "Birthday Calendar";
+const String channel_id = "123";
+
 void main() async{
 
   WidgetsFlutterBinding.ensureInitialized();
   final int _selectedIndex;
-
-  // await Firebase.initializeApp();
     await initializeService();
+   init(_onDidReceiveLocalNotification);
+
   // NotificationService().initNotification();
   // tz.initializeTimeZones();
 
@@ -58,6 +70,168 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+ Future<dynamic> _onDidReceiveLocalNotification(
+      int id,
+      String? title,
+      String? body,
+      String? payload) async {
+  //  showDialog(
+  //      context: context, 
+    //    builder: (BuildContext context) =>
+            AlertDialog(
+                title: Text(title ?? ''),
+                content: Text(body ?? ''),
+                actions: [
+                  TextButton(
+                      child: Text("Ok"),
+                      onPressed: () async {
+//                        _notificationService.handleApplicationWasLaunchedFromNotification(payload ?? '');
+                      }
+                  )
+                ]
+           );
+    //);
+  }
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+  void init(Future<dynamic> Function(int, String?, String?, String?)? onDidReceive) {
+    final AndroidInitializationSettings initializationSettingsAndroid =
+    AndroidInitializationSettings('app_icon');
+
+    final IOSInitializationSettings initializationSettingsIOS =
+    IOSInitializationSettings(onDidReceiveLocalNotification: onDidReceive);
+
+    final InitializationSettings initializationSettings =
+    InitializationSettings(
+        android: initializationSettingsAndroid, iOS: initializationSettingsIOS, macOS: null);
+  print("find");
+    initializeLocalNotificationsPlugin(initializationSettings);
+
+    tz.initializeTimeZones();
+  }
+
+  void initializeLocalNotificationsPlugin(InitializationSettings initializationSettings) async {
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: selectNotification);
+    print("RRS");
+///    handleApplicationWasLaunchedFromNotification("");
+  }
+
+  Future selectNotification(String? payload) async {
+//    UserBirthday userBirthday = getUserBirthdayFromPayload(payload ?? '');
+//    cancelNotificationForBirthday(userBirthday);
+      print("===========mmmmmm=============");
+  List<Shedule_modle> shedule_list=[];
+        int hour_befor=await praf_handler.get_int(my_helper.hour_before);
+
+        if(hour_befor==0)
+          hour_befor=1;
+
+
+        DateTime hour_before_time=DateTime.now();
+        hour_before_time=hour_before_time.add(Duration(minutes: hour_befor));
+        shedule_list=await praf_handler.get_shedule_list(my_helper.shedule+hour_before_time.millisecondsSinceEpoch.toString());
+            print("fool");
+
+        shedule_list.forEach((element) {
+          if(element.alert_on){
+
+            String b=DateFormat('dd/MM/yyyy HH:mm').format(hour_before_time);
+            String c=DateFormat('dd/MM/yyyy HH:mm').format(DateTime.fromMillisecondsSinceEpoch(element.shedule_time));
+           print('B: ${b}');
+           print('B: ${c}');
+
+//            if(b==c)
+ //             send_noti(element.time, 'hour before alert');
+        scheduleNotificationForBirthday(hour_before_time, " has an upcoming birthday!");
+
+          }
+        });
+  }
+  /*
+  void handleApplicationWasLaunchedFromNotification(String payload) async {
+    if (Platform.isIOS) {
+      _rescheduleNotificationFromPayload(payload);
+      return;
+    }
+
+    final NotificationAppLaunchDetails? notificationAppLaunchDetails =
+    await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+
+    if (notificationAppLaunchDetails != null && notificationAppLaunchDetails.didNotificationLaunchApp) {
+      _rescheduleNotificationFromPayload(notificationAppLaunchDetails.payload ?? "");
+    }
+  }
+  */
+  /*
+  void _rescheduleNotificationFromPayload(String payload) {
+    UserBirthday userBirthday = getUserBirthdayFromPayload(payload);
+    cancelNotificationForBirthday(userBirthday);
+    scheduleNotificationForBirthday(userBirthday, "${userBirthday.name} has an upcoming birthday!");
+  }
+  */
+  void showNotification(DateTime userBirthday, String notificationMessage) async {
+    String formattedBirthday = userBirthday.toIso8601String(); // Convert DateTime to string
+    await flutterLocalNotificationsPlugin.show(
+      userBirthday.hashCode,
+      applicationName,
+      notificationMessage,
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          channel_id,
+          "Birthday Calendar",
+          channelDescription: 'To remind you about upcoming birthdays',
+        ),
+      ),
+      payload: jsonEncode(formattedBirthday), // Encode the string representation
+    );
+  }
+
+  void scheduleNotificationForBirthday(DateTime userBirthday, String notificationMessage) async {
+    DateTime now = DateTime.now();
+    DateTime birthdayDate = userBirthday;
+    DateTime correctedBirthdayDate = birthdayDate;
+
+    if (birthdayDate.year < now.year) {
+      correctedBirthdayDate = new DateTime(now.year, birthdayDate.month, birthdayDate.day);
+    }
+
+    Duration difference = now.isAfter(correctedBirthdayDate)
+        ? now.difference(correctedBirthdayDate)
+        : correctedBirthdayDate.difference(now);
+
+    bool didApplicationLaunchFromNotification = await _wasApplicationLaunchedFromNotification();
+    if (!didApplicationLaunchFromNotification && difference.inDays == 0) {
+      showNotification(userBirthday, notificationMessage);
+      return;
+    }
+
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+        userBirthday.hashCode,
+        applicationName,
+        notificationMessage,
+        tz.TZDateTime.now(tz.local).add(difference),
+        const NotificationDetails(
+            android: AndroidNotificationDetails(
+                channel_id,
+                "Birthday Calendar",
+                channelDescription: 'To remind you about upcoming birthdays')
+        ),
+        payload: jsonEncode(userBirthday),
+        androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation:
+        UILocalNotificationDateInterpretation.absoluteTime);
+  }
+  Future<bool> _wasApplicationLaunchedFromNotification() async {
+    NotificationAppLaunchDetails? notificationAppLaunchDetails = await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+
+    if (notificationAppLaunchDetails != null) {
+      return notificationAppLaunchDetails.didNotificationLaunchApp;
+    }
+
+    return false;
+  }
+
 
 Future<void> initializeService() async {
   final service = FlutterBackgroundService();
@@ -133,7 +307,7 @@ void onStart(ServiceInstance service) async {
   // For flutter prior to version 3.0.0
   // We have to register the plugin manually
 
-  AwesomeNotifications().initialize(
+ /* AwesomeNotifications().initialize(
     // set the icon to null if you want to use the default app icon
     null,
     [
@@ -148,8 +322,8 @@ void onStart(ServiceInstance service) async {
 
 
   );
-
-//  if (service is AndroidServiceInstance) {
+*/
+  if (service is AndroidServiceInstance) {
     service.on('setAsForeground').listen((event) {
       service.setAsForegroundService();
     });
@@ -157,7 +331,7 @@ void onStart(ServiceInstance service) async {
     service.on('setAsBackground').listen((event) {
       service.setAsBackgroundService();
     });
-//  }
+  }
 
   service.on('stopService').listen((event) {
     service.stopSelf();
@@ -171,32 +345,56 @@ void onStart(ServiceInstance service) async {
 
 hour_timer(var service)async{
   Timer.periodic(const Duration(minutes: 1), (timer) async {
-//    if (service is AndroidServiceInstance) {
-      if (await service.isForegroundService()) {
+  //    if (await service.isForegroundService()) {
 
 
         List<Shedule_modle> shedule_list=[];
         int hour_befor=await praf_handler.get_int(my_helper.hour_before);
+       int day_befor=await praf_handler.get_int(my_helper.day_before);
 
         if(hour_befor==0)
           hour_befor=1;
 
 
         DateTime hour_before_time=DateTime.now();
+        DateTime day_before_time=DateTime.now();
+
         hour_before_time=hour_before_time.add(Duration(minutes: hour_befor));
-        shedule_list=await praf_handler.get_shedule_list(my_helper.shedule+hour_before_time.millisecondsSinceEpoch.toString());
+        day_before_time=hour_before_time.add(Duration(days: day_befor));
+
+        shedule_list=await praf_handler.get_shedule_list(my_helper.shedule_total);
             print("fool");
 
+        print(shedule_list);
+        print(shedule_list.length);
+        print("====1===");
         shedule_list.forEach((element) {
+          print("element");
+          print(element);
           if(element.alert_on){
 
             String b=DateFormat('dd/MM/yyyy HH:mm').format(hour_before_time);
+            String d=DateFormat('dd/MM/yyyy HH:mm').format(day_before_time);
             String c=DateFormat('dd/MM/yyyy HH:mm').format(DateTime.fromMillisecondsSinceEpoch(element.shedule_time));
            print('B: ${b}');
            print('B: ${c}');
 
             if(b==c)
-              send_noti(element.time, 'hour before alert');
+            {
+               String message;
+               message = "Appointment with " + element.owner_name;
+               message += element.shedule_time.toString();
+               showNotification(DateTime.now(), message);
+            }
+            if(d==c)
+            {
+               String message;
+               message = "Appointment with " + element.owner_name;
+               message += element.shedule_time.toString();
+               showNotification(DateTime.now(), message);
+            }
+
+//              send_noti(element.time, 'hour before alert');
           }
         });
 
@@ -204,17 +402,25 @@ hour_timer(var service)async{
 
 
         int noti_duration=await praf_handler.get_int(my_helper.noti_duration);
+         String e=DateFormat('dd/MM/yyyy HH:mm').format(DateTime.fromMillisecondsSinceEpoch(noti_duration));
+
         int noti_time=await praf_handler.get_int(my_helper.noti_time);
         String noti_msg=await praf_handler.get_string(my_helper.noti_txt);
+            String c=DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now());
 
-        if(noti_duration>0){
-          if(noti_duration<DateTime.now().millisecondsSinceEpoch){
+//        if(noti_duration>0){
+//          if(noti_duration<DateTime.now().millisecondsSinceEpoch) { 
+          if(e == c) { 
 
             List<Horse_model> horse_list=await praf_handler.get_horse_list(my_helper.all_horses);
 
-            horse_list.forEach((element) {
+            horse_list.forEach((element) async{
 
-              Telephony.instance.sendSms(to: element.owner_nbr, message: noti_msg);
+//              Telephony.instance.sendSms(to: element.owner_nbr, message: noti_msg);
+            var message = "Your message goes here";
+            var url = Uri.parse('sms:${element.owner_nbr}?body=$message');
+
+              await launchUrl(url);
 
             });
 
@@ -226,13 +432,12 @@ hour_timer(var service)async{
 
           }
 
-        }
+     //   }
 
 
 
-      }
-//    }
-
+ 
+  //  }
     /// you can see this log in logcat
     print('FLUTTER BACKGROUND SERVICE: ${DateTime.now()}');
 
@@ -241,7 +446,7 @@ hour_timer(var service)async{
 
 day_timer(var service)async{
   Timer.periodic(const Duration(days: 1), (timer) async {
-    if (service is AndroidServiceInstance) {
+//    if (service is AndroidServiceInstance) {
       if (await service.isForegroundService()) {
 
 
@@ -254,7 +459,7 @@ day_timer(var service)async{
 
         DateTime day_before_time=DateTime.now();
         day_before_time=day_before_time.add(Duration(days: day_befor));
-        shedule_list=await praf_handler.get_shedule_list(my_helper.shedule+day_before_time.millisecondsSinceEpoch.toString());
+        shedule_list=await praf_handler.get_shedule_list(my_helper.shedule_total);
 
         shedule_list.forEach((element) {
           if(element.alert_on){
@@ -271,8 +476,6 @@ day_timer(var service)async{
 
 
       }
-    }
-
     /// you can see this log in logcat
     print('FLUTTER BACKGROUND SERVICE: ${DateTime.now()}');
 
@@ -291,3 +494,5 @@ send_noti(String title,String msg){
       )
   );
 }
+
+ 
