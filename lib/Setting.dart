@@ -41,7 +41,7 @@ class _SettingState extends State<Setting> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+/*      appBar: AppBar(
         backgroundColor: Colors.red,
         title: MyText(txt: 'Setting', color: Colors.white, txtSize: 18),
       ),
@@ -71,7 +71,7 @@ bottomNavigationBar: BottomNavigationBar(
             });
           }
         },
-        ),
+        ),*/
       body: SingleChildScrollView(
         child: Column(
           children: [

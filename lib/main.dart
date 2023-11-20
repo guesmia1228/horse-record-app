@@ -52,6 +52,62 @@ void main() async{
 
   runApp(const MyApp());
 }
+class MyBottomNavigationBar extends StatefulWidget {
+  @override
+  _MyBottomNavigationBarState createState() => _MyBottomNavigationBarState();
+}
+
+class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
+  int _currentIndex = 0;
+  final List<Widget> _children = [
+    Home(),
+    Setting(),
+  ];
+
+  void onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _children[_currentIndex],
+      appBar: AppBar(
+       // automaticallyImplyLeading: true, // This will show the back button
+        title: Text('Settings Screen'),
+      ),      
+    /*  appBar: AppBar(
+        title: Text('Your App Title'),
+        backgroundColor: Colors.red, 
+        automaticallyImplyLeading: true,
+/*         title: Text('Your App Title'),     
+         leading: _currentIndex == 0 ? null : IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },*/
+        ),         
+//        title: MyText(txt: 'Home', color: Colors.white, txtSize: 18,fontWeight: FontWeight.bold),
+      ),   */   
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: onTabTapped,
+        currentIndex: _currentIndex,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+        ],
+      ),
+    );
+  }
+}
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -62,7 +118,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       home: Scaffold(
-        body: Home(),
+        body: MyBottomNavigationBar(),
       
       ),
       debugShowCheckedModeBanner: false,
@@ -70,6 +126,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
  Future<dynamic> _onDidReceiveLocalNotification(
       int id,
       String? title,

@@ -15,6 +15,7 @@ import 'package:hourses/model/Shedule_model.dart';
 import 'package:intl/intl.dart';
 import 'package:telephony/telephony.dart';
 import 'package:hourses/Appointment.dart';
+import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 
 
 class Home extends StatefulWidget {
@@ -509,6 +510,7 @@ class _HomeState extends State<Home> {
   }
     return Scaffold(
       backgroundColor: my_helper.backgroundColor,
+      /*
       appBar: AppBar(
         backgroundColor: Colors.red,
         title: MyText(txt: 'Home', color: Colors.white, txtSize: 18,fontWeight: FontWeight.bold),
@@ -540,8 +542,12 @@ class _HomeState extends State<Home> {
                 }
             });
           }
+          if (index == 1)
+          {
+              contact=await FlutterContactPicker().selectContact();
+          }
         },
-        ),      
+        ),      */
       body: Column(
         children: [
           SizedBox(height: 20),
