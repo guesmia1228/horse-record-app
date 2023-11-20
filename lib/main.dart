@@ -22,7 +22,6 @@ import 'package:hourses/model/Horse_model.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:telephony/telephony.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import 'helper/notifi_service.dart';
 import 'model/Shedule_model.dart';
@@ -52,62 +51,6 @@ void main() async{
 
   runApp(const MyApp());
 }
-class MyBottomNavigationBar extends StatefulWidget {
-  @override
-  _MyBottomNavigationBarState createState() => _MyBottomNavigationBarState();
-}
-
-class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
-  int _currentIndex = 0;
-  final List<Widget> _children = [
-    Home(),
-    Setting(),
-  ];
-
-  void onTabTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: _children[_currentIndex],
-      appBar: AppBar(
-       // automaticallyImplyLeading: true, // This will show the back button
-        title: Text('Settings Screen'),
-      ),      
-    /*  appBar: AppBar(
-        title: Text('Your App Title'),
-        backgroundColor: Colors.red, 
-        automaticallyImplyLeading: true,
-/*         title: Text('Your App Title'),     
-         leading: _currentIndex == 0 ? null : IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },*/
-        ),         
-//        title: MyText(txt: 'Home', color: Colors.white, txtSize: 18,fontWeight: FontWeight.bold),
-      ),   */   
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: onTabTapped,
-        currentIndex: _currentIndex,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-          ),
-        ],
-      ),
-    );
-  }
-}
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -118,7 +61,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       home: Scaffold(
-        body: MyBottomNavigationBar(),
+        body: Home(),
       
       ),
       debugShowCheckedModeBanner: false,
@@ -126,7 +69,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
  Future<dynamic> _onDidReceiveLocalNotification(
       int id,
       String? title,
@@ -431,7 +373,7 @@ hour_timer(var service)async{
           if(element.alert_on){
 
             String b=DateFormat('dd/MM/yyyy HH:mm').format(hour_before_time);
-            String d=DateFormat('dd/MM/yyyy HH:mm').format(day_before_time);
+            String d=DateFormat('dd/MM/yyyy HH:mm').format(_before_time);
             String c=DateFormat('dd/MM/yyyy HH:mm').format(DateTime.fromMillisecondsSinceEpoch(element.shedule_time));
            print('B: ${b}');
            print('B: ${c}');
@@ -450,7 +392,7 @@ hour_timer(var service)async{
                message += element.shedule_time.toString();
                showNotification(DateTime.now(), message);
             }
-
+//sdfsdfsdfsdfsdfdsfsdfsdfsdf
 //              send_noti(element.time, 'hour before alert');
           }
         });
@@ -459,25 +401,17 @@ hour_timer(var service)async{
 
 
         int noti_duration=await praf_handler.get_int(my_helper.noti_duration);
-         String e=DateFormat('dd/MM/yyyy HH:mm').format(DateTime.fromMillisecondsSinceEpoch(noti_duration));
-
         int noti_time=await praf_handler.get_int(my_helper.noti_time);
         String noti_msg=await praf_handler.get_string(my_helper.noti_txt);
-            String c=DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now());
 
-//        if(noti_duration>0){
-//          if(noti_duration<DateTime.now().millisecondsSinceEpoch) { 
-          if(e == c) { 
+        if(noti_duration>0){
+          if(noti_duration<DateTime.now().millisecondsSinceEpoch){
 
             List<Horse_model> horse_list=await praf_handler.get_horse_list(my_helper.all_horses);
 
-            horse_list.forEach((element) async{
+            horse_list.forEach((element) {
 
-//              Telephony.instance.sendSms(to: element.owner_nbr, message: noti_msg);
-            var message = "Your message goes here";
-            var url = Uri.parse('sms:${element.owner_nbr}?body=$message');
-
-              await launchUrl(url);
+              Telephony.instance.sendSms(to: element.owner_nbr, message: noti_msg);
 
             });
 
@@ -489,7 +423,7 @@ hour_timer(var service)async{
 
           }
 
-     //   }
+        }
 
 
 
