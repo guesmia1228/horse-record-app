@@ -15,16 +15,10 @@ import 'package:horse/helper/notifi_service.dart';
 import 'package:horse/model/Shedule_model.dart';
 import 'package:intl/intl.dart';
 import 'package:telephony/telephony.dart';
-<<<<<<< HEAD
-import 'package:hourses/Appointment.dart';
-import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
-
-=======
 import 'package:horse/Appointment.dart';
 import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 import 'package:horse/OwnerPage.dart';
 import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
->>>>>>> tmp
 
 class Home extends StatefulWidget {
   const Home({super.key});
