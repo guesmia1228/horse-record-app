@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:hourses/Home.dart';
-import 'package:hourses/helper/My_Button.dart';
-import 'package:hourses/helper/My_Methods.dart';
-import 'package:hourses/helper/my_helper.dart';
-import 'package:hourses/model/User_model.dart';
+import 'package:horse/Home.dart';
+import 'package:horse/helper/My_Button.dart';
+import 'package:horse/helper/My_Methods.dart';
+import 'package:horse/helper/my_helper.dart';
+import 'package:horse/model/User_model.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});

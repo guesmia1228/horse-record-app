@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:hourses/Home.dart';
-import 'package:hourses/helper/My_Button.dart';
-import 'package:hourses/helper/My_Text.dart';
-import 'package:hourses/helper/Praf_handler.dart';
-import 'package:hourses/helper/my_helper.dart';
+import 'package:horse/Home.dart';
+import 'package:horse/helper/My_Button.dart';
+import 'package:horse/helper/My_Text.dart';
+import 'package:horse/helper/Praf_handler.dart';
+import 'package:horse/helper/my_helper.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
-import 'package:hourses/OwnerPage.dart';
+import 'package:horse/OwnerPage.dart';
 import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 class Setting extends StatefulWidget {
   const Setting({super.key});
@@ -248,7 +248,7 @@ bottomNavigationBar: BottomNavigationBar(
               child: TextField(
                 controller: hour_before,
                 decoration: InputDecoration(
-                    labelText: 'Hour before'
+                    labelText: 'Minute before'
                 ),
                 keyboardType: TextInputType.number,
 

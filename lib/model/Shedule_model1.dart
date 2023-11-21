@@ -1,18 +1,18 @@
 class Shedule_model1{
-  late int hourses;
+  late int horse;
   late String time,owner_name,owner_phone;
   late bool alert_on;
   late String reason;
   late int shedule_time;
   late String date;  
-  Shedule_model1({required this.hourses,    required this.date,
+  Shedule_model1({required this.horse,    required this.date,
     required this.time,
     required this.owner_name, required this.owner_phone,
     required this.alert_on, required this.reason, required this.shedule_time});
 
   factory Shedule_model1.fromJson(Map<dynamic, dynamic> json) {
     return Shedule_model1(
-      hourses: json["hourses"],
+      horse: json["horse"],
       date: json["date"],
       time: json["time"],
       owner_name: json["owner_name"],
@@ -25,7 +25,7 @@ class Shedule_model1{
 
   Map<dynamic, dynamic> toJson() {
     return {
-      "hourses": this.hourses,
+      "horse": this.horse,
       "time": this.time,
       "date": this.date,
       "owner_name": this.owner_name,

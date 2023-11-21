@@ -7,25 +7,25 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:record/record.dart';
-import 'package:hourses/Horse_info.dart';
-import 'package:hourses/helper/My_Button.dart';
-import 'package:hourses/helper/My_Text.dart';
-import 'package:hourses/helper/My_Text_Field.dart';
-import 'package:hourses/helper/Praf_handler.dart';
-import 'package:hourses/helper/my_helper.dart';
-import 'package:hourses/model/Horse_model.dart';
-import 'package:hourses/model/Shedule_model.dart';
+import 'package:horse/Horse_info.dart';
+import 'package:horse/helper/My_Button.dart';
+import 'package:horse/helper/My_Text.dart';
+import 'package:horse/helper/My_Text_Field.dart';
+import 'package:horse/helper/Praf_handler.dart';
+import 'package:horse/helper/my_helper.dart';
+import 'package:horse/model/Horse_model.dart';
+import 'package:horse/model/Shedule_model.dart';
 import 'package:intl/intl.dart';
 import 'package:telephony/telephony.dart';
-import 'package:hourses/Horse_cmnts.dart';
+import 'package:horse/Horse_cmnts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:hourses/model/Horse_coment_model.dart';
-import 'package:hourses/model/Horse_model.dart';
+import 'package:horse/model/Horse_coment_model.dart';
+import 'package:horse/model/Horse_model.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:record/record.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:hourses/Setting.dart';
-import 'package:hourses/Home.dart';
+import 'package:horse/Setting.dart';
+import 'package:horse/Home.dart';
 import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -352,7 +352,7 @@ class _OwnerPageState extends State<OwnerPage> {
                   });
                 },
               ),
-//              MyText(txt: model.hourses.toString()+' HD', color: Colors.black, txtSize: 20),
+//              MyText(txt: model.horse.toString()+' HD', color: Colors.black, txtSize: 20),
               SizedBox(width: 10,),
 
               /*

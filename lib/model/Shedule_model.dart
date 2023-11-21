@@ -1,17 +1,17 @@
 class Shedule_modle{
-  late int hourses;
+  late int horse;
   late String time,owner_name,owner_phone;
   late bool alert_on;
   late String reason;
   late int shedule_time;
 
-  Shedule_modle({required this.hourses, required this.time,
+  Shedule_modle({required this.horse, required this.time,
     required this.owner_name, required this.owner_phone,
     required this.alert_on, required this.reason, required this.shedule_time});
 
   factory Shedule_modle.fromJson(Map<dynamic, dynamic> json) {
     return Shedule_modle(
-      hourses: json["hourses"],
+      horse: json["horse"],
       time: json["time"],
       owner_name: json["owner_name"],
       owner_phone: json["owner_phone"],
@@ -23,7 +23,7 @@ class Shedule_modle{
 
   Map<dynamic, dynamic> toJson() {
     return {
-      "hourses": this.hourses,
+      "horse": this.horse,
       "time": this.time,
       "owner_name": this.owner_name,
       "owner_phone": this.owner_phone,

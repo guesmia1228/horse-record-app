@@ -23,7 +23,7 @@
   -->
 
     <application
-        android:label="hourses"
+        android:label="horse"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <service

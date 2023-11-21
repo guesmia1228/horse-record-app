@@ -1,4 +1,4 @@
-# hourses
+# horse
 
 A new Flutter project.
 

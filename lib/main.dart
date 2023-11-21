@@ -11,14 +11,14 @@ import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:hourses/Home.dart';
-import 'package:hourses/Login.dart';
-import 'package:hourses/Setting.dart';
-import 'package:hourses/helper/My_Button.dart';
+import 'package:horse/Home.dart';
+import 'package:horse/Login.dart';
+import 'package:horse/Setting.dart';
+import 'package:horse/helper/My_Button.dart';
 import 'package:flutter_background_service_android/flutter_background_service_android.dart';
-import 'package:hourses/helper/Praf_handler.dart';
-import 'package:hourses/helper/my_helper.dart';
-import 'package:hourses/model/Horse_model.dart';
+import 'package:horse/helper/Praf_handler.dart';
+import 'package:horse/helper/my_helper.dart';
+import 'package:horse/model/Horse_model.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:telephony/telephony.dart';
@@ -37,7 +37,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
-  final String applicationName= "Birthday Calendar";
+  final String applicationName= "Appointment Calender";
 const String channel_id = "123";
 
 void main() async{
@@ -382,15 +382,20 @@ hour_timer(var service)async{
             if(b==c)
             {
                String message;
-               message = "Appointment with " + element.owner_name;
-               message += element.shedule_time.toString();
+               message = "Appointment at " + element.owner_name;
+               DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(element.shedule_time);
+               String formattedDate = DateFormat('MM-dd-yyyy H:m').format(dateTime);
+               message += formattedDate;
+
                showNotification(DateTime.now(), message);
             }
             if(d==c)
             {
                String message;
                message = "Appointment with " + element.owner_name;
-               message += element.shedule_time.toString();
+               DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(element.shedule_time);
+               String formattedDate = DateFormat('MM-dd-yyyy H:m').format(dateTime);
+               message += formattedDate;
                showNotification(DateTime.now(), message);
             }
 

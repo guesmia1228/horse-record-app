@@ -1,6 +1,6 @@
 {
-    "name": "hourses",
-    "short_name": "hourses",
+    "name": "horse",
+    "short_name": "horse",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

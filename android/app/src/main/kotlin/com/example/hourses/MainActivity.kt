@@ -1,4 +1,4 @@
-package com.example.hourses
+package com.example.horse
 
 import io.flutter.embedding.android.FlutterActivity
 

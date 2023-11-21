@@ -195,7 +195,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:747792255961:android:d887efcd6c58d27eade7c8",
         "android_client_info": {
-          "package_name": "com.example.hourses"
+          "package_name": "com.example.horse"
         }
       },
       "oauth_client": [
@@ -203,7 +203,7 @@
           "client_id": "747792255961-jlbfdiv6h2u8ro6qfel9ahac7hc7ao5s.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.hourses",
+            "package_name": "com.example.horse",
             "certificate_hash": "4686fcfc3d0f48e743ad17cf28437bddfc1036fe"
           }
         },

@@ -1,28 +1,28 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hourses/Owner_hourses.dart';
-import 'package:hourses/helper/My_Button.dart';
-import 'package:hourses/helper/My_Text.dart';
-import 'package:hourses/helper/Praf_handler.dart';
-import 'package:hourses/model/Horse_model.dart';
-import 'package:hourses/model/Shedule_model.dart';
+import 'package:horse/Owner_horse.dart';
+import 'package:horse/helper/My_Button.dart';
+import 'package:horse/helper/My_Text.dart';
+import 'package:horse/helper/Praf_handler.dart';
+import 'package:horse/model/Horse_model.dart';
+import 'package:horse/model/Shedule_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class Date_added_hourses extends StatefulWidget {
+class Date_added_horse extends StatefulWidget {
   final Shedule_modle shedule_modle;
   final DateTime weekDay;
-  const Date_added_hourses({super.key, required this.shedule_modle, required this.weekDay});
+  const Date_added_horse({super.key, required this.shedule_modle, required this.weekDay});
 
   @override
-  State<Date_added_hourses> createState() => _Date_added_hoursesState(shedule_modle,weekDay);
+  State<Date_added_horse> createState() => _Date_added_horseState(shedule_modle,weekDay);
 }
 
-class _Date_added_hoursesState extends State<Date_added_hourses> {
+class _Date_added_horseState extends State<Date_added_horse> {
   final Shedule_modle shedule_modle;
   final DateTime weekDay;
 
-  _Date_added_hoursesState(this.shedule_modle, this.weekDay);
+  _Date_added_horseState(this.shedule_modle, this.weekDay);
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +66,7 @@ class _Date_added_hoursesState extends State<Date_added_hourses> {
                       SizedBox(height: 10,),
                       My_Btn(txt: 'Add', btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () {
 
-                        Get.to(Owner_hourses(shedule_modle: shedule_modle, weekDay: weekDay, added_horses: list,)
+                        Get.to(Owner_horse(shedule_modle: shedule_modle, weekDay: weekDay, added_horses: list,)
                             ,transition: Transition.circularReveal,duration: Duration(seconds: 1))!.then((value) {
                           if(value!=null)
                           getList();

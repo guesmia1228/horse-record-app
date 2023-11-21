@@ -6,16 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 import 'package:get/get.dart';
-import 'package:hourses/helper/My_Button.dart';
-import 'package:hourses/helper/My_Text.dart';
-import 'package:hourses/helper/Praf_handler.dart';
-import 'package:hourses/helper/my_helper.dart';
-import 'package:hourses/model/Shedule_model.dart';
+import 'package:horse/helper/My_Button.dart';
+import 'package:horse/helper/My_Text.dart';
+import 'package:horse/helper/Praf_handler.dart';
+import 'package:horse/helper/my_helper.dart';
+import 'package:horse/model/Shedule_model.dart';
 import 'package:intl/intl.dart';
-import 'package:hourses/Setting.dart';
-import 'package:hourses/Home.dart';
-import 'package:hourses/model/Shedule_model1.dart';
-import 'package:hourses/OwnerPage.dart';
+import 'package:horse/Setting.dart';
+import 'package:horse/Home.dart';
+import 'package:horse/model/Shedule_model1.dart';
+import 'package:horse/OwnerPage.dart';
 
 
 class Sheduling extends StatefulWidget {
@@ -189,7 +189,7 @@ class _ShedulingState extends State<Sheduling> {
           ),
 //          SizedBox(height: 10,),
 
-          grid_hourses(),
+          grid_horse(),
 //          SizedBox(height: 10,),
           Row(children: [
             Expanded(
@@ -215,7 +215,7 @@ class _ShedulingState extends State<Sheduling> {
 
 
                   if(mode==2){
-                    Shedule_modle model=Shedule_modle(hourses: hourses, time: fixed_digital_time,
+                    Shedule_modle model=Shedule_modle(horse: horse, time: fixed_digital_time,
                         owner_name: '',
                         owner_phone:'',
                          alert_on: alert_on, reason: reason.text, shedule_time: manual_selected_shedule_time.millisecondsSinceEpoch);
@@ -224,7 +224,7 @@ class _ShedulingState extends State<Sheduling> {
                     
                     praf_handler.add_list(my_helper.shedule+weekDay.millisecondsSinceEpoch.toString(), s);
 
-                    Shedule_model1 model1=Shedule_model1(hourses: hourses, date:weekDay.toIso8601String(), time: fixed_digital_time,
+                    Shedule_model1 model1=Shedule_model1(horse: horse, date:weekDay.toIso8601String(), time: fixed_digital_time,
                         owner_name: '',
                         owner_phone:'',
                          alert_on: alert_on, reason: reason.text, shedule_time: manual_selected_shedule_time.millisecondsSinceEpoch);
@@ -236,7 +236,7 @@ class _ShedulingState extends State<Sheduling> {
 //                      print(my_helper.shedule_total,s1);
                     // int h=await praf_handler.get_int(my_helper.hourse+weekDay.millisecondsSinceEpoch.toString());
                     //
-                    // h=h+hourses;
+                    // h=h+horse;
                     //
                     // praf_handler.set_int(my_helper.hourse+weekDay.millisecondsSinceEpoch.toString(), h);
                     praf_handler.set_bool(my_helper.day_mode+weekDay.millisecondsSinceEpoch.toString(),
@@ -247,7 +247,7 @@ class _ShedulingState extends State<Sheduling> {
                   }
                   else{
                     if(contact!=null) {
-                      Shedule_modle model=Shedule_modle(hourses: hourses, time: fixed_digital_time, owner_name: contact!.fullName!.toString(),
+                      Shedule_modle model=Shedule_modle(horse: horse, time: fixed_digital_time, owner_name: contact!.fullName!.toString(),
                           owner_phone: contact!.phoneNumbers![0],
                           alert_on: alert_on, reason: reason.text, shedule_time: manual_selected_shedule_time.millisecondsSinceEpoch);
 
@@ -258,14 +258,14 @@ class _ShedulingState extends State<Sheduling> {
                       print(my_helper.shedule+weekDay.millisecondsSinceEpoch.toString());
                       int h=await praf_handler.get_int(my_helper.hourse+weekDay.millisecondsSinceEpoch.toString());
 
-                      h=h+hourses;
+                      h=h+horse;
 
  
                      await praf_handler.set_int(my_helper.hourse+weekDay.millisecondsSinceEpoch.toString(), h);
                       print(my_helper.hourse+weekDay.millisecondsSinceEpoch.toString());
 
 
-                     Shedule_model1 model1=Shedule_model1(hourses: h, date:weekDay.toIso8601String(), time: fixed_digital_time,
+                     Shedule_model1 model1=Shedule_model1(horse: h, date:weekDay.toIso8601String(), time: fixed_digital_time,
                         owner_name: '',
                         owner_phone:'',
                          alert_on: alert_on, reason: reason.text, shedule_time: manual_selected_shedule_time.millisecondsSinceEpoch);
@@ -468,8 +468,8 @@ class _ShedulingState extends State<Sheduling> {
       ),
     );
   }
-  int hourses=1;
-  Widget grid_hourses(){
+  int horse=1;
+  Widget grid_horse(){
     return mode==2?Container():Padding(
       padding: const EdgeInsets.all(2.0),
       child: GridView.builder(
@@ -484,7 +484,7 @@ class _ShedulingState extends State<Sheduling> {
 
           return InkWell(
             onTap: () {
-              hourses=(index+1);
+              horse=(index+1);
               setState(() {
 
               });
@@ -495,7 +495,7 @@ class _ShedulingState extends State<Sheduling> {
                 color: Colors.green,
                 shape: BoxShape.circle
               ),
-              child: Center(child: MyText(txt: (index+1).toString(), color: hourses==(index+1)?Colors.white:Colors.black, txtSize: 25,fontWeight: FontWeight.bold,)),
+              child: Center(child: MyText(txt: (index+1).toString(), color: horse==(index+1)?Colors.white:Colors.black, txtSize: 25,fontWeight: FontWeight.bold,)),
             ),
           );
 
