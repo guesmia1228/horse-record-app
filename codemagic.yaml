@@ -12,7 +12,7 @@ workflows:
       vars:
         BUNDLE_ID: "com.example.hourses"
         XCODE_WORKSPACE: "Runner.xcworkspace"
-        XCODE_SCHEME: "CodemagicSample"
+        XCODE_SCHEME: "Runner"
         APP_STORE_APPLE_ID: 6470133754
       xcode: latest # <-- set to specific version e.g. 14.3, 15.0 to avoid unexpected updates.
       cocoapods: default
