@@ -4,30 +4,30 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:hourses/Add_hourses.dart';
-import 'package:hourses/helper/My_Button.dart';
-import 'package:hourses/helper/My_Text.dart';
-import 'package:hourses/helper/Praf_handler.dart';
-import 'package:hourses/helper/my_helper.dart';
-import 'package:hourses/model/Horse_model.dart';
-import 'package:hourses/model/Shedule_model.dart';
+import 'package:horse/Add_horse.dart';
+import 'package:horse/helper/My_Button.dart';
+import 'package:horse/helper/My_Text.dart';
+import 'package:horse/helper/Praf_handler.dart';
+import 'package:horse/helper/my_helper.dart';
+import 'package:horse/model/Horse_model.dart';
+import 'package:horse/model/Shedule_model.dart';
 
-class Owner_hourses extends StatefulWidget {
+class Owner_horse extends StatefulWidget {
   final Shedule_modle shedule_modle;
   final DateTime weekDay;
   final List<Horse_model> added_horses;
-  const Owner_hourses({super.key, required this.shedule_modle, required this.weekDay, required this.added_horses});
+  const Owner_horse({super.key, required this.shedule_modle, required this.weekDay, required this.added_horses});
 
   @override
-  State<Owner_hourses> createState() => _Owner_hoursesState(shedule_modle,weekDay,added_horses);
+  State<Owner_horse> createState() => _Owner_horseState(shedule_modle,weekDay,added_horses);
 }
 
-class _Owner_hoursesState extends State<Owner_hourses> {
+class _Owner_horseState extends State<Owner_horse> {
   final Shedule_modle shedule_modle;
   final DateTime weekDay;
   final List<Horse_model> added_horses;
 
-  _Owner_hoursesState(this.shedule_modle, this.weekDay, this.added_horses);
+  _Owner_horseState(this.shedule_modle, this.weekDay, this.added_horses);
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +102,7 @@ class _Owner_hoursesState extends State<Owner_hourses> {
             ),
             SizedBox(height: 10,),
             My_Btn(txt: 'Add', btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () {
-              Get.to(Add_hourses(shedule_modle: shedule_modle, weekDay: weekDay),transition: Transition.circularReveal,duration: Duration(seconds: 1))!.then((value) {
+              Get.to(Add_horse(shedule_modle: shedule_modle, weekDay: weekDay),transition: Transition.circularReveal,duration: Duration(seconds: 1))!.then((value) {
                 if(value!=null)
                   {
                     getList();

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:hourses/helper/my_helper.dart';
-import 'package:hourses/model/User_model.dart';
+import 'package:horse/helper/my_helper.dart';
+import 'package:horse/model/User_model.dart';
 import 'package:intl/intl.dart';
 
 class my_Methods

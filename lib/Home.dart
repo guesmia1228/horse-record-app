@@ -1,22 +1,30 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hourses/Appointment.dart';
-import 'package:hourses/Date_added_hourses.dart';
-import 'package:hourses/Setting.dart';
-import 'package:hourses/Shedulaining.dart';
-import 'package:hourses/helper/My_Button.dart';
-import 'package:hourses/helper/My_Methods.dart';
-import 'package:hourses/helper/My_Text.dart';
-import 'package:hourses/helper/Praf_handler.dart';
-import 'package:hourses/helper/my_helper.dart';
-import 'package:hourses/helper/notifi_service.dart';
-import 'package:hourses/model/Shedule_model.dart';
+import 'package:horse/Appointment.dart';
+import 'package:horse/Date_added_horse.dart';
+import 'package:horse/OwnerPage.dart';
+import 'package:horse/Setting.dart';
+import 'package:horse/Shedulaining.dart';
+import 'package:horse/helper/My_Button.dart';
+import 'package:horse/helper/My_Methods.dart';
+import 'package:horse/helper/My_Text.dart';
+import 'package:horse/helper/Praf_handler.dart';
+import 'package:horse/helper/my_helper.dart';
+import 'package:horse/helper/notifi_service.dart';
+import 'package:horse/model/Shedule_model.dart';
 import 'package:intl/intl.dart';
 import 'package:telephony/telephony.dart';
+<<<<<<< HEAD
 import 'package:hourses/Appointment.dart';
 import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 
+=======
+import 'package:horse/Appointment.dart';
+import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
+import 'package:horse/OwnerPage.dart';
+import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
+>>>>>>> tmp
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -26,6 +34,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  Contact ?contact;
 
   DateTime selected_date = DateTime.now();
   bool show_d1_list = false, show_d2_list = false, show_d3_list = false, show_d4_list = false,
@@ -406,7 +415,7 @@ class _HomeState extends State<Home> {
                     await praf_handler.del_list_item_from_schedule(my_helper.shedule+ dateTime.millisecondsSinceEpoch.toString(), index);
                     int hours;
                       hours=await praf_handler.get_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString());
-                      hours-=model.hourses;
+                      hours-=model.horse;
                       praf_handler.set_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString(), hours);
                       
                       setState(() {
@@ -451,13 +460,13 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                   Container(
-                    width: 70,
+                    width: 45,
                     padding: EdgeInsets.zero,
                     alignment: Alignment.centerRight,
                     child: MyText(
-                      txt: '-' + model.hourses.toString() + ' hd',
+                      txt: '-' + model.horse.toString() + ' hd',
                       color: Colors.black,
-                      txtSize: 20,
+                      txtSize: 15,
                     ),
                   ),
                   IconButton(
@@ -466,7 +475,7 @@ class _HomeState extends State<Home> {
                       await praf_handler.del_list_item_from_schedule(my_helper.shedule+ dateTime.millisecondsSinceEpoch.toString(), index);
                       int hours;
                       hours=await praf_handler.get_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString());
-                      hours-=model.hourses;
+                      hours-=model.horse;
                       praf_handler.set_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString(), hours);                    
                       Get.to(Sheduling(weekDay: dateTime, edit_value:true),transition: Transition.circularReveal,duration: Duration(seconds: 1))!.then((value) async{
                         if(value!=null){
@@ -542,9 +551,37 @@ class _HomeState extends State<Home> {
                 }
             });
           }
+<<<<<<< HEAD
           if (index == 1)
           {
               contact=await FlutterContactPicker().selectContact();
+=======
+          if (index == 1) {
+             contact=await FlutterContactPicker().selectContact();
+    
+             if (contact != null) {
+              Get.to(OwnerPage(contact: contact!))!.then((value) {
+                if (value != null) {
+                  // Perform additional actions here based on the returned value
+                  // For example:
+                  // getSelectedWeeks();
+                  // getWeekDays(); 
+                }
+              });
+            } else {
+              // Handle the case where contact is null
+              // For example: show an error message or take alternative action
+            }
+             
+            /*
+            Get.to(Con())!.then((value) {
+              if(value!=null)
+                {
+                  getSelectedWeeks();
+                  getWeekDays();                  
+                }
+            });*/
+>>>>>>> tmp
           }
         },
         ),      */

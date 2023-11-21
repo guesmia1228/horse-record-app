@@ -26,31 +26,33 @@ import 'package:record/record.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:horse/Setting.dart';
 import 'package:horse/Home.dart';
-import 'package:horse/OwnerPage.dart';
 import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class Add_comment extends StatefulWidget {
-  final Shedule_modle shedule_modle;
-  final DateTime weekDay;
-  const Add_comment({super.key, required this.shedule_modle, required this.weekDay});
+class OwnerPage extends StatefulWidget {
+  final Contact? contact;
+  const OwnerPage({required this.contact});
 
   @override
-  State<Add_comment> createState() => _Add_commentState(shedule_modle,weekDay);
+  State<OwnerPage> createState() => _OwnerPageState(contact!);
 }
 
-class _Add_commentState extends State<Add_comment> {
-    Contact ?contact;
-  final Shedule_modle shedule_modle;
-  final DateTime weekDay;
+class _OwnerPageState extends State<OwnerPage> {
+  final Contact contact;
 
-  _Add_commentState(this.shedule_modle, this.weekDay);
+  _OwnerPageState(this.contact);
 
   String yearBorn_String='';
   String show_flag= '';
-
-  @override
+   Shedule_modle ?shedule_modle;
+  DateTime ?weekDay;
   TextEditingController dateController = TextEditingController(text: DateFormat.yMd().format(DateTime.now()));
+
+  final name=TextEditingController(),year_born=TextEditingController(),age=TextEditingController();
+
+//  DateTime selectedDate=DateTime.now();
+  @override
+  TextEditingController dateController_age = TextEditingController(text: DateFormat.yMd().format(DateTime.now()));
   void initState() {
     // TODO: implement initState
     super.initState();
@@ -62,7 +64,7 @@ class _Add_commentState extends State<Add_comment> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
-        title: MyText(txt: shedule_modle.owner_name, color: Colors.white, txtSize: 20,fontWeight: FontWeight.bold),
+        title: MyText(txt: contact!.fullName!.toString(), color: Colors.white, txtSize: 20,fontWeight: FontWeight.bold),
       ),
 
        bottomNavigationBar: BottomNavigationBar(
@@ -81,7 +83,7 @@ class _Add_commentState extends State<Add_comment> {
             ),
             
           ],
-           currentIndex: 0,
+           currentIndex: 1,
           onTap: (int index) async{
           if(index==0)
           {
@@ -89,23 +91,11 @@ class _Add_commentState extends State<Add_comment> {
 
             });
           }
-           if (index == 1) {
-             contact=await FlutterContactPicker().selectContact();
-    
-             if (contact != null) {
-              Get.to(OwnerPage(contact: contact!))!.then((value) {
-                if (value != null) {
-                  // Perform additional actions here based on the returned value
-                  // For example:
-                  // getSelectedWeeks();
-                  // getWeekDays(); 
-                }
-              });
-            }}
           if (index == 2) {
             Get.to(Setting())!.then((value) {
               if(value!=null)
                 {
+                  Home();
 //                  getSelectedWeeks();
 //                  getWeekDays();   
                 }
@@ -127,9 +117,171 @@ class _Add_commentState extends State<Add_comment> {
                 fontSize: 50,
               ),
             ),
-        ShowHorse(),
+               My_Btn(txt: 'Add', btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Add Horses'),
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Add your form fields here
+//                        MyTextField(controller: nameController, label: 'Horse Name'),
+                         Container(
+                            width: double.infinity,
+                            color: Colors.grey,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 40,right: 40,top: 10,bottom: 10),
+                              child: Column(children: [
 
-        ],
+                                My_Text_Field(controler: name, label: 'Horse Name'),
+                                SizedBox(height: 10,),
+
+
+                                  TextFormField(
+                                  readOnly: true,
+                                  controller: dateController,
+                                  onTap: () async {
+                                    DateTime selectedDate1 = DateTime.now(); // Initialize selectedDate with today's date
+
+                                    DateTime? pickedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: selectedDate1, // Use selectedDate as the initial date
+                                      firstDate: DateTime(1990),
+                                      lastDate: DateTime(2025),
+                                    );
+
+                                    if (pickedDate != null) {
+                                      // Update selectedDate with the picked date
+                                      selectedDate = pickedDate;
+
+                                      String selectedYear = DateFormat('yyyy').format(selectedDate);
+
+                                      String formattedDate = '01-01-' + selectedYear;
+                                      // Set the selected date in the TextFormField
+                                      dateController.text = formattedDate;
+
+                                      yearBorn_String=DateFormat.yMd().format(pickedDate);
+
+                                      // Find out your age as of today's date 2021-03-08
+                                      DateDuration duration = AgeCalculator.age(pickedDate);
+                                      print('Your age is $duration');
+
+                                      age.text='${duration.years + 1}';
+
+                                      setState(() {
+
+                                      });
+
+                                      // Find out the age based on today's date
+                                      setState(() {});
+                                    }
+                                  }
+                                ),   
+
+                            
+                                  SizedBox(height: 10,),
+                                TextFormField(
+                                    controller: age, // The controller for the age text field
+                                    decoration: InputDecoration(
+                                      labelText: 'Age', // The label for the age text field
+                                    ),
+                                    onChanged: (value) { // Event handler for when the value of the age field changes
+                                      if (value.isNotEmpty) { // Check if the value is not empty
+                                        int enteredAge = int.tryParse(value) ?? 0; // Convert the entered value to an integer or default to 0
+                                        DateTime today = DateTime.now(); // Get the current date
+                                        int currentYear = today.year; // Extract the current year
+                                        int birthYear = currentYear - enteredAge + 1; // Calculate the birth year based on the entered age
+                                        String formattedDate = '01-01-$birthYear'; // Format the birth date as '01-01-YYYY'
+                                        dateController.text = formattedDate; // Set the birth date in the date text field
+                                      }
+                                    },
+                                  ),
+                                SizedBox(height: 10,),
+
+                              ],),
+                            ),
+                          ),
+                      ],
+                    ),
+                    actions: <Widget>[
+                      ElevatedButton(
+                        onPressed: () async{
+                          // Your 'Add' functionality here
+                          // You can access the entered data using nameController.text and ageController.text
+                          // Perform your data validation and saving logic here
+                          // Then close the dialog
+                          /*
+                            bool? permissionsGranted = await Telephony.instance.requestPhoneAndSmsPermissions;
+                          if(!permissionsGranted!)
+                            {
+                              EasyLoading.showError('give permisson');
+                              return;
+                            }*/
+                          Horse_model model=Horse_model(name: name.text, year_born: year_born.text, age: age.text,
+                              owner_name: contact!.fullName!.toString(), owner_nbr: contact!.phoneNumbers![0].toString());
+                          String s=jsonEncode(model.toJson());
+                          await praf_handler.add_list(contact!.fullName!.toString()+my_helper.all_horses, s);
+
+                          getList();
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('Add'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          // Close the dialog
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('Cancel'),
+                      ),
+                    ],
+                  );
+                },
+              ).then((value) {
+                if (value != null) {
+                  getList();
+                }
+              });
+            },)),
+        ShowHorse(),
+      Center(  child: Padding(
+    padding: EdgeInsets.symmetric(horizontal: 16), 
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: My_Btn(
+                txt: 'Call',
+                btn_color: Colors.green,
+                btn_size: 160,
+                gestureDetector: GestureDetector(
+                  onTap: () async {
+                    var url = Uri.parse("tel:"+contact!.phoneNumbers![0].toString());
+                    await launchUrl(url);
+                  },
+                ),
+              ),
+            ),
+            SizedBox(width: 8), // Adjust the spacing between the buttons as needed
+            Expanded(
+              child: My_Btn(
+                txt: 'Message',
+                btn_color: Colors.green,
+                btn_size: 160,
+                gestureDetector: GestureDetector(
+                  onTap: () async {
+                    var url = Uri.parse('sms:'+contact!.phoneNumbers![0].toString()+'?body=%20');
+                    await launchUrl(url);
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+      ))]
+
 
 
       ));
@@ -394,7 +546,7 @@ class _Add_commentState extends State<Add_comment> {
                                             Navigator.pop(context);
                                           }, child: Text('No')),
                                           TextButton(onPressed: () {
-                                            Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img: path!, owner_name: shedule_modle.owner_name,
+                                            Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img: path!, owner_name: contact!.fullName!,
                                                 time_of_cmnt: selectedDate.millisecondsSinceEpoch, img_picked: false);
 //                                            praf_handler.add_list(horse_model.name+horse_model.age, jsonEncode(horse_cmnt_model.toJson()));
                                             praf_handler.add_list(name, jsonEncode(horse_cmnt_model.toJson()));
@@ -530,9 +682,12 @@ class _Add_commentState extends State<Add_comment> {
 
                 ),
                 child: Center(child: IconButton(onPressed: () async{
-                   
-                    var url = Uri.parse('sms:'+shedule_modle.owner_phone+'?body=%20');
-                    await launchUrl(url);
+      /*             Get.to(Sheduling(weekDay: dateTime),transition: Transition.circularReveal,duration: Duration(seconds: 1))!.then((value) {
+                    if(value!=null)
+                      {
+                        getWeekDays();
+                      }
+                  });*/
 
                 }, icon: Icon(Icons.send,color: Colors.black,size: 20,))),
 
@@ -618,7 +773,7 @@ class _Add_commentState extends State<Add_comment> {
   getList()async{
 
     list.clear();
-    list=await praf_handler.get_horse_list(shedule_modle.owner_name+my_helper.all_horses);
+    list=await praf_handler.get_horse_list(contact!.fullName!+my_helper.all_horses);
 
     setState(() {
 

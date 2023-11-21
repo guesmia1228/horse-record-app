@@ -1,13 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:hourses/helper/My_Button.dart';
-import 'package:hourses/helper/My_Text.dart';
-import 'package:hourses/helper/Praf_handler.dart';
-import 'package:hourses/helper/my_helper.dart';
+import 'package:horse/Home.dart';
+import 'package:horse/helper/My_Button.dart';
+import 'package:horse/helper/My_Text.dart';
+import 'package:horse/helper/Praf_handler.dart';
+import 'package:horse/helper/my_helper.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
-
+import 'package:horse/OwnerPage.dart';
+import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 class Setting extends StatefulWidget {
   const Setting({super.key});
 
@@ -16,7 +18,7 @@ class Setting extends StatefulWidget {
 }
 
 class _SettingState extends State<Setting> {
-
+  Contact ?contact;
   final w1=TextEditingController(),w2=TextEditingController(),w3=TextEditingController();
   
   String fixed_digital_time='09:30 AM';
@@ -67,6 +69,36 @@ bottomNavigationBar: BottomNavigationBar(
             Get.to(Setting())!.then((value) {
               if(value!=null)
                 {
+                }
+            });
+          }
+          if (index == 1) {
+             contact=await FlutterContactPicker().selectContact();
+    
+             if (contact != null) {
+              Get.to(OwnerPage(contact: contact!))!.then((value) {
+                if (value != null) {
+                  // Perform additional actions here based on the returned value
+                  // For example:
+                  // getSelectedWeeks();
+                  // getWeekDays(); 
+                }
+              });
+            }
+       
+        }
+         if(index==0)
+          {
+            Get.to(Home())!.then((value){
+
+            });
+          }
+          if (index == 2) {
+            Get.to(Setting())!.then((value) {
+              if(value!=null)
+                {
+//                  getSelectedWeeks();
+//                  getWeekDays();   
                 }
             });
           }
@@ -173,7 +205,12 @@ bottomNavigationBar: BottomNavigationBar(
           praf_handler.set_int(my_helper.w2, int.parse(w2.text));
           praf_handler.set_int(my_helper.w3, int.parse(w3.text));
           EasyLoading.showSuccess('saved');
-          Navigator.pop(context,true);
+//          Home();
+            Get.to(Home())!.then((value){
+
+            });
+//           Navigator.pushReplacementNamed(context, '/home'); // 
+//          Navigator.pop(context,true);
         }
 
       },),txt_color: Colors.white,)
@@ -211,7 +248,7 @@ bottomNavigationBar: BottomNavigationBar(
               child: TextField(
                 controller: hour_before,
                 decoration: InputDecoration(
-                    labelText: 'Hour before'
+                    labelText: 'Minute before'
                 ),
                 keyboardType: TextInputType.number,
 
@@ -232,7 +269,10 @@ bottomNavigationBar: BottomNavigationBar(
           praf_handler.set_int(my_helper.day_before, int.parse(day_before.text));
           praf_handler.set_int(my_helper.hour_before, int.parse(hour_before.text));
           EasyLoading.showSuccess('saved');
-          Navigator.pop(context,true);
+           Get.to(Home())!.then((value){
+
+            });
+//          Navigator.pop(context,true);
         }
 
       },),txt_color: Colors.white,)
@@ -309,7 +349,10 @@ bottomNavigationBar: BottomNavigationBar(
           praf_handler.set_int(my_helper.noti_time, noti_time);
           praf_handler.set_string(my_helper.noti_txt, noti_txt.text);
           EasyLoading.showSuccess('saved');
-          Navigator.pop(context,true);
+   Get.to(Home())!.then((value){
+
+            });          
+//          Navigator.pop(context,true);
         }
 
       },),txt_color: Colors.white,)

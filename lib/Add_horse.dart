@@ -5,31 +5,31 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:hourses/Horse_info.dart';
-import 'package:hourses/helper/My_Button.dart';
-import 'package:hourses/helper/My_Text.dart';
-import 'package:hourses/helper/My_Text_Field.dart';
-import 'package:hourses/helper/Praf_handler.dart';
-import 'package:hourses/helper/my_helper.dart';
-import 'package:hourses/model/Horse_model.dart';
-import 'package:hourses/model/Shedule_model.dart';
+import 'package:horse/Horse_info.dart';
+import 'package:horse/helper/My_Button.dart';
+import 'package:horse/helper/My_Text.dart';
+import 'package:horse/helper/My_Text_Field.dart';
+import 'package:horse/helper/Praf_handler.dart';
+import 'package:horse/helper/my_helper.dart';
+import 'package:horse/model/Horse_model.dart';
+import 'package:horse/model/Shedule_model.dart';
 import 'package:intl/intl.dart';
 import 'package:telephony/telephony.dart';
 
-class Add_hourses extends StatefulWidget {
+class Add_horse extends StatefulWidget {
   final Shedule_modle shedule_modle;
   final DateTime weekDay;
-  const Add_hourses({super.key, required this.shedule_modle, required this.weekDay});
+  const Add_horse({super.key, required this.shedule_modle, required this.weekDay});
 
   @override
-  State<Add_hourses> createState() => _Add_hoursesState(shedule_modle,weekDay);
+  State<Add_horse> createState() => _Add_horseState(shedule_modle,weekDay);
 }
 
-class _Add_hoursesState extends State<Add_hourses> {
+class _Add_horseState extends State<Add_horse> {
   final Shedule_modle shedule_modle;
   final DateTime weekDay;
 
-  _Add_hoursesState(this.shedule_modle, this.weekDay);
+  _Add_horseState(this.shedule_modle, this.weekDay);
 
   final name=TextEditingController(),year_born=TextEditingController(),age=TextEditingController();
 

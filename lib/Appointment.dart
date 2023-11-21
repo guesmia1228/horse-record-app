@@ -4,24 +4,26 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
-import 'package:hourses/Add_comment.dart';
-import 'package:hourses/Add_hourses.dart';
-import 'package:hourses/helper/My_Button.dart';
-import 'package:hourses/helper/My_Text.dart';
-import 'package:hourses/helper/Praf_handler.dart';
-import 'package:hourses/helper/my_helper.dart';
-import 'package:hourses/model/Horse_model.dart';
-import 'package:hourses/model/Shedule_model.dart';
+import 'package:horse/Add_comment.dart';
+import 'package:horse/Add_horse.dart';
+import 'package:horse/helper/My_Button.dart';
+import 'package:horse/helper/My_Text.dart';
+import 'package:horse/helper/Praf_handler.dart';
+import 'package:horse/helper/my_helper.dart';
+import 'package:horse/model/Horse_model.dart';
+import 'package:horse/model/Shedule_model.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:hourses/Owner_hourses.dart';
-import 'package:hourses/helper/My_Text_Field.dart';
+import 'package:horse/Owner_horse.dart';
+import 'package:horse/helper/My_Text_Field.dart';
 import 'package:age_calculator/age_calculator.dart';
 import 'package:age_calculator/age_calculator.dart';
 import 'package:intl/intl.dart';
 import 'package:telephony/telephony.dart';
-import 'package:hourses/Add_comment.dart';
-import 'package:hourses/Setting.dart';
-import 'package:hourses/Home.dart';
+import 'package:horse/Add_comment.dart';
+import 'package:horse/Setting.dart';
+import 'package:horse/Home.dart';
+import 'package:horse/OwnerPage.dart';
+import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 
 class Appointment extends StatefulWidget {
   final Shedule_modle shedule_modle;
@@ -41,6 +43,7 @@ class _AppointmentState extends State<Appointment> {
   final name=TextEditingController(),year_born=TextEditingController(),age=TextEditingController();
 
   String yearBorn_String='';
+    Contact ?contact;
   DateTime selectedDate=DateTime.now();
   int _selectedIndex=1;
   _AppointmentState(this.shedule_modle, this.weekDay);
@@ -75,7 +78,7 @@ class _AppointmentState extends State<Appointment> {
             Get.to(Home())!.then((value){
 
             });
-          }            
+          }      
           if (index == 2) {
             Get.to(Setting())!.then((value) {
               if(value!=null)
@@ -83,7 +86,21 @@ class _AppointmentState extends State<Appointment> {
                 }
             });
           }
-        },
+       if (index == 1) {
+             contact=await FlutterContactPicker().selectContact();
+    
+             if (contact != null) {
+              Get.to(OwnerPage(contact: contact!))!.then((value) {
+                if (value != null) {
+                  // Perform additional actions here based on the returned value
+                  // For example:
+                  // getSelectedWeeks();
+                  // getWeekDays(); 
+                }
+              });
+            }
+       
+        }}
         ),
       body: Padding(
         padding: const EdgeInsets.all(28.0),
@@ -111,7 +128,7 @@ class _AppointmentState extends State<Appointment> {
                   MyText(txt: DateFormat('M-d-yyyy').format(weekDay), color: Colors.black, txtSize: 20,fontWeight: FontWeight.bold),
                   Spacer(),
                   MyText(txt: list_appointment.length.toString()+'/', color: Colors.black, txtSize: 20,fontWeight: FontWeight.bold),
-                  MyText(txt: shedule_modle.hourses.toString()+' hd', color: Colors.black, txtSize: 20,fontWeight: FontWeight.bold),
+                  MyText(txt: shedule_modle.horse.toString()+' hd', color: Colors.black, txtSize: 20,fontWeight: FontWeight.bold),
                 ],),
               ),
             ),
@@ -133,7 +150,7 @@ class _AppointmentState extends State<Appointment> {
 /*
                       My_Btn(txt: 'Add', btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () {
 
-                        Get.to(Owner_hourses(shedule_modle: shedule_modle, weekDay: weekDay, added_horses: list_appointment,)
+                        Get.to(Owner_horse(shedule_modle: shedule_modle, weekDay: weekDay, added_horses: list_appointment,)
                             ,transition: Transition.circularReveal,duration: Duration(seconds: 1))!.then((value) {
                           if(value!=null)
                           getList_appointment();

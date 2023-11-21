@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:hourses/model/Horse_coment_model.dart';
-import 'package:hourses/model/Horse_model.dart';
-import 'package:hourses/model/Shedule_model.dart';
+import 'package:horse/model/Horse_coment_model.dart';
+import 'package:horse/model/Horse_model.dart';
+import 'package:horse/model/Shedule_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class praf_handler{

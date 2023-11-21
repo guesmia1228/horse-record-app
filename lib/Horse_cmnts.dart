@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hourses/helper/My_Text.dart';
-import 'package:hourses/model/Horse_coment_model.dart';
+import 'package:horse/helper/My_Text.dart';
+import 'package:horse/model/Horse_coment_model.dart';
 
 class Horse_cmnts extends StatefulWidget {
 
