@@ -37,10 +37,41 @@ class my_Methods
 
 //    final startDate = DateTime(year);
     final startDate = date;
-
+    
     final dates = startDate.add(extraDuration);
+    DateTime  dates_after = dates;
+    String dayOfWeek = DateFormat.E().format(dates);    
+    if(dayOfWeek == "Mon")
+    {
+      dates_after = dates.subtract(Duration(days:1));
+    }
+    if(dayOfWeek == "Tue")
+    {
+      dates_after = dates.subtract(Duration(days:2));
+    }
+    if(dayOfWeek == "Wed")
+    {
+      dates_after = dates.subtract(Duration(days:3));
+    }
+    if(dayOfWeek == "Thu")
+    {
+    print(dayOfWeek);
+  
+      dates_after = dates.subtract(Duration(days:4));
+      print(dates);
+    } 
+    if(dayOfWeek == "Fri")
+    {
+      
+      dates_after = dates.subtract(Duration(days:5));
+    }               
+    if(dayOfWeek == "Sat")
+    {
+      dates_after = dates.subtract(Duration(days:6));
+    }               
+
     for (var i = 0; i < 7; i++) {
-      var newDate = dates.add(Duration(days: i));
+      var newDate = dates_after.add(Duration(days: i));
       weekdays.add(newDate);
       print(DateFormat.yMMMMEEEEd().format(newDate));
       // if(DateFormat('E').format(newDate) == 'Mon')print('Monday:'+newDate.toString());

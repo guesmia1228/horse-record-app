@@ -14,7 +14,13 @@ class My_Btn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(onPressed: gestureDetector.onTap,
-        child: MyText(txt: txt, color: txt_color, txtSize: 13),style: ElevatedButton.styleFrom(
+        child: Center(
+          child: MyText(
+            txt: txt,
+            color: txt_color,
+            txtSize: 13,
+          ),
+        ), style: ElevatedButton.styleFrom(
         backgroundColor: btn_color,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(radios)),
         fixedSize: Size.fromWidth(btn_size)

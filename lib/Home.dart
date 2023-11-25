@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:horse/Add_comment.dart';
 import 'package:horse/Appointment.dart';
 import 'package:horse/Date_added_horse.dart';
 import 'package:horse/OwnerPage.dart';
@@ -426,7 +427,7 @@ class _HomeState extends State<Home> {
                   InkWell(
                       onTap: () {
                         Get.to(
-                          Appointment(
+                          Add_comment(
                             shedule_modle: model,
                             weekDay: dateTime,
                           ),
@@ -454,7 +455,7 @@ class _HomeState extends State<Home> {
                       ),
                     ),
                   Container(
-                    width: 45,
+                    width: 65,
                     padding: EdgeInsets.zero,
                     alignment: Alignment.centerRight,
                     child: MyText(
@@ -513,7 +514,7 @@ class _HomeState extends State<Home> {
   }
     return Scaffold(
       backgroundColor: my_helper.backgroundColor,
-      /*
+      
       appBar: AppBar(
         backgroundColor: Colors.red,
         title: MyText(txt: 'Home', color: Colors.white, txtSize: 18,fontWeight: FontWeight.bold),
@@ -545,11 +546,6 @@ class _HomeState extends State<Home> {
                 }
             });
           }
-<<<<<<< HEAD
-          if (index == 1)
-          {
-              contact=await FlutterContactPicker().selectContact();
-=======
           if (index == 1) {
              contact=await FlutterContactPicker().selectContact();
     
@@ -575,10 +571,9 @@ class _HomeState extends State<Home> {
                   getWeekDays();                  
                 }
             });*/
->>>>>>> tmp
           }
         },
-        ),      */
+        ),      
       body: Column(
         children: [
           SizedBox(height: 20),

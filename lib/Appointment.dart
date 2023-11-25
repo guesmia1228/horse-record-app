@@ -121,7 +121,7 @@ class _AppointmentState extends State<Appointment> {
             
             Container(
               width: double.infinity,
-              color: const Color.fromARGB(255, 239, 57, 57),
+              color: Color.fromARGB(255, 49, 43, 225),
               child: Padding(
                 padding: const EdgeInsets.only(left: 40,right: 40,top: 10,bottom: 10),
                 child: Row(children: [
@@ -336,35 +336,42 @@ class _AppointmentState extends State<Appointment> {
               });
             },)),
 
-  
-         Row(
-            children: [
-              My_Btn(
-                txt: 'Call',
-                btn_color: Colors.green,
-                btn_size: 160,
-                gestureDetector: GestureDetector(
-                  onTap: () async {
-                    var url = Uri.parse("tel:"+shedule_modle.owner_phone);
-                    await launchUrl(url);
-                  },
-                ),
-              ),
-              SizedBox(width: 8), // Adjust the spacing between the buttons as needed
-              My_Btn(
-                txt: 'Message',
-                btn_color: Colors.green,
-                btn_size: 160,
-                gestureDetector: GestureDetector(
-                  onTap: () async {
-                    var url = Uri.parse('sms:'+shedule_modle.owner_phone+'?body=%20');
-                    await launchUrl(url);
-                  },
-                ),
-              ),
-            ],
-          )
-
+            Center(  child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 26), 
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: My_Btn(
+                          txt: 'Call',
+                          btn_color: Colors.green,
+                          btn_size: 160,
+                          gestureDetector: GestureDetector(
+                            onTap: () async {
+                              var url = Uri.parse("tel:"+shedule_modle.owner_phone);
+                              await launchUrl(url);
+                            },
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 8), // Adjust the spacing between the buttons as needed
+                      Expanded(
+                        child: My_Btn(
+                          txt: 'Message',
+                          btn_color: Colors.green,
+                          btn_size: 160,
+                          gestureDetector: GestureDetector(
+                            onTap: () async {
+                              var url = Uri.parse('sms:'+shedule_modle.owner_phone+'?body=%20');
+                              await launchUrl(url);
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ))
+      
           
 
           ],

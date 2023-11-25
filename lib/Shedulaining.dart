@@ -376,16 +376,19 @@ class _ShedulingState extends State<Sheduling> {
             Spacer(),
             InkWell(
               onTap: () {
-                mnt=30;
-
-                if(selectedTime>7) {
+                if(mnt==30)
+                  mnt=0;
+                else
+                  mnt=30;
+                print(selectedTime);
+                if(selectedTime>=7) {
                     pm_select=false;
                     am_select=true;
-                    set_digital_time(selectedTime+12, mnt);
+                    set_digital_time(selectedTime, mnt);
                   }else{
                   pm_select=true;
                   am_select=false;
-                  set_digital_time(selectedTime, mnt);
+                  set_digital_time(selectedTime+12, mnt);
 
                 }
                 setState(() {

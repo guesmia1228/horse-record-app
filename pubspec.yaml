@@ -58,6 +58,7 @@ dependencies:
   audioplayers: ^5.2.0
   telephony: ^0.2.0
   record: ^5.0.1
+  share_plus: ^7.1.0
 
 dev_dependencies:
   flutter_test:

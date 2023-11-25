@@ -113,7 +113,7 @@ class _Horse_infoState extends State<Horse_info> {
                     if(xfile!=null)
                     {
                       Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img: xfile.path, owner_name: shedule_modle.owner_name,
-                          time_of_cmnt: DateTime.now().millisecondsSinceEpoch, img_picked: true);
+                          time_of_cmnt: DateTime.now().millisecondsSinceEpoch, img_picked: 1);
                       praf_handler.add_list(horse_model.name+horse_model.age, jsonEncode(horse_cmnt_model.toJson()));
                       EasyLoading.showSuccess('added');
                       Future.delayed(Duration(seconds: 1)).then((value) => getList());
@@ -131,7 +131,7 @@ class _Horse_infoState extends State<Horse_info> {
                     if(res!=null)
                     {
                       Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img: res.files.single.path!, owner_name: shedule_modle.owner_name,
-                          time_of_cmnt: DateTime.now().millisecondsSinceEpoch, img_picked: false);
+                          time_of_cmnt: DateTime.now().millisecondsSinceEpoch, img_picked: 2);
                       praf_handler.add_list(horse_model.name+horse_model.age, jsonEncode(horse_cmnt_model.toJson()));
                       EasyLoading.showSuccess('added');
                       Future.delayed(Duration(seconds: 1)).then((value) => getList());
@@ -168,7 +168,7 @@ class _Horse_infoState extends State<Horse_info> {
                           }, child: Text('No')),
                           TextButton(onPressed: () {
                             Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img: path!, owner_name: shedule_modle.owner_name,
-                                time_of_cmnt: DateTime.now().millisecondsSinceEpoch, img_picked: false);
+                                time_of_cmnt: DateTime.now().millisecondsSinceEpoch, img_picked: 2);
                             praf_handler.add_list(horse_model.name+horse_model.age, jsonEncode(horse_cmnt_model.toJson()));
                             EasyLoading.showSuccess('added');
                             Navigator.pop(context);

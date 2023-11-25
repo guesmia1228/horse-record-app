@@ -43,8 +43,8 @@ void main() async{
 
   WidgetsFlutterBinding.ensureInitialized();
   final int _selectedIndex;
-    await initializeService();
-   init(_onDidReceiveLocalNotification);
+//    await initializeService();
+//   init(_onDidReceiveLocalNotification);
 
   // NotificationService().initNotification();
   // tz.initializeTimeZones();
@@ -233,6 +233,8 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterL
 
 
 Future<void> initializeService() async {
+
+  
   final service = FlutterBackgroundService();
 
 
