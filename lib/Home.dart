@@ -363,17 +363,17 @@ class _HomeState extends State<Home> {
                   if(value!=null)
                     {
                      int h=await praf_handler.get_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString());
-                     print(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString());
-                      print("mother");
-                      print(h);
+             //        print(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString());
+              //        print("mother");
+               //       print(h);
                     setState((){
                       horse_num[index_num]=h;
                       hours=h;                     
-                      print(horse_num[index_num]);
+                   //   print(horse_num[index_num]);
 //                      print(horse_num);
-                      print(index_num);
-                      print("===mother===");
-                      print(horse_num[index_num]);
+                 //     print(index_num);
+                  //    print("===mother===");
+                  //    print(horse_num[index_num]);
                     });
                     init_value();
                     getWeekDays();
@@ -475,17 +475,17 @@ class _HomeState extends State<Home> {
                       Get.to(Sheduling(weekDay: dateTime, edit_value:true),transition: Transition.circularReveal,duration: Duration(seconds: 1))!.then((value) async{
                         if(value!=null){
                         int h=await praf_handler.get_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString());
-                        print(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString());
-                          print("mother");
-                          print(h);
+                    //    print(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString());
+                    //      print("mother");
+                    //      print(h);
                         setState((){
                           horse_num[index_h]=h;
                           hours=h;                     
-                          print(horse_num[index_h]);
+                      //    print(horse_num[index_h]);
     //                      print(horse_num);
-                          print(index_h);
-                          print("===mother===");
-                          print(horse_num[index_h]);
+                     //     print(index_h);
+                      //    print("===mother===");
+                      //    print(horse_num[index_h]);
                         });  
                         init_value();
                           getWeekDays();

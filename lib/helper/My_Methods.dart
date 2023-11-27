@@ -55,10 +55,10 @@ class my_Methods
     }
     if(dayOfWeek == "Thu")
     {
-    print(dayOfWeek);
+   // print(dayOfWeek);
   
       dates_after = dates.subtract(Duration(days:4));
-      print(dates);
+   //   print(dates);
     } 
     if(dayOfWeek == "Fri")
     {
@@ -73,7 +73,7 @@ class my_Methods
     for (var i = 0; i < 7; i++) {
       var newDate = dates_after.add(Duration(days: i));
       weekdays.add(newDate);
-      print(DateFormat.yMMMMEEEEd().format(newDate));
+   //   print(DateFormat.yMMMMEEEEd().format(newDate));
       // if(DateFormat('E').format(newDate) == 'Mon')print('Monday:'+newDate.toString());
       // else if(DateFormat('EEEE').format(newDate) == 'Tuesday')print('Tuesday:'+newDate.toString());
       // else if(DateFormat('EEEE').format(newDate) == 'Friday')print('Friday:'+newDate.toString());

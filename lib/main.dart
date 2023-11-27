@@ -103,7 +103,7 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterL
     final InitializationSettings initializationSettings =
     InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS, macOS: null);
-  print("find");
+ // print("find");
     initializeLocalNotificationsPlugin(initializationSettings);
 
     tz.initializeTimeZones();
@@ -112,14 +112,14 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterL
   void initializeLocalNotificationsPlugin(InitializationSettings initializationSettings) async {
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: selectNotification);
-    print("RRS");
+ //   print("RRS");
 ///    handleApplicationWasLaunchedFromNotification("");
   }
 
   Future selectNotification(String? payload) async {
 //    UserBirthday userBirthday = getUserBirthdayFromPayload(payload ?? '');
 //    cancelNotificationForBirthday(userBirthday);
-      print("===========mmmmmm=============");
+    //  print("===========mmmmmm=============");
   List<Shedule_modle> shedule_list=[];
         int hour_befor=await praf_handler.get_int(my_helper.hour_before);
 

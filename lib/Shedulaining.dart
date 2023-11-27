@@ -45,7 +45,7 @@ class _ShedulingState extends State<Sheduling> {
     }
     else
      set_digital_time(9, 30);
-    print('fixed '+fixed_digital_time);
+   // print('fixed '+fixed_digital_time);
     setState(() {
 
     });
@@ -136,8 +136,11 @@ class _ShedulingState extends State<Sheduling> {
           Center(
             child:mode==2?Container(): My_Btn(txt: 'Owner Search', btn_color: Colors.grey, btn_size: 300, gestureDetector: GestureDetector(onTap: () async{
 
+              
                contact=await FlutterContactPicker().selectContact();
-
+              setState(() {
+                
+              });  
             },),txt_color: Colors.black),
           ),
 
@@ -163,6 +166,20 @@ class _ShedulingState extends State<Sheduling> {
 
           ],),
 
+        //        MyText(txt: DateFormat.yMMMd().format(weekDay), color: Colors.purple, txtSize: 18),
+    Container(
+              width: double.infinity,
+              color: Color.fromARGB(255, 109, 106, 213),              
+              child: Padding(
+                padding: const EdgeInsets.only(left: 40,right: 40,top: 10,bottom: 10),
+                child: Row(children: [
+                  MyText(txt: DateFormat('M-d-yyyy').format(weekDay), color: Colors.black, txtSize: 20,fontWeight: FontWeight.bold),
+                  Spacer(),
+                  if(contact!=null)
+                    MyText(txt: contact!.fullName!.toString(), color: Colors.black, txtSize: 20,fontWeight: FontWeight.bold),
+                ],),
+              ),
+            ),    
            Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
@@ -222,7 +239,7 @@ class _ShedulingState extends State<Sheduling> {
 
                     String s=jsonEncode(model.toJson());
                     
-                    praf_handler.add_list(my_helper.shedule+weekDay.millisecondsSinceEpoch.toString(), s);
+                    praf_handler.add_list_sort(my_helper.shedule+weekDay.millisecondsSinceEpoch.toString(), s,"Schedule");
 
                     Shedule_model1 model1=Shedule_model1(horse: horse, date:weekDay.toIso8601String(), time: fixed_digital_time,
                         owner_name: '',
@@ -230,7 +247,7 @@ class _ShedulingState extends State<Sheduling> {
                          alert_on: alert_on, reason: reason.text, shedule_time: manual_selected_shedule_time.millisecondsSinceEpoch);
 
                     String s1=jsonEncode(model1.toJson());
-                    await praf_handler.add_list(my_helper.shedule_total, s1);
+           //         await praf_handler.add_list(my_helper.shedule_total, s1);
 
                       print("another====fool====");
 //                      print(my_helper.shedule_total,s1);
@@ -253,16 +270,16 @@ class _ShedulingState extends State<Sheduling> {
 
 
                       String s=jsonEncode(model.toJson());
-                      praf_handler.add_list(my_helper.shedule+weekDay.millisecondsSinceEpoch.toString(), s);
-                      print("another====fool====");
-                      print(my_helper.shedule+weekDay.millisecondsSinceEpoch.toString());
+                      praf_handler.add_list_sort(my_helper.shedule+weekDay.millisecondsSinceEpoch.toString(), s,"Schedule");
+                //      print("another====fool====");
+              //        print(my_helper.shedule+weekDay.millisecondsSinceEpoch.toString());
                       int h=await praf_handler.get_int(my_helper.hourse+weekDay.millisecondsSinceEpoch.toString());
 
                       h=h+horse;
 
  
                      await praf_handler.set_int(my_helper.hourse+weekDay.millisecondsSinceEpoch.toString(), h);
-                      print(my_helper.hourse+weekDay.millisecondsSinceEpoch.toString());
+             //         print(my_helper.hourse+weekDay.millisecondsSinceEpoch.toString());
 
 
                      Shedule_model1 model1=Shedule_model1(horse: h, date:weekDay.toIso8601String(), time: fixed_digital_time,
@@ -271,7 +288,7 @@ class _ShedulingState extends State<Sheduling> {
                          alert_on: alert_on, reason: reason.text, shedule_time: manual_selected_shedule_time.millisecondsSinceEpoch);
 
                     String s1=jsonEncode(model1.toJson());
-                    await praf_handler.add_list(my_helper.shedule_total, s1);
+                    await praf_handler.add_list_sort(my_helper.shedule_total, s1,"Schedule");
                     //   print(await praf_handler.get_int(my_helper.hourse+weekDay.millisecondsSinceEpoch.toString()));
                       await praf_handler.set_bool(my_helper.day_mode+weekDay.millisecondsSinceEpoch.toString(),
                           mode==1?true:false);
@@ -380,7 +397,7 @@ class _ShedulingState extends State<Sheduling> {
                   mnt=0;
                 else
                   mnt=30;
-                print(selectedTime);
+          //      print(selectedTime);
                 if(selectedTime>=7) {
                     pm_select=false;
                     am_select=true;
@@ -447,7 +464,7 @@ class _ShedulingState extends State<Sheduling> {
                 setState(() {
 
                 });
-                print(DateFormat('hh:mm a').format(dt));
+         //       print(DateFormat('hh:mm a').format(dt));
               }
 
           },

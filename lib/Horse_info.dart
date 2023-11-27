@@ -107,7 +107,7 @@ class _Horse_infoState extends State<Horse_info> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: My_Btn(txt: 'Upload Picture', btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
+                  child: My_Btn(txt: 'Picture', btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
 
                     XFile? xfile=await ImagePicker().pickImage(source: ImageSource.gallery);
                     if(xfile!=null)
@@ -125,7 +125,7 @@ class _Horse_infoState extends State<Horse_info> {
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: My_Btn(txt: 'Upload MP3', btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
+                  child: My_Btn(txt: 'MP3', btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
 
                     FilePickerResult? res=await FilePicker.platform.pickFiles();
                     if(res!=null)
@@ -196,7 +196,7 @@ class _Horse_infoState extends State<Horse_info> {
                     });
                   }
                   catch(error){
-                    print('samak'+error.toString());
+                //    print('samak'+error.toString());
                   }
 
 

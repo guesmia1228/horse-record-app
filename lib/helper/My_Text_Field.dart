@@ -8,16 +8,34 @@ class My_Text_Field extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: controler,
-      style: TextStyle(color: Colors.black),
-      cursorColor: Colors.white,
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: TextStyle(color: Colors.black),
-        enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black))
-      ),
+    if(label == "Add Comment")
+    {
+      return TextField(
+        controller: controler,
+        style: TextStyle(color: Colors.black),
+        cursorColor: Colors.white,
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(color: Colors.black),
+          enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black))
+        ),
+        minLines: 10,      
+        maxLines: null,
+      );
+    }
+    else
+    {
+      return TextField(
+        controller: controler,
+        style: TextStyle(color: Colors.black),
+        cursorColor: Colors.white,
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: TextStyle(color: Colors.black),
+          enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black))
+        ),
+      );
 
-    );
+    }
   }
 }

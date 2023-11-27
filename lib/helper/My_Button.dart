@@ -18,7 +18,7 @@ class My_Btn extends StatelessWidget {
           child: MyText(
             txt: txt,
             color: txt_color,
-            txtSize: 13,
+            txtSize: 10,
           ),
         ), style: ElevatedButton.styleFrom(
         backgroundColor: btn_color,

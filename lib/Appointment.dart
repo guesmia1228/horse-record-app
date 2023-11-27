@@ -193,7 +193,7 @@ class _AppointmentState extends State<Appointment> {
                                        jsonEncode(element.toJson()));
                                  }
                               });
-                              print("inkwell=========================2");
+                        //      print("inkwell=========================2");
                               getList_appointment();
 
 //                              Navigator.pop(context,true);
@@ -256,7 +256,7 @@ class _AppointmentState extends State<Appointment> {
 
                                       // Find out your age as of today's date 2021-03-08
                                       DateDuration duration = AgeCalculator.age(pickedDate);
-                                      print('Your age is $duration');
+                             //         print('Your age is $duration');
 
                                       age.text='${duration.years + 1}';
 
@@ -413,8 +413,8 @@ class _AppointmentState extends State<Appointment> {
                else
                {
                  await praf_handler.add_list(shedule_modle.owner_name+shedule_modle.owner_phone+weekDay.millisecondsSinceEpoch.toString(), jsonEncode(list[index].toJson()));
-                 print("fooo================");
-                 print(weekDay.millisecondsSinceEpoch.toString());
+              //   print("fooo================");
+           //      print(weekDay.millisecondsSinceEpoch.toString());
 //                 Navigator.pop(context,true);
                  getList_appointment();
                }  
@@ -508,7 +508,7 @@ class _AppointmentState extends State<Appointment> {
   List<Horse_model> list_appointment=[];
   getList_appointment()async{
 
-    print("FOOL");
+   // print("FOOL");
     list_appointment.clear();
     list_appointment=await praf_handler.get_horse_list(shedule_modle.owner_name+shedule_modle.owner_phone+weekDay.millisecondsSinceEpoch.toString());
     setState(() {

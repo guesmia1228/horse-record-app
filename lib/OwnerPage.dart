@@ -169,7 +169,7 @@ class _OwnerPageState extends State<OwnerPage> {
 
                                       // Find out your age as of today's date 2021-03-08
                                       DateDuration duration = AgeCalculator.age(pickedDate);
-                                      print('Your age is $duration');
+                        //              print('Your age is $duration');
 
                                       age.text='${duration.years}';
 
@@ -293,7 +293,7 @@ class _OwnerPageState extends State<OwnerPage> {
   final record = AudioRecorder();
 
   Widget ShowHorse() {
-    print("=================RS+++++++++++++++++++++++++");
+   // print("=================RS+++++++++++++++++++++++++");
     if (list.length < 1) {
       return Container();
     }
@@ -303,8 +303,8 @@ class _OwnerPageState extends State<OwnerPage> {
         child: ListView.builder(
           itemCount: list.length,
           itemBuilder: (context, index) {
-            print("=========================================");
-            print(list[index].name);
+      //      print("=========================================");
+      //      print(list[index].name);
 
             return Column(
               children: [
@@ -323,7 +323,7 @@ class _OwnerPageState extends State<OwnerPage> {
   }
 
   Widget ShowHorseDetail(String name){
-    print("mmm"+name);
+   // print("mmm"+name);
 //    getHistoryList();
     return ListView.builder(
       physics: NeverScrollableScrollPhysics(),  
@@ -388,7 +388,7 @@ class _OwnerPageState extends State<OwnerPage> {
   XFile? xfile;
   FilePickerResult? res;
    Widget ShowHorseName(int index, String name,bool mode){
-    print("name=====================name");
+   // print("name=====================name");
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -520,7 +520,7 @@ class _OwnerPageState extends State<OwnerPage> {
                               Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: My_Btn(txt: 'Upload Picture', btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
+                                  child: My_Btn(txt: 'Picture', btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
 
                                     xfile=await ImagePicker().pickImage(source: ImageSource.gallery);
                                     record_flag=1;
@@ -530,7 +530,7 @@ class _OwnerPageState extends State<OwnerPage> {
                               Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: My_Btn(txt: 'Upload MP3', btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
+                                  child: My_Btn(txt: 'MP3', btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
 
                                     res=await FilePicker.platform.pickFiles();
                                     record_flag=3;                                   
@@ -555,8 +555,8 @@ class _OwnerPageState extends State<OwnerPage> {
                                     setState(() {
                                       recording=!recording;
 //                                      buttonTitle = 'Start Recording';
-                                      print(buttonTitle);
-                                      print(recording);
+                               //       print(buttonTitle);
+                            //          print(recording);
                                     });
                                   final path = await record.stop();
                                   record.dispose();
@@ -589,8 +589,8 @@ class _OwnerPageState extends State<OwnerPage> {
 
 //                                      recording=true;                                      
 //                                      buttonTitle = 'Stop Recording';
-                                      print(buttonTitle);
-                                      print(recording);
+                         //             print(buttonTitle);
+                           //           print(recording);
 
                                     });
 
@@ -604,7 +604,7 @@ class _OwnerPageState extends State<OwnerPage> {
                                     EasyLoading.showSuccess('speak');
                                   }
                                   catch(error){
-                                    print('samak'+error.toString());
+                    //                print('samak'+error.toString());
                                   }
 
 

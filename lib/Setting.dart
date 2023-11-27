@@ -25,11 +25,11 @@ class _SettingState extends State<Setting> {
 
   getFixedDigitalTime()async{
     int t=await praf_handler.get_int(my_helper.fixed_digital_time);
-    print(t);
+   // print(t);
     if(t>0)
       fixed_digital_time=DateFormat('hh:mm a').format(DateTime.fromMillisecondsSinceEpoch(t));
 
-    print('fixed '+fixed_digital_time);
+   // print('fixed '+fixed_digital_time);
     setState(() {
 
     });
@@ -127,11 +127,11 @@ bottomNavigationBar: BottomNavigationBar(
                 final dt= DateTime(now.year, now.month, now.day, time.hour, time.minute);
                 fixed_digital_time=DateFormat('hh:mm a').format(dt);
                 praf_handler.set_int(my_helper.fixed_digital_time, dt.millisecondsSinceEpoch);
-                print(dt.millisecondsSinceEpoch);
+          //      print(dt.millisecondsSinceEpoch);
                 setState(() {
 
                 });
-                print(DateFormat('hh:mm a').format(dt));
+           //     print(DateFormat('hh:mm a').format(dt));
               }
 
             },
@@ -343,7 +343,7 @@ bottomNavigationBar: BottomNavigationBar(
           String monthTxt = month_txt.text;  // Assuming monthTxtController is your TextEditingController
           int month = int.tryParse(monthTxt) ?? 0;
           dt= DateTime(dt.year, dt.month + month , 1, 1 , 9 ,0 );
-          print(dt);
+      //    print(dt);
 
           praf_handler.set_int(my_helper.noti_duration, dt.millisecondsSinceEpoch);
           praf_handler.set_int(my_helper.noti_time, noti_time);
