@@ -460,10 +460,10 @@ class _OwnerPageState extends State<OwnerPage> {
                 builder: (context) {
                   bool recording = false;
                   return StatefulBuilder(builder:(context, setState) {
-             return AlertDialog(
+                  return AlertDialog(
                     
                     title: Text('Add Comment'),
-                    content:  Column(
+                    content:  SingleChildScrollView(child:Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         // Add your form fields here
@@ -555,8 +555,8 @@ class _OwnerPageState extends State<OwnerPage> {
                                     setState(() {
                                       recording=!recording;
 //                                      buttonTitle = 'Start Recording';
-                               //       print(buttonTitle);
-                            //          print(recording);
+                  //                    print(buttonTitle);
+                  //                    print(recording);
                                     });
                                   final path = await record.stop();
                                   record.dispose();
@@ -568,7 +568,8 @@ class _OwnerPageState extends State<OwnerPage> {
                                           }, child: Text('No')),
                                           TextButton(onPressed: () {
                                             record_flag=2;
-                                            
+                                            Navigator.pop(context);
+
 /*                                            Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img: record_path!, owner_name: shedule_modle.owner_name,
                                                 time_of_cmnt: selectedDate.millisecondsSinceEpoch, img_picked: 2);
 //                                            praf_handler.add_list(horse_model.name+horse_model.age, jsonEncode(horse_cmnt_model.toJson()));
@@ -589,8 +590,8 @@ class _OwnerPageState extends State<OwnerPage> {
 
 //                                      recording=true;                                      
 //                                      buttonTitle = 'Stop Recording';
-                         //             print(buttonTitle);
-                           //           print(recording);
+                  //                    print(buttonTitle);
+                 //                     print(recording);
 
                                     });
 
@@ -604,7 +605,7 @@ class _OwnerPageState extends State<OwnerPage> {
                                     EasyLoading.showSuccess('speak');
                                   }
                                   catch(error){
-                    //                print('samak'+error.toString());
+                               //     print('samak'+error.toString());
                                   }
 
 
@@ -624,7 +625,7 @@ class _OwnerPageState extends State<OwnerPage> {
                             ),*/
 
                       ],
-                    ),
+                    )),
                     actions: <Widget>[
                       ElevatedButton(
                         onPressed: () async{
@@ -634,23 +635,22 @@ class _OwnerPageState extends State<OwnerPage> {
                           // Then close the dialog
                           if(record_flag==2)
                           {
-                                Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img: record_path!, owner_name: name,
-                                                time_of_cmnt: selectedDate.millisecondsSinceEpoch, img_picked: record_flag);
+                                Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img: record_path!, owner_name: contact!.fullName!,
+                                                time_of_cmnt: selectedDate.millisecondsSinceEpoch, img_picked: 2);
 //                                            praf_handler.add_list(horse_model.name+horse_model.age, jsonEncode(horse_cmnt_model.toJson()));
-                                            praf_handler.add_list(name, jsonEncode(horse_cmnt_model.toJson()));
+                                            praf_handler.add_list_sort(name, jsonEncode(horse_cmnt_model.toJson()),"horse_sort");
                                             
                                             EasyLoading.showSuccess('added');                          
                                 record_flag=0;
                                xfile=null;
                                 res=null;
                                 record_path="";
-
                           }
                           else if(xfile!=null&& record_flag==1)
                           {
-                               Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text,  img: xfile?.path ?? '', owner_name: name,
+                               Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text,  img: xfile?.path ?? '', owner_name: contact!.fullName!,
                                           time_of_cmnt: selectedDate.millisecondsSinceEpoch, img_picked: 1);
-                                      praf_handler.add_list(name, jsonEncode(horse_cmnt_model.toJson()));
+                                      praf_handler.add_list_sort(name, jsonEncode(horse_cmnt_model.toJson()),"horse_sort");
                                       EasyLoading.showSuccess('added');
                                 record_flag=0;
                                xfile=null;
@@ -660,10 +660,10 @@ class _OwnerPageState extends State<OwnerPage> {
                           }
                           else if(res!=null && record_flag == 3)
                                     {
-                                      Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img: res?.files?.isNotEmpty == true ? res!.files.single.path! : "defaultPath", owner_name: name,
+                                      Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img: res?.files?.isNotEmpty == true ? res!.files.single.path! : "defaultPath", owner_name: contact!.fullName!,
                                           time_of_cmnt: selectedDate.millisecondsSinceEpoch, img_picked: 2);
 //                                      praf_handler.add_list(horse_model.name+horse_model.age, jsonEncode(horse_cmnt_model.toJson()));
-                                      praf_handler.add_list(name, jsonEncode(horse_cmnt_model.toJson()));
+                                      praf_handler.add_list_sort(name, jsonEncode(horse_cmnt_model.toJson()),"horse_sort");
 
                                       EasyLoading.showSuccess('added');
                                       Future.delayed(Duration(seconds: 1)).then((value) => getHistoryList());
@@ -675,10 +675,10 @@ class _OwnerPageState extends State<OwnerPage> {
                                     }
                          else
                          {
-                                Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img:  "defaultPath", owner_name: name,
+                                Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img:  "defaultPath", owner_name: contact!.fullName!,
                                           time_of_cmnt: selectedDate.millisecondsSinceEpoch, img_picked: 0);
 //                                      praf_handler.add_list(horse_model.name+horse_model.age, jsonEncode(horse_cmnt_model.toJson()));
-                                      praf_handler.add_list(name, jsonEncode(horse_cmnt_model.toJson()));
+                                      praf_handler.add_list_sort(name, jsonEncode(horse_cmnt_model.toJson()),"horse_sort");
 
                                       EasyLoading.showSuccess('added');
                                       Future.delayed(Duration(seconds: 1)).then((value) => getHistoryList());
@@ -702,6 +702,7 @@ class _OwnerPageState extends State<OwnerPage> {
                         child: Text('Cancel'),
                       ),
                     ],
+                    
                   );                    
                   },);
                 },

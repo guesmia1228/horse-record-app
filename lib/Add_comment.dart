@@ -30,6 +30,7 @@ import 'package:horse/OwnerPage.dart';
 import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class Add_comment extends StatefulWidget {
   final Shedule_modle shedule_modle;
@@ -60,6 +61,15 @@ class _Add_commentState extends State<Add_comment> {
   int record_flag = 1;
   @override
   TextEditingController dateController = TextEditingController(text: DateFormat.yMd().format(DateTime.now()));
+   Future<bool> checkPermission() async {
+    if (!await Permission.microphone.isGranted) {
+      PermissionStatus status = await Permission.microphone.request();
+      if (status != PermissionStatus.granted) {
+        return false;
+      }
+    }
+    return true;
+  }
   void initState() {
     // TODO: implement initState
     super.initState();
