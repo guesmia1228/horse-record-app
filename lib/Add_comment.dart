@@ -659,7 +659,7 @@ showDialog(
         SizedBox(width: 5,),
         SizedBox(
 
-        width: 250,
+        width: 220,
         height: 30,
         child: Container(
           color: mode?Colors.grey:Colors.red,
