@@ -406,8 +406,9 @@ class _HomeState extends State<Home> {
                 children: [
                   IconButton(
                     icon: Icon(Icons.delete),
-                    onPressed: () async{  
-                    await praf_handler.del_list_item_from_schedule(my_helper.shedule+ dateTime.millisecondsSinceEpoch.toString(), index);
+                    onPressed: () {  
+                       showDeleteConfirmationDialog(context, () async {
+                      await praf_handler.del_list_item_from_schedule(my_helper.shedule+ dateTime.millisecondsSinceEpoch.toString(), index);
                     int hours;
                       hours=await praf_handler.get_int(my_helper.hourse+dateTime.millisecondsSinceEpoch.toString());
                       hours-=model.horse;
@@ -419,6 +420,8 @@ class _HomeState extends State<Home> {
                         }
                         horse_num[index_h]=hours;
                       });
+                  });
+                 
   //                    init_value();
   //                    getWeekDays();
                     },
@@ -501,7 +504,32 @@ class _HomeState extends State<Home> {
         },
       );
   }
-
+  void showDeleteConfirmationDialog(BuildContext context, Function onConfirm) {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text("Confirm Delete"),
+          content: Text("Are you sure you want to delete this item?"),
+          actions: <Widget>[
+            TextButton(
+              child: Text("Cancel"),
+              onPressed: () {
+                Navigator.of(dialogContext).pop(); // Close the dialog
+              },
+            ),
+            TextButton(
+              child: Text("Delete"),
+              onPressed: () {
+                Navigator.of(dialogContext).pop(); // Close the dialog
+                onConfirm(); // Call the onConfirm function passed as a parameter
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
 

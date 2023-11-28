@@ -390,15 +390,18 @@ class _Add_commentState extends State<Add_comment> {
             children: [
               IconButton(
                 icon: Icon(Icons.delete),
+       
                 onPressed: () {
                   // Add code to handle deletion here
-            // For example: deleteEntry(model);
-                  praf_handler.del_list_item(name, index);
-//                  ShowHorse();
-                  setState(() {
-                       if (index >= 0 && index < my_cmnts_list.length) {
-                        my_cmnts_list.removeAt(index);
-                      }
+            // For example: deleteEntry(model);\
+                  showDeleteConfirmationDialog(context, () async {
+                    praf_handler.del_list_item(name, index);
+  //                  ShowHorse();
+                    setState(() {
+                        if (index >= 0 && index < my_cmnts_list.length) {
+                          my_cmnts_list.removeAt(index);
+                        }
+                    }); 
                   });
                 },
               ),
