@@ -633,7 +633,7 @@ class _OwnerPageState extends State<OwnerPage> {
                           // You can access the entered data using nameController.text and ageController.text
                           // Perform your data validation and saving logic here
                           // Then close the dialog
-                          if(record_flag==2)
+                        /*  if(record_flag==2)
                           {
                                 Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img: record_path!, owner_name: contact!.fullName!,
                                                 time_of_cmnt: selectedDate.millisecondsSinceEpoch, img_picked: 2);
@@ -690,7 +690,7 @@ class _OwnerPageState extends State<OwnerPage> {
                          }     
                               
                           getHistoryList();
-                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();*/
                         },
                         child: Text('Add'),
                       ),

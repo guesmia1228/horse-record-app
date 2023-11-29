@@ -112,11 +112,12 @@ class _Horse_infoState extends State<Horse_info> {
                     XFile? xfile=await ImagePicker().pickImage(source: ImageSource.gallery);
                     if(xfile!=null)
                     {
+                      /*
                       Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img: xfile.path, owner_name: shedule_modle.owner_name,
                           time_of_cmnt: DateTime.now().millisecondsSinceEpoch, img_picked: 1);
                       praf_handler.add_list(horse_model.name+horse_model.age, jsonEncode(horse_cmnt_model.toJson()));
                       EasyLoading.showSuccess('added');
-                      Future.delayed(Duration(seconds: 1)).then((value) => getList());
+                      Future.delayed(Duration(seconds: 1)).then((value) => getList());*/
                     }
 
                   },)),
@@ -129,12 +130,12 @@ class _Horse_infoState extends State<Horse_info> {
 
                     FilePickerResult? res=await FilePicker.platform.pickFiles();
                     if(res!=null)
-                    {
+                    {/*
                       Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img: res.files.single.path!, owner_name: shedule_modle.owner_name,
                           time_of_cmnt: DateTime.now().millisecondsSinceEpoch, img_picked: 2);
                       praf_handler.add_list(horse_model.name+horse_model.age, jsonEncode(horse_cmnt_model.toJson()));
                       EasyLoading.showSuccess('added');
-                      Future.delayed(Duration(seconds: 1)).then((value) => getList());
+                      Future.delayed(Duration(seconds: 1)).then((value) => getList());*/
                     }
 
                   },)),
@@ -167,12 +168,13 @@ class _Horse_infoState extends State<Horse_info> {
                             Navigator.pop(context);
                           }, child: Text('No')),
                           TextButton(onPressed: () {
+                            /*
                             Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img: path!, owner_name: shedule_modle.owner_name,
                                 time_of_cmnt: DateTime.now().millisecondsSinceEpoch, img_picked: 2);
                             praf_handler.add_list(horse_model.name+horse_model.age, jsonEncode(horse_cmnt_model.toJson()));
                             EasyLoading.showSuccess('added');
                             Navigator.pop(context);
-                            Future.delayed(Duration(seconds: 1)).then((value) => getList());
+                            Future.delayed(Duration(seconds: 1)).then((value) => getList());*/
                           }, child: Text('YES'))
                         ],);
                       },);

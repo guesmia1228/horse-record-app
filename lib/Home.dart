@@ -292,6 +292,10 @@ class _HomeState extends State<Home> {
   }
 
   Widget days_view(DateTime dateTime,int hours,bool mode,int index_num){
+    print(dateTime);
+      String formattedDate = DateFormat('yyyy-MM-dd 00:00:00.000').format(dateTime);
+      String formattedDate1 = DateFormat('yyyy-MM-dd 00:00:00.000').format(DateTime.now());
+  print(formattedDate);
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -308,7 +312,7 @@ class _HomeState extends State<Home> {
         SizedBox(
           width: 200,
           child: Container(
-            color: mode ? Colors.grey : Colors.red,
+            color: mode ?( formattedDate==formattedDate1?Color.fromARGB(255, 234, 223, 120):Colors.grey ): Colors.red,
             child: Padding(
               padding: const EdgeInsets.only(left: 30, right: 30),
               child: InkWell(
@@ -440,7 +444,7 @@ class _HomeState extends State<Home> {
                       },
                       child: RichText(
                         text: TextSpan(
-                          text: model.time.toString() + '-',
+                          text: model.time.toString(),
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 15,
@@ -462,7 +466,7 @@ class _HomeState extends State<Home> {
                     padding: EdgeInsets.zero,
                     alignment: Alignment.centerRight,
                     child: MyText(
-                      txt: '-' + model.horse.toString() + ' hd',
+                      txt: model.horse!=0?'-' + model.horse.toString() + ' hd':"",
                       color: Colors.black,
                       txtSize: 15,
                     ),

@@ -43,8 +43,8 @@ void main() async{
 
   WidgetsFlutterBinding.ensureInitialized();
   final int _selectedIndex;
-    await initializeService();
-   init(_onDidReceiveLocalNotification);
+  //  await initializeService();
+ //  init(_onDidReceiveLocalNotification);
 
   // NotificationService().initNotification();
   // tz.initializeTimeZones();
@@ -77,12 +77,84 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       home: Scaffold(
-        body: Home(),
+        body: MyHomePage(),
       
       ),
       debugShowCheckedModeBanner: false,
       builder: EasyLoading.init(),
     );
+  }
+}
+
+class MyHomePage extends StatelessWidget {
+  // ... (existing code)
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Enter Password'),
+      ),
+     body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20.0),
+              child: Text(
+                'Welcome to EquiScheduler by Wayne Team',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                _showPasswordDialog(context);
+              },
+              child: Text('Enter Password'),
+            ),
+          ],
+        ),
+      ),
+
+    );
+  }
+
+  Future<void> _showPasswordDialog(BuildContext context) async {
+    String enteredPassword = '';
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Enter Password'),
+          content: TextField(
+            obscureText: true,
+            onChanged: (value) {
+              enteredPassword = value;
+            },
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Submit'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                if (enteredPassword == 'Wayne') {
+                  _proceedToNextPart();
+                } else {
+                  // Password incorrect, handle accordingly (e.g., show error message)
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _proceedToNextPart() {
+    Get.to(Home());
+    // Your code to proceed to the next part after password validation
   }
 }
  Future<dynamic> _onDidReceiveLocalNotification(

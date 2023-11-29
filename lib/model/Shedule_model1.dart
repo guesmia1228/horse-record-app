@@ -12,7 +12,7 @@ class Shedule_model1{
 
   factory Shedule_model1.fromJson(Map<dynamic, dynamic> json) {
     return Shedule_model1(
-      horse: json["horse"],
+      horse: json["horse"]??0,
       date: json["date"],
       time: json["time"],
       owner_name: json["owner_name"],

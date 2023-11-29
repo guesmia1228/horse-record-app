@@ -54,9 +54,9 @@ class _Horse_cmntsState extends State<Horse_cmnts> {
               SizedBox(height: 80,),
               MyText(txt: list[pos].owner_name, color: Colors.black, txtSize: 20),
 
-              if(list[pos].img_picked==1)
+              if(list[pos].img!="")
                 Image.file(File(list[pos].img)),
-              if(list[pos].img_picked==2)                
+              if(list[pos].record!="")                
               ElevatedButton(onPressed: () async{
 
                 if(play){
@@ -64,7 +64,7 @@ class _Horse_cmntsState extends State<Horse_cmnts> {
                 }
                 else{
 
-                  await player.play(DeviceFileSource(list[pos].img));
+                  await player.play(DeviceFileSource(list[pos].record));
                 }
                 setState(() {
                   play=!play;

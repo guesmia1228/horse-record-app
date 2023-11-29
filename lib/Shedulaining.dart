@@ -232,7 +232,7 @@ class _ShedulingState extends State<Sheduling> {
 
 
                   if(mode==2){
-                    Shedule_modle model=Shedule_modle(horse: horse, time: fixed_digital_time,
+                    Shedule_modle model=Shedule_modle(horse: 0, time: fixed_digital_time,
                         owner_name: '',
                         owner_phone:'',
                          alert_on: alert_on, reason: reason.text, shedule_time: manual_selected_shedule_time.millisecondsSinceEpoch);
@@ -241,7 +241,7 @@ class _ShedulingState extends State<Sheduling> {
                     
                     praf_handler.add_list_sort(my_helper.shedule+weekDay.millisecondsSinceEpoch.toString(), s,"Schedule");
 
-                    Shedule_model1 model1=Shedule_model1(horse: horse, date:weekDay.toIso8601String(), time: fixed_digital_time,
+                    Shedule_model1 model1=Shedule_model1(horse: 0, date:weekDay.toIso8601String(), time: fixed_digital_time,
                         owner_name: '',
                         owner_phone:'',
                          alert_on: alert_on, reason: reason.text, shedule_time: manual_selected_shedule_time.millisecondsSinceEpoch);

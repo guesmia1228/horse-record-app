@@ -24,6 +24,14 @@ class praf_handler{
     SharedPreferences sharedPreferences=await my_Praf();
     sharedPreferences.setBool(key, value);
   }
+   static set_comment(String key,String value)async{
+    SharedPreferences sharedPreferences=await my_Praf();
+    sharedPreferences.setString(key, value);
+  }
+    static get_comment(String key)async{
+    SharedPreferences sharedPreferences=await my_Praf();
+    return sharedPreferences.getString(key)??'';
+  }
   static get_bool(String key)async{
     SharedPreferences sharedPreferences=await my_Praf();
     return sharedPreferences.getBool(key)??true;

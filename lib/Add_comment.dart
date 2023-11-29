@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:horse/Comment_info.dart';
 import 'package:record/record.dart';
 import 'package:horse/Horse_info.dart';
 import 'package:horse/helper/My_Button.dart';
@@ -266,8 +267,12 @@ class _Add_commentState extends State<Add_comment> {
                             {
                               EasyLoading.showError('give permisson');
                               return;
+                              
                             }*/
-                          Horse_model model=Horse_model(name: name.text, year_born: year_born.text, age: age.text,
+                                  bool b=await check_horse_already_added(name.text);
+                               if(!b)
+                                 {   
+                                     Horse_model model=Horse_model(name: name.text, year_born: year_born.text, age: age.text,
                               owner_name: shedule_modle.owner_name, owner_nbr: shedule_modle.owner_phone);
                           String s=jsonEncode(model.toJson());
                           await praf_handler.add_list(shedule_modle.owner_name+my_helper.all_horses, s);
@@ -276,6 +281,12 @@ class _Add_commentState extends State<Add_comment> {
                           });
 //                          getList();
                           Navigator.of(context).pop();
+                               }
+                                   else
+                                 {
+                                   EasyLoading.showSuccess('That name already exists');
+                                 }
+                       
                         },
                         child: Text('Add'),
                       ),
@@ -423,6 +434,30 @@ class _Add_commentState extends State<Add_comment> {
                   Get.to(Horse_cmnts(list: my_cmnts_list, pos: index,));
                 },
                 child: Icon(Icons.attach_file,color: Colors.black,)),
+              InkWell(
+                onTap: () async{
+                            final files = <XFile>[];
+//                 praf_handler.add_list(name, jsonEncode(horse_cmnt_model.toJson()));
+                  my_cmnts_list=await praf_handler.get_horse_cmnr(list[index].name);
+
+//                  Share.shareFiles(['${xfile?.path}'], text: 'Great picture');
+                       //   print(productsListForShare[i].photo!.path!);
+                        if(my_cmnts_list[index].img!="")
+                        {
+                          var xfile = XFile(my_cmnts_list[index].img);
+                          files.add(xfile);
+                        }
+                        if(my_cmnts_list[index].record!="")
+                        {
+                          var xfile = XFile(my_cmnts_list[index].record);
+                          files.add(xfile);
+                        }
+                  Share.shareXFiles(files);
+               
+                     Share.share(my_cmnts_list[index].cmnt);
+
+                },
+                child: Icon(Icons.send,color: Colors.black,)),
     
              
             ],),
@@ -688,12 +723,12 @@ showDialog(
 
                  SizedBox(
                 width: double.infinity,  // Ensure the title takes the remaining space
-                child: Row(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align the components horizontally
                   crossAxisAlignment: CrossAxisAlignment.center, // Center align vertically
                   children: <Widget>[
-                    MyText(txt: list[index].name, color: Colors.red, txtSize: 20),
-                    MyText(txt: list[index].age + " years", color: Colors.blue, txtSize: 20),
+                    MyText(txt: list[index].name, color: Colors.red, txtSize: 13),
+                    MyText(txt: list[index].age + " years", color: Colors.blue, txtSize: 13),
                   ],
                 ),
               ),
@@ -716,7 +751,7 @@ showDialog(
                 builder: (context) {
                   bool recording = false;
                   cmnt.text = "";
-                  dateController.text = "";
+//                  dateController.text = "";
                   record_flag = 0;
                   return StatefulBuilder(builder:(context, setState) {
              return AlertDialog(
@@ -734,13 +769,9 @@ showDialog(
                           padding: const EdgeInsets.only(left: 40, right: 40, top: 10, bottom: 10),
                           child: Column(
                             children: [
+                               Text("Date"),
+
                               // My_Text_Field(controler: name, label: 'Horse Name'),
-                              SizedBox(height: 20),
-                                My_Text_Field(controler: cmnt, label: 'Add Comment'),
-                              SizedBox(height: 20),
-                           
-
-
                               TextFormField(
                                 readOnly: true,
                                 controller: dateController,
@@ -789,10 +820,22 @@ showDialog(
                               Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: My_Btn(txt: 'MP3', btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
-
-                                    res=await FilePicker.platform.pickFiles();
-                                    record_flag=3;                                   
+                                  child: My_Btn(txt: 'Comment', btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
+//                                    Get.to(Comment_info());
+                                      try {
+                                        var value = await Get.to(Comment_info());
+                                        if (value != null) {
+                                          cmnt.text = await praf_handler.get_string("now_comment");
+                                          print(cmnt.text);
+                                          print("=======================");
+                                        }
+                                      } catch (e) {
+                                        print(e);
+                                        // Handle any potential errors from the asynchronous operation
+                                      }
+                                      
+//                                    res=await FilePicker.platform.pickFiles();
+//                                    record_flag=3;                                   
                                   },)),
                                 ),
                               ),
@@ -858,10 +901,17 @@ showDialog(
 
                                     final directory = await getApplicationDocumentsDirectory();
  //                                   final path = '${directory.path}/myFile.mp3';
-                                    final path = '${directory.path}/myFile_${DateTime.now().millisecondsSinceEpoch}.mp3';
+ //                                    await checkPermission();
+                                     if (await record.hasPermission()) {
+                                      final path = '${directory.path}/myFile_${DateTime.now().millisecondsSinceEpoch}.m4a';
+                                    
                                     await record.start(const RecordConfig(), path: path);
+                                    
                                     record_path=path;
+                                    print(record_path);
                                     EasyLoading.showSuccess('speak');
+
+                                     }
                                   }
                                   catch(error){
                                //     print('samak'+error.toString());
@@ -892,21 +942,27 @@ showDialog(
                           // You can access the entered data using nameController.text and ageController.text
                           // Perform your data validation and saving logic here
                           // Then close the dialog
-                          if(record_flag==2)
-                          {
-                                Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img: record_path!, owner_name: shedule_modle.owner_name,
-                                                time_of_cmnt: selectedDate.millisecondsSinceEpoch, img_picked: 2);
+                  /*        if(record_flag==2)
+                          {*/
+     
+                           Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img: xfile?.path ?? '',record: record_path!,  owner_name: shedule_modle.owner_name,
+                            time_of_cmnt: selectedDate.millisecondsSinceEpoch, img_picked: 2);
 //                                            praf_handler.add_list(horse_model.name+horse_model.age, jsonEncode(horse_cmnt_model.toJson()));
                                             praf_handler.add_list_sort(name, jsonEncode(horse_cmnt_model.toJson()),"horse_sort");
                                             
                                             EasyLoading.showSuccess('added');                          
-                                record_flag=0;
-                               xfile=null;
-                                res=null;
-                                record_path="";
-                          }
+                          cmnt.text="";
+                         record_flag=0;
+                         xfile=null;
+                         record_path="";
+
+                          getHistoryList();
+                          Navigator.of(context).pop();                                
+        
+                      /*    }
                           else if(xfile!=null&& record_flag==1)
                           {
+           
                                Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text,  img: xfile?.path ?? '', owner_name: shedule_modle.owner_name,
                                           time_of_cmnt: selectedDate.millisecondsSinceEpoch, img_picked: 1);
                                       praf_handler.add_list_sort(name, jsonEncode(horse_cmnt_model.toJson()),"horse_sort");
@@ -915,10 +971,14 @@ showDialog(
                                xfile=null;
                                 res=null;
                                 record_path="";
-
+                                                         
+                          getHistoryList();
+                          Navigator.of(context).pop();
+                            
                           }
                           else if(res!=null && record_flag == 3)
                                     {
+                                               
                                       Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img: res?.files?.isNotEmpty == true ? res!.files.single.path! : "defaultPath", owner_name: shedule_modle.owner_name,
                                           time_of_cmnt: selectedDate.millisecondsSinceEpoch, img_picked: 2);
 //                                      praf_handler.add_list(horse_model.name+horse_model.age, jsonEncode(horse_cmnt_model.toJson()));
@@ -930,10 +990,14 @@ showDialog(
                                xfile=null;
                                 res=null;
                                 record_path="";
-
+                                                         
+                          getHistoryList();
+                          Navigator.of(context).pop();
+                            
                                     }
                          else
                          {
+                             
                                 Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img:  "defaultPath", owner_name: shedule_modle.owner_name,
                                           time_of_cmnt: selectedDate.millisecondsSinceEpoch, img_picked: 0);
 //                                      praf_handler.add_list(horse_model.name+horse_model.age, jsonEncode(horse_cmnt_model.toJson()));
@@ -945,11 +1009,11 @@ showDialog(
                                xfile=null;
                                 res=null;
                                 record_path="";
-
+                                          
+          
+                                 
                          }     
-                              
-                          getHistoryList();
-                          Navigator.of(context).pop();
+                          */
                         },
                         child: Text('Add'),
                       ),
@@ -1011,13 +1075,21 @@ showDialog(
 //                  Share.shareFiles(['${xfile?.path}'], text: 'Great picture');
                   for (var i = 0; i < my_cmnts_list.length; i++) {
                        //   print(productsListForShare[i].photo!.path!);
-                        if(my_cmnts_list[i].img_picked!=0)
+                        if(my_cmnts_list[i].img!="")
                         {
                           var xfile = XFile(my_cmnts_list[i].img);
                           files.add(xfile);
                         }
+                        if(my_cmnts_list[i].record!="")
+                        {
+                          var xfile = XFile(my_cmnts_list[i].img);
+                          files.add(xfile);
+                        }                        
                   }
                   Share.shareXFiles(files);
+                   for (var i = 0; i < my_cmnts_list.length; i++) {                  
+                     Share.share(my_cmnts_list[i].cmnt);
+                   }
                 }, icon: Icon(Icons.send,color: Colors.black,size: 20,))),
 
             ),
@@ -1123,4 +1195,18 @@ showDialog(
 
     });
   }
+  
+check_horse_already_added(String name)async{
+    bool exist=false;
+  
+    if(list.length>0) {
+      Future.forEach(list, (element) {
+        if (element.name == name) {
+          exist = true;
+        }
+      });
+    }
+    return exist;
+
+}
 }
