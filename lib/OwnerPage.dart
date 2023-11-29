@@ -490,7 +490,7 @@ Widget ShowHorseName(int index, String name,bool mode){
                 }, icon: Icon(Icons.delete,color: Colors.black,size: 20,))),    
             ),   
       Container(
-                width: 30,height: 30,
+                width: 30,height: 60,
                 decoration: BoxDecoration(
                   color: Colors.red,
 

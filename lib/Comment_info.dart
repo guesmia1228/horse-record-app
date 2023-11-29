@@ -41,8 +41,8 @@ void showDeleteConfirmationDialog(BuildContext context, Function onConfirm) {
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text("Confirm Delete"),
-          content: Text("Are you sure you want to delete this item?"),
+          title: Text("Confirm Save"),
+          content: Text("Are you sure you want to Save this item?"),
           actions: <Widget>[
             TextButton(
               child: Text("Cancel"),
@@ -51,7 +51,7 @@ void showDeleteConfirmationDialog(BuildContext context, Function onConfirm) {
               },
             ),
             TextButton(
-              child: Text("Delete"),
+              child: Text("Save"),
               onPressed: () {
                   Navigator.of(context).pop(); // Close the dialog
                 onConfirm(); // Call the onConfirm function passed as a parameter
