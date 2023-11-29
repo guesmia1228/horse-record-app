@@ -62,13 +62,58 @@ void showDeleteConfirmationDialog(BuildContext context, Function onConfirm) {
       },
     );
   }
+  void showDeleteConfirmationDialog1(BuildContext context, Function onConfirm) {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text("Confirm Save"),
+          content: Text("Are you sure you want to leave without saveing?"),
+          actions: <Widget>[
+            TextButton(
+              child: Text("Don't save"),
+              onPressed: () {
+                 Navigator.of(dialogContext).pop(); // Close the dialog
+                 Navigator.pop(context,true);
+              },
+            ),
+            TextButton(
+              child: Text("Save"),
+              onPressed: () {
+                  Navigator.of(dialogContext).pop(); // Close the dialog
+                onConfirm(); // Call the onConfirm function passed as a parameter
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
        appBar: AppBar(
+         leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            onPressed: () {
+               showDeleteConfirmationDialog1(context, () async {
+                   praf_handler.set_string("now_comment",cmnt.text);
+                    String top = await praf_handler.get_string("now_comment");
+                    print("foooolsdfsdfsdfsdfsdfdsfsdf");
+                    print(top);
+                   Navigator.pop(context,true);
+                  });
+
+              // Add your back arrow event handling here
+              // For example, you can use Navigator to pop the current screen
+        //      Navigator.pop(context);
+            },
+          ),
+//        automaticallyImplyLeading: false,
         backgroundColor: Colors.red,
         title: MyText(txt: "Comment", color: Colors.white, txtSize: 20,fontWeight: FontWeight.bold),
         actions: [
+          
             IconButton(
               icon: Icon(Icons.save),
               onPressed: () async{
@@ -77,7 +122,7 @@ void showDeleteConfirmationDialog(BuildContext context, Function onConfirm) {
                    praf_handler.set_string("now_comment",cmnt.text);
                     String top = await praf_handler.get_string("now_comment");
                     print(top);
-                    Navigator.pop(context, true);
+                    Navigator.pop(context,true);
                   });
                    
 

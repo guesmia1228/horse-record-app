@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:html';
 
 import 'package:age_calculator/age_calculator.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,6 +17,8 @@ import 'package:horse/helper/Praf_handler.dart';
 import 'package:horse/helper/my_helper.dart';
 import 'package:horse/model/Horse_model.dart';
 import 'package:horse/model/Shedule_model.dart';
+import 'package:horse/helper/Icon_Button.dart';
+
 import 'package:intl/intl.dart';
 import 'package:telephony/telephony.dart';
 import 'package:horse/Horse_cmnts.dart';
@@ -436,24 +439,31 @@ class _Add_commentState extends State<Add_comment> {
                 child: Icon(Icons.attach_file,color: Colors.black,)),
               InkWell(
                 onTap: () async{
-                            final files = <XFile>[];
+                   final files = <XFile>[];
 //                 praf_handler.add_list(name, jsonEncode(horse_cmnt_model.toJson()));
-                  my_cmnts_list=await praf_handler.get_horse_cmnr(list[index].name);
+//                  my_cmnts_list=await praf_handler.get_horse_cmnr(list[index].name);
 
 //                  Share.shareFiles(['${xfile?.path}'], text: 'Great picture');
                        //   print(productsListForShare[i].photo!.path!);
-                        if(my_cmnts_list[index].img!="")
+                   Horse_cmnt_model model1=my_cmnts_list[index];
+                    print(model1.img);
+                    print(model1.cmnt);
+
+                        if(model1.img!="")
                         {
-                          var xfile = XFile(my_cmnts_list[index].img);
+                          var xfile = XFile(model1.img);
                           files.add(xfile);
                         }
-                        if(my_cmnts_list[index].record!="")
+                        if(model1.record!="")
                         {
-                          var xfile = XFile(my_cmnts_list[index].record);
+                          var xfile = XFile(model1.record);
                           files.add(xfile);
                         }
-                  Share.shareXFiles(files,text: my_cmnts_list[index].cmnt);
-               
+//                        print(files);
+                        if(files.length!=0)
+                          Share.shareXFiles(files,text:model1.cmnt);
+                        else
+                          Share.share(model1.cmnt);
 
 
                 },
@@ -541,7 +551,7 @@ class _Add_commentState extends State<Add_comment> {
                 }, icon: Icon(Icons.delete,color: Colors.black,size: 20,))),    
             ),   
       Container(
-                width: 30,height: 60,
+                width: 30,height: 30,
                 decoration: BoxDecoration(
                   color: Colors.red,
 
@@ -555,7 +565,7 @@ class _Add_commentState extends State<Add_comment> {
                           list.removeAt(index);
                         }
                       });*/
-showDialog(
+        showDialog(
                 context: context,
                 builder: (BuildContext context) {
                   buttonTitle="RRS";
@@ -621,7 +631,7 @@ showDialog(
                                   }
                                 ),   
 
-                            
+                               
                                   SizedBox(height: 10,),
                                 TextFormField(
                                     controller: age, // The controller for the age text field
@@ -810,29 +820,53 @@ showDialog(
                               Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: My_Btn(txt: 'Picture', btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
+                                  child: Icon_Button(txt: "picture", btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
 
                                     xfile=await ImagePicker().pickImage(source: ImageSource.gallery);
                                     record_flag=1;
                                   },)),
                                 ),
                               ),
+                            //                 InkWell(
+                            // onTap: () async{
+                            //   Get.to(Horse_cmnts(list: my_cmnts_list, pos: index,));
+                            // },
+                            // child: Icon(Icons.attach_file,color: Colors.black,)),
+
                               Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: My_Btn(txt: 'Comment', btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
+                                  child: Icon_Button(txt: "comment", btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
 //                                    Get.to(Comment_info());
-                                      try {
-                                        var value = await Get.to(Comment_info());
+  
+                                // Get.to(Comment_info())!.then((value) {
+                                //                 if (value != null) {
+                                //                   // Perform additional actions here based on the returned value
+                                //                   // For example:
+                                //                   // getSelectedWeeks();
+                                //                   // getWeekDays(); 
+                                //                 }
+                                //               });
+                                            
+                                    Get.to(Comment_info())!.then((value) async{
+                                      if(value!=null)
+                                      {
+                                       cmnt.text = await praf_handler.get_string("now_comment");
+                                         print(cmnt.text);
+                                      }
+
+                                      });
+                                    /*  try {
+                                        print("again");
+                                        print(Comment_info());
+                                        var value = await Get.to(()=>Comment_info());
                                         if (value != null) {
-                                          cmnt.text = await praf_handler.get_string("now_comment");
-                                          print(cmnt.text);
-                                          print("=======================");
+                                          
                                         }
                                       } catch (e) {
                                         print(e);
                                         // Handle any potential errors from the asynchronous operation
-                                      }
+                                      }*/
                                       
 //                                    res=await FilePicker.platform.pickFiles();
 //                                    record_flag=3;                                   
@@ -844,7 +878,7 @@ showDialog(
                               Expanded(child: Padding(
                                padding: const EdgeInsets.all(8.0),
                               // ignore: dead_code
-                              child: My_Btn(txt: recording? "Stop":"Record", btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
+                              child: Icon_Button(txt: recording? "Stop":"Record", btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
                                 
                                 if(!await record.hasPermission()){
                                   EasyLoading.showError('give permission');
@@ -861,7 +895,7 @@ showDialog(
                   //                    print(recording);
                                     });
                                   final path = await record.stop();
-                                  record.dispose();
+//                                  record.dispose();
                                   showDialog(context: context,
                                       builder: (context) {
                                         return AlertDialog(title: Text('Save'),actions: [
@@ -1086,7 +1120,8 @@ showDialog(
                           files.add(xfile);
                         }                        
                   }
-                  Share.shareXFiles(files);
+                  if(files.length!=0)
+                    Share.shareXFiles(files);
                    for (var i = 0; i < my_cmnts_list.length; i++) {                  
                      Share.share(my_cmnts_list[i].cmnt);
                    }

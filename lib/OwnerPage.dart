@@ -31,6 +31,7 @@ import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:horse/helper/Icon_Button.dart';
 
 class OwnerPage extends StatefulWidget {
   final Contact? contact;
@@ -127,12 +128,16 @@ class _OwnerPageState extends State<OwnerPage> {
             ),
         ShowHorse(),
 
-               My_Btn(txt: 'Add', btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () {
+             My_Btn(txt: 'Add', btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
+                  buttonTitle="RRS";
+                  name.text = "";                  
+                  year_born.text ="";
+                  age.text = "";
                   return AlertDialog(
-                    title: Text('Add Horses'),
+                    title: Text('Add Horses'),  
                     content: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -176,9 +181,9 @@ class _OwnerPageState extends State<OwnerPage> {
 
                                       // Find out your age as of today's date 2021-03-08
                                       DateDuration duration = AgeCalculator.age(pickedDate);
-                        //              print('Your age is $duration');
+                         //             print('Your age is $duration');
 
-                                      age.text='${duration.years}';
+                                      age.text='${duration.years }';
 
                                       setState(() {
 
@@ -202,7 +207,7 @@ class _OwnerPageState extends State<OwnerPage> {
                                         int enteredAge = int.tryParse(value) ?? 0; // Convert the entered value to an integer or default to 0
                                         DateTime today = DateTime.now(); // Get the current date
                                         int currentYear = today.year; // Extract the current year
-                                        int birthYear = currentYear - enteredAge + 1; // Calculate the birth year based on the entered age
+                                        int birthYear = currentYear - enteredAge; // Calculate the birth year based on the entered age
                                         String formattedDate = '01-01-$birthYear'; // Format the birth date as '01-01-YYYY'
                                         dateController.text = formattedDate; // Set the birth date in the date text field
                                       }
@@ -228,14 +233,26 @@ class _OwnerPageState extends State<OwnerPage> {
                             {
                               EasyLoading.showError('give permisson');
                               return;
+                              
                             }*/
-                          Horse_model model=Horse_model(name: name.text, year_born: year_born.text, age: age.text,
+                                  bool b=await check_horse_already_added(name.text);
+                               if(!b)
+                                 {   
+                                     Horse_model model=Horse_model(name: name.text, year_born: year_born.text, age: age.text,
                               owner_name: contact!.fullName!.toString(), owner_nbr: contact!.phoneNumbers![0].toString());
                           String s=jsonEncode(model.toJson());
                           await praf_handler.add_list(contact!.fullName!.toString()+my_helper.all_horses, s);
-
-                          getList();
+                          setState(() {
+                            list.add(model);
+                          });
+//                          getList();
                           Navigator.of(context).pop();
+                               }
+                                   else
+                                 {
+                                   EasyLoading.showSuccess('That name already exists');
+                                 }
+                       
                         },
                         child: Text('Add'),
                       ),
@@ -255,41 +272,42 @@ class _OwnerPageState extends State<OwnerPage> {
                 }
               });
             },)),
-      Center(  child: Padding(
-    padding: EdgeInsets.symmetric(horizontal: 16), 
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: My_Btn(
-                txt: 'Call',
-                btn_color: Colors.green,
-                btn_size: 160,
-                gestureDetector: GestureDetector(
-                  onTap: () async {
-                    var url = Uri.parse("tel:"+contact!.phoneNumbers![0].toString());
-                    await launchUrl(url);
-                  },
-                ),
-              ),
-            ),
-            SizedBox(width: 8), // Adjust the spacing between the buttons as needed
-            Expanded(
-              child: My_Btn(
-                txt: 'Message',
-                btn_color: Colors.green,
-                btn_size: 160,
-                gestureDetector: GestureDetector(
-                  onTap: () async {
-                    var url = Uri.parse('sms:'+contact!.phoneNumbers![0].toString()+'?body=%20');
-                    await launchUrl(url);
-                  },
-                ),
-              ),
-            ),
-          ],
-        ),
-      ))]
+            Center(  child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 26), 
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: My_Btn(
+                          txt: 'Call',
+                          btn_color: Colors.green,
+                          btn_size: 160,
+                          gestureDetector: GestureDetector(
+                            onTap: () async {
+                       var url = Uri.parse("tel:"+contact!.phoneNumbers![0].toString());
+                             await launchUrl(url);
+                            },
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 8), // Adjust the spacing between the buttons as needed
+                      Expanded(
+                        child: My_Btn(
+                          txt: 'Message',
+                          btn_color: Colors.green,
+                          btn_size: 160,
+                          gestureDetector: GestureDetector(
+                            onTap: () async {
+                            var url = Uri.parse('sms:'+contact!.phoneNumbers![0].toString()+'?body=%20');
+                              await launchUrl(url);
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ))
+        ]
 
 
 
@@ -387,22 +405,30 @@ class _OwnerPageState extends State<OwnerPage> {
                 onTap: () async{
                             final files = <XFile>[];
 //                 praf_handler.add_list(name, jsonEncode(horse_cmnt_model.toJson()));
-                  my_cmnts_list=await praf_handler.get_horse_cmnr(list[index].name);
+//                  my_cmnts_list=await praf_handler.get_horse_cmnr(list[index].name);
 
 //                  Share.shareFiles(['${xfile?.path}'], text: 'Great picture');
                        //   print(productsListForShare[i].photo!.path!);
-                        if(my_cmnts_list[index].img!="")
-                        {
-                          var xfile = XFile(my_cmnts_list[index].img);
-                          files.add(xfile);
-                        }
-                        if(my_cmnts_list[index].record!="")
-                        {
-                          var xfile = XFile(my_cmnts_list[index].record);
-                          files.add(xfile);
-                        }
-                                 Share.shareXFiles(files,text: my_cmnts_list[index].cmnt);
+                   Horse_cmnt_model model1=my_cmnts_list[index];
+                    print(model1.img);
+                    print(model1.cmnt);
 
+                        if(model1.img!="")
+                        {
+                          var xfile = XFile(model1.img);
+                          files.add(xfile);
+                          
+                        }
+                        if(model1.record!="")
+                        {
+                          var xfile = XFile(model1.record);
+                          files.add(xfile);
+                        }
+//                        print(files);
+                        if(files.length!=0)
+                          Share.shareXFiles(files);
+                        if(model1.cmnt!="")
+                          Share.share(model1.cmnt);
 //                     Share.share(my_cmnts_list[index].cmnt);
 
                 },
@@ -490,7 +516,7 @@ Widget ShowHorseName(int index, String name,bool mode){
                 }, icon: Icon(Icons.delete,color: Colors.black,size: 20,))),    
             ),   
       Container(
-                width: 30,height: 60,
+                width: 30,height: 30,
                 decoration: BoxDecoration(
                   color: Colors.red,
 
@@ -756,10 +782,10 @@ showDialog(
 
                          Row(children: [
 
-                              Expanded(
+                               Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: My_Btn(txt: 'Picture', btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
+                                  child: Icon_Button(txt: "picture", btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
 
                                     xfile=await ImagePicker().pickImage(source: ImageSource.gallery);
                                     record_flag=1;
@@ -769,7 +795,7 @@ showDialog(
                               Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: My_Btn(txt: 'Comment', btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
+                                  child: Icon_Button(txt: "comment", btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
 //                                    Get.to(Comment_info());
                                       try {
                                         var value = await Get.to(Comment_info());
@@ -793,7 +819,7 @@ showDialog(
                               Expanded(child: Padding(
                                padding: const EdgeInsets.all(8.0),
                               // ignore: dead_code
-                              child: My_Btn(txt: recording? "Stop":"Record", btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
+                              child: Icon_Button(txt: recording? "Stop":"Record", btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
                                 
                                 if(!await record.hasPermission()){
                                   EasyLoading.showError('give permission');
@@ -810,7 +836,7 @@ showDialog(
                   //                    print(recording);
                                     });
                                   final path = await record.stop();
-                                  record.dispose();
+//                                  record.dispose();
                                   showDialog(context: context,
                                       builder: (context) {
                                         return AlertDialog(title: Text('Save'),actions: [
@@ -818,7 +844,7 @@ showDialog(
                                             Navigator.pop(context);
                                           }, child: Text('No')),
                                           TextButton(onPressed: () {
-                                            record_flag=2;
+                                            record_flag=2;                                
                                             Navigator.pop(context);
 
 /*                                            Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img: record_path!, owner_name: shedule_modle.owner_name,
@@ -853,8 +879,10 @@ showDialog(
  //                                    await checkPermission();
                                      if (await record.hasPermission()) {
                                       final path = '${directory.path}/myFile_${DateTime.now().millisecondsSinceEpoch}.m4a';
-                                    
+//                                    record.dispose();
+                                    print("Step1====================");
                                     await record.start(const RecordConfig(), path: path);
+                                    print("Step2====================");
                                     
                                     record_path=path;
                                     print(record_path);
@@ -1035,7 +1063,8 @@ showDialog(
                           files.add(xfile);
                         }                        
                   }
-                  Share.shareXFiles(files);
+                  if(files.length!=0)
+                    Share.shareXFiles(files);
                    for (var i = 0; i < my_cmnts_list.length; i++) {                  
                      Share.share(my_cmnts_list[i].cmnt);
                    }
@@ -1144,4 +1173,17 @@ showDialog(
 
     });
   }
+  check_horse_already_added(String name)async{
+    bool exist=false;
+  
+    if(list.length>0) {
+      Future.forEach(list, (element) {
+        if (element.name == name) {
+          exist = true;
+        }
+      });
+    }
+    return exist;
+
+}
 }
