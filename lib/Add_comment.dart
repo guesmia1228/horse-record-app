@@ -452,9 +452,9 @@ class _Add_commentState extends State<Add_comment> {
                           var xfile = XFile(my_cmnts_list[index].record);
                           files.add(xfile);
                         }
-                  Share.shareXFiles(files);
+                  Share.shareXFiles(files,text: my_cmnts_list[index].cmnt);
                
-                     Share.share(my_cmnts_list[index].cmnt);
+
 
                 },
                 child: Icon(Icons.send,color: Colors.black,)),

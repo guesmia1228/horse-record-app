@@ -849,13 +849,13 @@ packages:
     source: hosted
     version: "1.0.3"
   record_darwin:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: record_darwin
-      sha256: "78dba641ae271e555035ee68b637f7605ba9f8c60ccfd5c03b835e0b77ea201f"
+      sha256: db3e0384ed44b69bae6dfa548566b066000100aebf1311363730412cfa430667
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.0"
+    version: "1.0.1-beta.1"
   record_linux:
     dependency: transitive
     description:
