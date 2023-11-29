@@ -26,8 +26,11 @@ import 'package:record/record.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:horse/Setting.dart';
 import 'package:horse/Home.dart';
+import 'package:horse/Comment_info.dart';
 import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class OwnerPage extends StatefulWidget {
   final Contact? contact;
@@ -49,6 +52,8 @@ class _OwnerPageState extends State<OwnerPage> {
   String record_path = '';
   int record_flag = 1;
   String buttonTitle = "RRS";
+    final name1=TextEditingController();
+
   TextEditingController dateController = TextEditingController(text: DateFormat.yMd().format(DateTime.now()));
 
   final name=TextEditingController(),year_born=TextEditingController(),age=TextEditingController();
@@ -120,6 +125,8 @@ class _OwnerPageState extends State<OwnerPage> {
                 fontSize: 50,
               ),
             ),
+        ShowHorse(),
+
                My_Btn(txt: 'Add', btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () {
               showDialog(
                 context: context,
@@ -248,7 +255,6 @@ class _OwnerPageState extends State<OwnerPage> {
                 }
               });
             },)),
-        ShowHorse(),
       Center(  child: Padding(
     padding: EdgeInsets.symmetric(horizontal: 16), 
         child: Row(
@@ -323,6 +329,7 @@ class _OwnerPageState extends State<OwnerPage> {
   }
 
   Widget ShowHorseDetail(String name){
+    
    // print("mmm"+name);
 //    getHistoryList();
     return ListView.builder(
@@ -343,15 +350,18 @@ class _OwnerPageState extends State<OwnerPage> {
             children: [
               IconButton(
                 icon: Icon(Icons.delete),
+       
                 onPressed: () {
                   // Add code to handle deletion here
-            // For example: deleteEntry(model);
-                  praf_handler.del_list_item(name, index);
-//                  ShowHorse();
-                  setState(() {
-                       if (index >= 0 && index < my_cmnts_list.length) {
-                        my_cmnts_list.removeAt(index);
-                      }
+            // For example: deleteEntry(model);\
+                  showDeleteConfirmationDialog(context, () async {
+                    praf_handler.del_list_item(name, index);
+  //                  ShowHorse();
+                    setState(() {
+                        if (index >= 0 && index < my_cmnts_list.length) {
+                          my_cmnts_list.removeAt(index);
+                        }
+                    }); 
                   });
                 },
               ),
@@ -373,6 +383,30 @@ class _OwnerPageState extends State<OwnerPage> {
                   Get.to(Horse_cmnts(list: my_cmnts_list, pos: index,));
                 },
                 child: Icon(Icons.attach_file,color: Colors.black,)),
+              InkWell(
+                onTap: () async{
+                            final files = <XFile>[];
+//                 praf_handler.add_list(name, jsonEncode(horse_cmnt_model.toJson()));
+                  my_cmnts_list=await praf_handler.get_horse_cmnr(list[index].name);
+
+//                  Share.shareFiles(['${xfile?.path}'], text: 'Great picture');
+                       //   print(productsListForShare[i].photo!.path!);
+                        if(my_cmnts_list[index].img!="")
+                        {
+                          var xfile = XFile(my_cmnts_list[index].img);
+                          files.add(xfile);
+                        }
+                        if(my_cmnts_list[index].record!="")
+                        {
+                          var xfile = XFile(my_cmnts_list[index].record);
+                          files.add(xfile);
+                        }
+                  Share.shareXFiles(files);
+               
+                     Share.share(my_cmnts_list[index].cmnt);
+
+                },
+                child: Icon(Icons.send,color: Colors.black,)),
     
              
             ],),
@@ -382,13 +416,44 @@ class _OwnerPageState extends State<OwnerPage> {
 
         },);
   }
+    void showDeleteConfirmationDialog(BuildContext context, Function onConfirm) {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Text("Confirm Delete"),
+          content: Text("Are you sure you want to delete this item?"),
+          actions: <Widget>[
+            TextButton(
+              child: Text("Cancel"),
+              onPressed: () {
+                Navigator.of(dialogContext).pop(); // Close the dialog
+              },
+            ),
+            TextButton(
+              child: Text("Delete"),
+              onPressed: () {
+                Navigator.of(dialogContext).pop(); // Close the dialog
+                onConfirm(); // Call the onConfirm function passed as a parameter
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
   bool recording=false;
   final cmnt=TextEditingController();
   DateTime selectedDate=DateTime.now();
   XFile? xfile;
   FilePickerResult? res;
-   Widget ShowHorseName(int index, String name,bool mode){
+ 
    // print("name=====================name");
+Widget ShowHorseName(int index, String name,bool mode){
+
+   // print("name=====================name");
+
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -403,6 +468,181 @@ class _OwnerPageState extends State<OwnerPage> {
           child: Center(child: MyText(txt: (index+1).toString(), color: Colors.black, txtSize: 20,fontWeight: FontWeight.bold)),
 
         ),
+               Container(
+                width: 30,height: 30,
+                decoration: BoxDecoration(
+                  color: Colors.red,
+
+                ),
+                child: Center(child: IconButton(onPressed: () {
+                   showDeleteConfirmationDialog(context, () async {
+                      // Perform the delete operation
+                      await praf_handler.del_list_item(contact!.fullName! + my_helper.all_horses, index);
+                      setState(() {
+                        if (index >= 0 && index < list.length) {
+                          list.removeAt(index);
+                        }
+                      });
+                    });
+//                  getList();
+
+//                          await praf_handler.add_list(shedule_modle.owner_name+my_helper.all_horses, s);
+                }, icon: Icon(Icons.delete,color: Colors.black,size: 20,))),    
+            ),   
+      Container(
+                width: 30,height: 30,
+                decoration: BoxDecoration(
+                  color: Colors.red,
+
+                ),
+                child: Center(child: IconButton(onPressed: () async{
+               
+                      // Perform the delete operation
+                     /* await praf_handler.del_list_item(shedule_modle.owner_name + my_helper.all_horses, index);
+                      setState(() {
+                        if (index >= 0 && index < list.length) {
+                          list.removeAt(index);
+                        }
+                      });*/
+showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  buttonTitle="RRS";
+                  name1.text="";            
+                  year_born.text ="";
+                  age.text = "";
+                  return AlertDialog(
+                    title: Text('Add Horses'),  
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Add your form fields here
+//                        MyTextField(controller: nameController, label: 'Horse Name'),
+                         Container(
+                            width: double.infinity,
+                            color: Colors.grey,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 40,right: 40,top: 10,bottom: 10),
+                              child: Column(children: [
+
+                                My_Text_Field(controler: name1, label: 'Horse Name'),
+                                SizedBox(height: 10,),
+
+
+                                  TextFormField(
+                                  readOnly: true,
+                                  controller: dateController,
+                                  onTap: () async {
+                                    DateTime selectedDate1 = DateTime.now(); // Initialize selectedDate with today's date
+
+                                    DateTime? pickedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: selectedDate1, // Use selectedDate as the initial date
+                                      firstDate: DateTime(1990),
+                                      lastDate: DateTime(2025),
+                                    );
+
+                                    if (pickedDate != null) {
+                                      // Update selectedDate with the picked date
+                                      selectedDate = pickedDate;
+
+                                      String selectedYear = DateFormat('yyyy').format(selectedDate);
+
+                                      String formattedDate = '01-01-' + selectedYear;
+                                      // Set the selected date in the TextFormField
+                                      dateController.text = formattedDate;
+
+                                      yearBorn_String=DateFormat.yMd().format(pickedDate);
+
+                                      // Find out your age as of today's date 2021-03-08
+                                      DateDuration duration = AgeCalculator.age(pickedDate);
+                            //          print('Your age is $duration');
+
+                                      age.text='${duration.years }';
+
+                                      setState(() {
+
+                                      });
+
+                                      // Find out the age based on today's date
+                                      setState(() {});
+                                    }
+                                  }
+                                ),   
+
+                            
+                                  SizedBox(height: 10,),
+                                TextFormField(
+                                    controller: age, // The controller for the age text field
+                                    decoration: InputDecoration(
+                                      labelText: 'Age', // The label for the age text field
+                                    ),
+                                    onChanged: (value) { // Event handler for when the value of the age field changes
+                                      if (value.isNotEmpty) { // Check if the value is not empty
+                                        int enteredAge = int.tryParse(value) ?? 0; // Convert the entered value to an integer or default to 0
+                                        DateTime today = DateTime.now(); // Get the current date
+                                        int currentYear = today.year; // Extract the current year
+                                        int birthYear = currentYear - enteredAge; // Calculate the birth year based on the entered age
+                                        String formattedDate = '01-01-$birthYear'; // Format the birth date as '01-01-YYYY'
+                                        dateController.text = formattedDate; // Set the birth date in the date text field
+                                      }
+                                    },
+                                  ),
+                                SizedBox(height: 10,),
+
+                              ],),
+                            ),
+                          ),
+                      ],
+                    ),
+                    actions: <Widget>[
+                      ElevatedButton(
+                        onPressed: () async{
+                          // Your 'Add' functionality here
+                          // You can access the entered data using nameController.text and ageController.text
+                          // Perform your data validation and saving logic here
+                          // Then close the dialog
+                          /*
+                            bool? permissionsGranted = await Telephony.instance.requestPhoneAndSmsPermissions;
+                          if(!permissionsGranted!)
+                            {
+                              EasyLoading.showError('give permisson');
+                              return;
+                            }*/
+                          Horse_model model=Horse_model(name: name1.text, year_born: year_born.text, age: age.text,
+                              owner_name: contact!.fullName!, owner_nbr: contact!.phoneNumbers![0].toString());
+                          String s=jsonEncode(model.toJson());
+                          await praf_handler.edit_list_item(contact!.fullName!+my_helper.all_horses, index, s, name1.text);
+                          setState(() {
+//                            list.add(model);
+                              list[index]=model;
+                          });
+//                          getList();
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('Save'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          // Close the dialog
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('Cancel'),
+                      ),
+                    ],
+                  );
+                },
+              ).then((value) {
+                if (value != null) {
+                  getList();
+                }
+                       
+                    });
+//                  getList();
+
+//                          await praf_handler.add_list(shedule_modle.owner_name+my_helper.all_horses, s);
+                }, icon: Icon(Icons.edit,color: Colors.black,size: 20,))),    
+            ),                
         SizedBox(width: 5,),
         SizedBox(
 
@@ -432,12 +672,12 @@ class _OwnerPageState extends State<OwnerPage> {
 
                  SizedBox(
                 width: double.infinity,  // Ensure the title takes the remaining space
-                child: Row(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align the components horizontally
                   crossAxisAlignment: CrossAxisAlignment.center, // Center align vertically
                   children: <Widget>[
-                    MyText(txt: list[index].name, color: Colors.red, txtSize: 20),
-                    MyText(txt: list[index].age + " years", color: Colors.blue, txtSize: 20),
+                    MyText(txt: list[index].name, color: Colors.red, txtSize: 13),
+                    MyText(txt: list[index].age + " years", color: Colors.blue, txtSize: 13),
                   ],
                 ),
               ),
@@ -448,19 +688,22 @@ class _OwnerPageState extends State<OwnerPage> {
         ),                 
         ),
         SizedBox(width: 5,),
-        Container(
-          width: 30,height: 30,
-          decoration: BoxDecoration(
-            color: Colors.red,
+          Container(
+            width: 30,height: 30,
+            decoration: BoxDecoration(
+              color: Colors.red,
 
-          ),
+            ),
             child: Center(child: IconButton(onPressed: () async{
                 showDialog(
                 context: context,
                 builder: (context) {
                   bool recording = false;
+                  cmnt.text = "";
+//                  dateController.text = "";
+                  record_flag = 0;
                   return StatefulBuilder(builder:(context, setState) {
-                  return AlertDialog(
+             return AlertDialog(
                     
                     title: Text('Add Comment'),
                     content:  SingleChildScrollView(child:Column(
@@ -475,13 +718,9 @@ class _OwnerPageState extends State<OwnerPage> {
                           padding: const EdgeInsets.only(left: 40, right: 40, top: 10, bottom: 10),
                           child: Column(
                             children: [
+                               Text("Date"),
+
                               // My_Text_Field(controler: name, label: 'Horse Name'),
-                              SizedBox(height: 20),
-                                My_Text_Field(controler: cmnt, label: 'Add Comment'),
-                              SizedBox(height: 20),
-                           
-
-
                               TextFormField(
                                 readOnly: true,
                                 controller: dateController,
@@ -530,10 +769,22 @@ class _OwnerPageState extends State<OwnerPage> {
                               Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child: My_Btn(txt: 'MP3', btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
-
-                                    res=await FilePicker.platform.pickFiles();
-                                    record_flag=3;                                   
+                                  child: My_Btn(txt: 'Comment', btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
+//                                    Get.to(Comment_info());
+                                      try {
+                                        var value = await Get.to(Comment_info());
+                                        if (value != null) {
+                                          cmnt.text = await praf_handler.get_string("now_comment");
+                                          print(cmnt.text);
+                                          print("=======================");
+                                        }
+                                      } catch (e) {
+                                        print(e);
+                                        // Handle any potential errors from the asynchronous operation
+                                      }
+                                      
+//                                    res=await FilePicker.platform.pickFiles();
+//                                    record_flag=3;                                   
                                   },)),
                                 ),
                               ),
@@ -599,10 +850,17 @@ class _OwnerPageState extends State<OwnerPage> {
 
                                     final directory = await getApplicationDocumentsDirectory();
  //                                   final path = '${directory.path}/myFile.mp3';
-                                    final path = '${directory.path}/myFile_${DateTime.now().millisecondsSinceEpoch}.mp3';
+ //                                    await checkPermission();
+                                     if (await record.hasPermission()) {
+                                      final path = '${directory.path}/myFile_${DateTime.now().millisecondsSinceEpoch}.m4a';
+                                    
                                     await record.start(const RecordConfig(), path: path);
+                                    
                                     record_path=path;
+                                    print(record_path);
                                     EasyLoading.showSuccess('speak');
+
+                                     }
                                   }
                                   catch(error){
                                //     print('samak'+error.toString());
@@ -633,22 +891,28 @@ class _OwnerPageState extends State<OwnerPage> {
                           // You can access the entered data using nameController.text and ageController.text
                           // Perform your data validation and saving logic here
                           // Then close the dialog
-                        /*  if(record_flag==2)
-                          {
-                                Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img: record_path!, owner_name: contact!.fullName!,
-                                                time_of_cmnt: selectedDate.millisecondsSinceEpoch, img_picked: 2);
+                  /*        if(record_flag==2)
+                          {*/
+     
+                           Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img: xfile?.path ?? '',record: record_path!,  owner_name: contact!.fullName!,
+                            time_of_cmnt: selectedDate.millisecondsSinceEpoch, img_picked: 2);
 //                                            praf_handler.add_list(horse_model.name+horse_model.age, jsonEncode(horse_cmnt_model.toJson()));
                                             praf_handler.add_list_sort(name, jsonEncode(horse_cmnt_model.toJson()),"horse_sort");
                                             
                                             EasyLoading.showSuccess('added');                          
-                                record_flag=0;
-                               xfile=null;
-                                res=null;
-                                record_path="";
-                          }
+                          cmnt.text="";
+                         record_flag=0;
+                         xfile=null;
+                         record_path="";
+
+                          getHistoryList();
+                          Navigator.of(context).pop();                                
+        
+                      /*    }
                           else if(xfile!=null&& record_flag==1)
                           {
-                               Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text,  img: xfile?.path ?? '', owner_name: contact!.fullName!,
+           
+                               Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text,  img: xfile?.path ?? '', owner_name: shedule_modle.owner_name,
                                           time_of_cmnt: selectedDate.millisecondsSinceEpoch, img_picked: 1);
                                       praf_handler.add_list_sort(name, jsonEncode(horse_cmnt_model.toJson()),"horse_sort");
                                       EasyLoading.showSuccess('added');
@@ -656,11 +920,15 @@ class _OwnerPageState extends State<OwnerPage> {
                                xfile=null;
                                 res=null;
                                 record_path="";
-
+                                                         
+                          getHistoryList();
+                          Navigator.of(context).pop();
+                            
                           }
                           else if(res!=null && record_flag == 3)
                                     {
-                                      Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img: res?.files?.isNotEmpty == true ? res!.files.single.path! : "defaultPath", owner_name: contact!.fullName!,
+                                               
+                                      Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img: res?.files?.isNotEmpty == true ? res!.files.single.path! : "defaultPath", owner_name: shedule_modle.owner_name,
                                           time_of_cmnt: selectedDate.millisecondsSinceEpoch, img_picked: 2);
 //                                      praf_handler.add_list(horse_model.name+horse_model.age, jsonEncode(horse_cmnt_model.toJson()));
                                       praf_handler.add_list_sort(name, jsonEncode(horse_cmnt_model.toJson()),"horse_sort");
@@ -671,11 +939,15 @@ class _OwnerPageState extends State<OwnerPage> {
                                xfile=null;
                                 res=null;
                                 record_path="";
-
+                                                         
+                          getHistoryList();
+                          Navigator.of(context).pop();
+                            
                                     }
                          else
                          {
-                                Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img:  "defaultPath", owner_name: contact!.fullName!,
+                             
+                                Horse_cmnt_model horse_cmnt_model=Horse_cmnt_model(cmnt: cmnt.text, img:  "defaultPath", owner_name: shedule_modle.owner_name,
                                           time_of_cmnt: selectedDate.millisecondsSinceEpoch, img_picked: 0);
 //                                      praf_handler.add_list(horse_model.name+horse_model.age, jsonEncode(horse_cmnt_model.toJson()));
                                       praf_handler.add_list_sort(name, jsonEncode(horse_cmnt_model.toJson()),"horse_sort");
@@ -686,11 +958,11 @@ class _OwnerPageState extends State<OwnerPage> {
                                xfile=null;
                                 res=null;
                                 record_path="";
-
+                                          
+          
+                                 
                          }     
-                              
-                          getHistoryList();
-                          Navigator.of(context).pop();*/
+                          */
                         },
                         child: Text('Add'),
                       ),
@@ -734,6 +1006,7 @@ class _OwnerPageState extends State<OwnerPage> {
           }, icon: Icon(Icons.delete,color: Colors.black,size: 20,))),
 
         ),*/
+        
         Container(
                 width: 30,height: 30,
                 decoration: BoxDecoration(
@@ -741,16 +1014,35 @@ class _OwnerPageState extends State<OwnerPage> {
 
                 ),
                 child: Center(child: IconButton(onPressed: () async{
-      /*             Get.to(Sheduling(weekDay: dateTime),transition: Transition.circularReveal,duration: Duration(seconds: 1))!.then((value) {
-                    if(value!=null)
-                      {
-                        getWeekDays();
-                      }
-                  });*/
+                   
+//                    var url = Uri.parse('sms:'+shedule_modle.owner_phone+'?body=%20');
+//                    await launchUrl(url);
+                  final files = <XFile>[];
+//                 praf_handler.add_list(name, jsonEncode(horse_cmnt_model.toJson()));
+                  my_cmnts_list=await praf_handler.get_horse_cmnr(list[index].name);
 
+//                  Share.shareFiles(['${xfile?.path}'], text: 'Great picture');
+                  for (var i = 0; i < my_cmnts_list.length; i++) {
+                       //   print(productsListForShare[i].photo!.path!);
+                        if(my_cmnts_list[i].img!="")
+                        {
+                          var xfile = XFile(my_cmnts_list[i].img);
+                          files.add(xfile);
+                        }
+                        if(my_cmnts_list[i].record!="")
+                        {
+                          var xfile = XFile(my_cmnts_list[i].img);
+                          files.add(xfile);
+                        }                        
+                  }
+                  Share.shareXFiles(files);
+                   for (var i = 0; i < my_cmnts_list.length; i++) {                  
+                     Share.share(my_cmnts_list[i].cmnt);
+                   }
                 }, icon: Icon(Icons.send,color: Colors.black,size: 20,))),
 
             ),
+           
       ],
     );
   }
