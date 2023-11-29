@@ -59,7 +59,8 @@ dependencies:
   telephony: ^0.2.0
   record: ^5.0.1
   share_plus: ^7.1.0
-
+  record_darwin: ^1.0.1-beta.1
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
