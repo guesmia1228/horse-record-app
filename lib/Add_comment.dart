@@ -520,7 +520,7 @@ class _Add_commentState extends State<Add_comment> {
       children: [
 
         Container(
-          width: 30,height: 30,
+          width: 30,height: 50,
           decoration: BoxDecoration(
             color: Colors.red,
 
@@ -530,7 +530,7 @@ class _Add_commentState extends State<Add_comment> {
         ),
         
                Container(
-                width: 30,height: 30,
+                width: 30,height: 50,
                 decoration: BoxDecoration(
                   color: Colors.red,
 
@@ -551,7 +551,7 @@ class _Add_commentState extends State<Add_comment> {
                 }, icon: Icon(Icons.delete,color: Colors.black,size: 20,))),    
             ),   
       Container(
-                width: 30,height: 30,
+                width: 30,height: 50,
                 decoration: BoxDecoration(
                   color: Colors.red,
 
@@ -747,7 +747,7 @@ class _Add_commentState extends State<Add_comment> {
         SizedBox(
 
         width: 220,
-        height: 30,
+        height: 50,
         child: Container(
           color: mode?Colors.grey:Colors.red,
           child: Padding(
@@ -771,16 +771,19 @@ class _Add_commentState extends State<Add_comment> {
               child: Column(children: [
 
                  SizedBox(
-                width: double.infinity,  // Ensure the title takes the remaining space
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align the components horizontally
-                  crossAxisAlignment: CrossAxisAlignment.center, // Center align vertically
-                  children: <Widget>[
-                    MyText(txt: list[index].name, color: Colors.red, txtSize: 13),
-                    MyText(txt: list[index].age + " years", color: Colors.blue, txtSize: 13),
-                  ],
-                ),
-              ),
+                    width: double.infinity,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        FittedBox(
+                          fit: BoxFit.scaleDown, // This will scale the text down to fit within the available space
+                          child: MyText(txt: list[index].name, color: Colors.red, txtSize: 12),
+                        ),
+                        MyText(txt: list[index].age + " years", color: Colors.blue, txtSize: 12),
+                      ],
+                    ),
+                  )
 
               ],),
             ),
@@ -789,7 +792,7 @@ class _Add_commentState extends State<Add_comment> {
         ),
         SizedBox(width: 5,),
           Container(
-            width: 30,height: 30,
+            width: 30,height: 50,
             decoration: BoxDecoration(
               color: Colors.red,
 
@@ -1133,7 +1136,7 @@ class _Add_commentState extends State<Add_comment> {
         ),*/
         
         Container(
-                width: 30,height: 30,
+                width: 30,height: 50,
                 decoration: BoxDecoration(
                   color: Colors.red,
 

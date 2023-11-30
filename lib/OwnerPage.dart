@@ -486,7 +486,7 @@ Widget ShowHorseName(int index, String name,bool mode){
       children: [
 
         Container(
-          width: 30,height: 30,
+          width: 30,height: 50,
           decoration: BoxDecoration(
             color: Colors.red,
 
@@ -495,7 +495,7 @@ Widget ShowHorseName(int index, String name,bool mode){
 
         ),
                Container(
-                width: 30,height: 30,
+                width: 30,height: 50,
                 decoration: BoxDecoration(
                   color: Colors.red,
 
@@ -516,7 +516,7 @@ Widget ShowHorseName(int index, String name,bool mode){
                 }, icon: Icon(Icons.delete,color: Colors.black,size: 20,))),    
             ),   
       Container(
-                width: 30,height: 30,
+                width: 30,height: 50,
                 decoration: BoxDecoration(
                   color: Colors.red,
 
@@ -673,7 +673,7 @@ showDialog(
         SizedBox(
 
         width: 220,
-        height: 30,
+        height: 50,
         child: Container(
           color: mode?Colors.grey:Colors.red,
           child: Padding(
@@ -701,10 +701,13 @@ showDialog(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align the components horizontally
                   crossAxisAlignment: CrossAxisAlignment.center, // Center align vertically
-                  children: <Widget>[
-                    MyText(txt: list[index].name, color: Colors.red, txtSize: 13),
-                    MyText(txt: list[index].age + " years", color: Colors.blue, txtSize: 13),
-                  ],
+                   children: <Widget>[
+                        FittedBox(
+                          fit: BoxFit.scaleDown, // This will scale the text down to fit within the available space
+                          child: MyText(txt: list[index].name, color: Colors.red, txtSize: 12),
+                        ),
+                        MyText(txt: list[index].age + " years", color: Colors.blue, txtSize: 12),
+                      ],
                 ),
               ),
 
@@ -715,7 +718,7 @@ showDialog(
         ),
         SizedBox(width: 5,),
           Container(
-            width: 30,height: 30,
+            width: 30,height: 50,
             decoration: BoxDecoration(
               color: Colors.red,
 
@@ -1034,7 +1037,7 @@ showDialog(
         ),*/
         
         Container(
-                width: 30,height: 30,
+                width: 30,height: 50,
                 decoration: BoxDecoration(
                   color: Colors.red,
 
