@@ -171,12 +171,12 @@ class _ShedulingState extends State<Sheduling> {
               width: double.infinity,
               color: Color.fromARGB(255, 109, 106, 213),              
               child: Padding(
-                padding: const EdgeInsets.only(left: 40,right: 40,top: 10,bottom: 10),
+                padding: const EdgeInsets.only(left: 10,right: 10,top: 10,bottom: 10),
                 child: Row(children: [
-                  MyText(txt: DateFormat('M-d-yyyy').format(weekDay), color: Colors.black, txtSize: 20,fontWeight: FontWeight.bold),
+                  MyText(txt: DateFormat('M-d-yyyy').format(weekDay), color: Colors.black, txtSize: 13,fontWeight: FontWeight.bold),
                   Spacer(),
                   if(contact!=null)
-                    MyText(txt: contact!.fullName!.toString(), color: Colors.black, txtSize: 20,fontWeight: FontWeight.bold),
+                    MyText(txt: contact!.fullName!.toString(), color: Colors.black, txtSize: 13,fontWeight: FontWeight.bold),
                 ],),
               ),
             ),    

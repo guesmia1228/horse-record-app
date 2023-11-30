@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:html';
 
 import 'package:age_calculator/age_calculator.dart';
 import 'package:flutter/cupertino.dart';
@@ -529,6 +528,7 @@ class _Add_commentState extends State<Add_comment> {
           child: Center(child: MyText(txt: (index+1).toString(), color: Colors.black, txtSize: 20,fontWeight: FontWeight.bold)),
 
         ),
+        
                Container(
                 width: 30,height: 30,
                 decoration: BoxDecoration(
@@ -587,6 +587,44 @@ class _Add_commentState extends State<Add_comment> {
                               child: Column(children: [
 
                                 My_Text_Field(controler: name1, label: 'Horse Name'),
+                             
+              Icon_Button(txt: "comment", btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
+//                                    Get.to(Comment_info());
+  
+                                // Get.to(Comment_info())!.then((value) {
+                                //                 if (value != null) {
+                                //                   // Perform additional actions here based on the returned value
+                                //                   // For example:
+                                //                   // getSelectedWeeks();
+                                //                   // getWeekDays(); 
+                                //                 }
+                                //               });
+                                            
+                                    Get.to(Comment_info())?.then((value) async{
+                                      
+                                      if(value!=null)
+                                      {
+                                       cmnt.text = await praf_handler.get_string("now_comment");
+                                         print(cmnt.text);
+                                      }
+
+                                      });
+                                    /*  try {
+                                        print("again");
+                                        print(Comment_info());
+                                        var value = await Get.to(()=>Comment_info());
+                                        if (value != null) {
+                                          
+                                        }
+                                      } catch (e) {
+                                        print(e);
+                                        // Handle any potential errors from the asynchronous operation
+                                      }*/
+                                      
+//                                    res=await FilePicker.platform.pickFiles();
+//                                    record_flag=3;                                   
+                                  },)),
+
                                 SizedBox(height: 10,),
 
 
@@ -630,7 +668,7 @@ class _Add_commentState extends State<Add_comment> {
                                     }
                                   }
                                 ),   
-
+          
                                
                                   SizedBox(height: 10,),
                                 TextFormField(
@@ -705,6 +743,7 @@ class _Add_commentState extends State<Add_comment> {
                 }, icon: Icon(Icons.edit,color: Colors.black,size: 20,))),    
             ),                
         SizedBox(width: 5,),
+        
         SizedBox(
 
         width: 220,
@@ -849,6 +888,7 @@ class _Add_commentState extends State<Add_comment> {
                                 //               });
                                             
                                     Get.to(Comment_info())!.then((value) async{
+                                      
                                       if(value!=null)
                                       {
                                        cmnt.text = await praf_handler.get_string("now_comment");
