@@ -797,17 +797,15 @@ showDialog(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Icon_Button(txt: "comment", btn_color: Colors.red, btn_size: 200, gestureDetector: GestureDetector(onTap: () async{
 //                                    Get.to(Comment_info());
-                                      try {
-                                        var value = await Get.to(Comment_info());
-                                        if (value != null) {
-                                          cmnt.text = await praf_handler.get_string("now_comment");
-                                          print(cmnt.text);
-                                          print("=======================");
-                                        }
-                                      } catch (e) {
-                                        print(e);
-                                        // Handle any potential errors from the asynchronous operation
+                                      Get.to(Comment_info())?.then((value) async{
+                                      
+                                      if(value!=null)
+                                      {
+                                       cmnt.text = await praf_handler.get_string("now_comment");
+                                         print(cmnt.text);
                                       }
+
+                                      });
                                       
 //                                    res=await FilePicker.platform.pickFiles();
 //                                    record_flag=3;                                   

@@ -68,7 +68,7 @@ void showDeleteConfirmationDialog(BuildContext context, Function onConfirm) {
       builder: (BuildContext dialogContext) {
         return AlertDialog(
           title: Text("Confirm Save"),
-          content: Text("Are you sure you want to leave without saveing?"),
+          content: Text("Are you sure you want to leave without saving?"),
           actions: <Widget>[
             TextButton(
               child: Text("Don't save"),
