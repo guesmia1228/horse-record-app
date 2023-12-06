@@ -17,7 +17,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
-	<string>13.0</string>
+	<string>14.0</string>
 	<key>CFBundleName</key>
 	<string>horse</string>
 	<key>CFBundlePackageType</key>
@@ -27,7 +27,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>13.0</string>
+	<string>14.0</string>
 	<key>FLTEnableImpeller</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
@@ -54,7 +54,6 @@
 		<string>audio</string>
 		<string>bluetooth-central</string>
 		<string>bluetooth-peripheral</string>
-		<string>external-accessory</string>
 		<string>fetch</string>
 		<string>location</string>
 		<string>nearby-interaction</string>
