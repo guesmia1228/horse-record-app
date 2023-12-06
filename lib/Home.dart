@@ -306,7 +306,7 @@ class _HomeState extends State<Home> {
           ),
           width: 30,
           height: 30,
-          child: Center(child: MyText(txt: (horse_num[index_num]).toString(), color: Colors.black, txtSize: 20,fontWeight: FontWeight.bold)),
+          child: Center(child: MyText(txt: (horse_num[index_num]).toString(), color: Colors.black, txtSize: 13,fontWeight: FontWeight.bold)),
         ),
         SizedBox(width: 5,),
         SizedBox(
