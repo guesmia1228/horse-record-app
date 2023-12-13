@@ -27,7 +27,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>15.0</string>
+	<string>16.0</string>
 	<key>FLTEnableImpeller</key>
 	<false/>
 	<key>LSApplicationQueriesSchemes</key>
