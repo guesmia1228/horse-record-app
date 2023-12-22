@@ -5,6 +5,7 @@ import 'package:horse/Home.dart';
 import 'package:horse/Report.dart';
 import 'package:horse/ReportHorse.dart';
 import 'package:horse/ReportSchedule.dart';
+import 'package:horse/ReportScheduleSent.dart';
 import 'package:horse/helper/My_Button.dart';
 import 'package:horse/helper/My_Text.dart';
 import 'package:horse/helper/Praf_handler.dart';
@@ -415,7 +416,7 @@ bottomNavigationBar: BottomNavigationBar(
 
        GestureDetector(
           onTap: () {
-            Get.to(ReportSchedule())!.then((value) {});
+            Get.to(ReportScheduleSent())!.then((value) {});
           },
           child: Text(
             'Sent Notification',

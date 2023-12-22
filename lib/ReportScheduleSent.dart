@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:horse/Home.dart';
-import 'package:horse/ReportMenu.dart';
+import 'package:horse/ReportScheduleSent.dart';
 import 'package:horse/Setting.dart';
 import 'package:horse/helper/My_Button.dart';
 import 'package:horse/helper/My_Text.dart';
@@ -16,15 +16,16 @@ import 'package:horse/helper/My_Text_Field.dart';
 import 'package:flutter_date_range_picker/flutter_date_range_picker.dart';
 import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 import 'package:custom_date_range_picker/custom_date_range_picker.dart';
-class ReportMenu extends StatefulWidget {
-  const ReportMenu({super.key});
+class ReportScheduleSent extends StatefulWidget {
+  const ReportScheduleSent({super.key});
 
   @override
-  State<ReportMenu> createState() => _ReportState();
+  State<ReportScheduleSent> createState() => _ReportState();
 }
 
-class _ReportState extends State<ReportMenu> {
+class _ReportState extends State<ReportScheduleSent> {
   Contact ?contact;
+  int sum=0;
 //  final w1=TextEditingController(),w2=TextEditingController(),w3=TextEditingController();
   TextEditingController dateController = TextEditingController(text: DateFormat.yMd().format(DateTime.now()));
   String fixed_digital_time='09:30 AM';
@@ -64,24 +65,30 @@ class _ReportState extends State<ReportMenu> {
   }
   _getDataAndDisplaySchedule() async
   {
-//    List<Shedule_modle> total_list = [];
-
-              print("formmatedate");
-  print(startDate);
-  print(endDate);
     if(startDate!=null && endDate!=null )
-    {
-      for (DateTime i = startDate; i.isBefore(endDate); i = i.add(Duration(days: 1))) 
-      {
-              String formattedDate = DateFormat('yyyy-MM-dd 00:00:00.000').format(i);
-              print("formmatedate");
-              print(formattedDate);
-          total_list.add(
-            await praf_handler.get_shedule_list(my_helper.shedule + formattedDate));
-      }
-    }
+                {
+                    sum=0;
+                    total_list=[];
+                    for (DateTime i = startDate; i.isBefore(endDate); i = i.add(Duration(days: 1))) {
+                        String formattedDate = DateFormat('yyyy-MM-dd 00:00:00.000').format(i);
+                        DateTime date = DateTime.parse(formattedDate);                      
+                        print("formmatedate");
+                        print(my_helper.shedule + date.millisecondsSinceEpoch.toString());
+                        List<Shedule_modle> list=[];
+                        list =  await praf_handler.get_shedule_list(my_helper.shedule + date.millisecondsSinceEpoch.toString());
+                        for(int i=0;i<list.length;i++)
+                        {
+                          sum+=list[i].horse;
+                          if(praf_handler.get_noti("noti"+list[i].owner_name+list[i].shedule_time.toString())=="1")
+                            total_list.add(list[i]);                          
+                        }
+                    }
+                    print(total_list);
+                 
+                }
+              setState(() {
 
-    print(total_list);
+              });
 
     // You can now use the total_list in your application as needed
     // For example, you can display it in a ListView or process the data further.
@@ -90,6 +97,8 @@ class _ReportState extends State<ReportMenu> {
   void initState() {
     endDate =  DateTime.now();
     startDate = DateTime.now().subtract(Duration(days: 15));
+
+
     // TODO: implement initState
     super.initState();
     getFixedDigitalTime();
@@ -216,9 +225,9 @@ class _ReportState extends State<ReportMenu> {
           children: [
 
              Text(
-              'ReportMenu',
+              'Report',
               style: TextStyle(
-                fontSize: 50,
+                fontSize: 30,
               ),
             ),
  
@@ -241,7 +250,6 @@ class _ReportState extends State<ReportMenu> {
             ),    
     
             SizedBox(height: 20,),
-    
       // _getDataAndDisplaySchedule(),
          Container(
                 height: 25, // Replace with your desired height
@@ -258,7 +266,7 @@ class _ReportState extends State<ReportMenu> {
                         child: Text("No"),
                     ),
                     Expanded(
-                      flex: 4,
+                      flex: 2,
                       child: GestureDetector(
                         onTap: () {
                           setState(() {
@@ -268,7 +276,7 @@ class _ReportState extends State<ReportMenu> {
                         },
                         child: Row(
                           children: [
-                            Text("Name"),
+                            Text("Owner"),
                              Align(
                                 alignment: Alignment.center,
                                 child: Icon(
@@ -279,10 +287,7 @@ class _ReportState extends State<ReportMenu> {
                         ),
                       ),
                     ),
-                    Expanded(
-                      flex: 1,
-                        child: Text("CN"),
-                    ),
+
                      Expanded(
                       flex: 2,
                       child: GestureDetector(
@@ -294,7 +299,7 @@ class _ReportState extends State<ReportMenu> {
                         },
                         child: Row(
                           children: [
-                            Text("Date"),
+                            Text("Scheduled"),
                             SizedBox(height: 4),
                              Align(
                                 alignment: Alignment.center,
@@ -331,17 +336,13 @@ class _ReportState extends State<ReportMenu> {
                       child: Text((index + 1).toString()),
                     ),
                     Expanded(
-                      flex: 4,
+                      flex: 2,
                       child: Text(model.owner_name),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Text(model.horse.toString()),
                     ),
                     Expanded(
                       flex: 2,
                       child: Text(DateFormat('yyyy-MM-dd')
-                          .format(DateTime.fromMillisecondsSinceEpoch(model.shedule_time))),
+                          .format(DateTime.fromMillisecondsSinceEpoch(model.shedule_time))+" " +model.time),
                     ),
                   ],
                 ),
@@ -369,20 +370,28 @@ class _ReportState extends State<ReportMenu> {
             onApplyClick: (start, end) async{
                 if(startDate!=null && endDate!=null )
                 {
-                  for (DateTime i = startDate; i.isBefore(endDate); i = i.add(Duration(days: 1))) {
-                      String formattedDate = DateFormat('yyyy-MM-dd 00:00:00.000').format(i);
-                      DateTime date = DateTime.parse(formattedDate);                      
-                      print("formmatedate");
-                      print(my_helper.shedule + date.millisecondsSinceEpoch.toString());
-                      List<Shedule_modle> list=[];
-                      list =  await praf_handler.get_shedule_list(my_helper.shedule + date.millisecondsSinceEpoch.toString());
-                      total_list.addAll(list);
-                  }
-                  print(total_list);
+                    sum=0;
+                    total_list=[];
+                    for (DateTime i = startDate; i.isBefore(endDate); i = i.add(Duration(days: 1))) {
+                        String formattedDate = DateFormat('yyyy-MM-dd 00:00:00.000').format(i);
+                        DateTime date = DateTime.parse(formattedDate);                      
+                        print("formmatedate");
+                        print(my_helper.shedule + date.millisecondsSinceEpoch.toString());
+                        List<Shedule_modle> list=[];
+                        list =  await praf_handler.get_shedule_list(my_helper.shedule + date.millisecondsSinceEpoch.toString());
+                        for(int i=0;i<list.length;i++)
+                        {
+                          sum+=list[i].horse;
+                          if(praf_handler.get_noti("noti"+list[i].owner_name+list[i].shedule_time.toString())=="1")
+                            total_list.add(list[i]);
+                        }
+                    }
+                    print(total_list);                 
                 }
               setState(() {
                 endDate = end;
                 startDate = start;
+                sum=sum;
               });
             },
             onCancelClick: () {

@@ -77,9 +77,12 @@ class _ReportState extends State<ReportSchedule> {
                         List<Shedule_modle> list=[];
                         list =  await praf_handler.get_shedule_list(my_helper.shedule + date.millisecondsSinceEpoch.toString());
                         for(int i=0;i<list.length;i++)
+                        {
                           sum+=list[i].horse;
+                          if(praf_handler.get_noti("noti"+list[i].owner_name+list[i].shedule_time.toString())!="1")
+                            total_list.add(list[i]);
+                        }
 
-                        total_list.addAll(list);
                     }
                     print(total_list);
                  

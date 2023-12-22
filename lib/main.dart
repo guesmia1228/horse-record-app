@@ -43,8 +43,8 @@ void main() async{
 
   WidgetsFlutterBinding.ensureInitialized();
   final int _selectedIndex;
-//    await initializeService();
-//   init(_onDidReceiveLocalNotification);
+   await initializeService();
+  init(_onDidReceiveLocalNotification);
 
   // NotificationService().initNotification();
   // tz.initializeTimeZones();
@@ -457,7 +457,7 @@ hour_timer(var service)async{
         print(shedule_list);
         print(shedule_list.length);
         print("====1===");
-        shedule_list.forEach((element) {
+        shedule_list.forEach((element) async{
           print("element");
           print(element);
           if(element.alert_on){
@@ -476,6 +476,9 @@ hour_timer(var service)async{
                String formattedDate = DateFormat('MM-dd-yyyy H:m').format(dateTime);
                message += formattedDate;
 
+ 
+               await praf_handler.add_list("noti"+element.shedule_time.toString()+element.owner_name, "1");                          
+             
                showNotification(DateTime.now(), message);
             }
             if(d==c)
