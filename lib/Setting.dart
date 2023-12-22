@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:horse/Home.dart';
 import 'package:horse/Report.dart';
+import 'package:horse/ReportHorse.dart';
+import 'package:horse/ReportSchedule.dart';
 import 'package:horse/helper/My_Button.dart';
 import 'package:horse/helper/My_Text.dart';
 import 'package:horse/helper/Praf_handler.dart';
@@ -359,13 +361,72 @@ bottomNavigationBar: BottomNavigationBar(
 
       },),txt_color: Colors.white,),
 
-      My_Btn(txt: 'Report', btn_color: Colors.blue, btn_size: 200, gestureDetector: GestureDetector(onTap: () {
 
-       Get.to(Report())!.then((value){
+      SizedBox(height: 10,),
+      Center(child: MyText(txt: 'Report', color: Colors.black, txtSize: 30)),
+      SizedBox(height: 10,),
 
-            });
 
-      },),txt_color: Colors.white,)
+      GestureDetector(
+          onTap: () {
+            Get.to(Report())!.then((value) {});
+          },
+          child: Text(
+            'Report with scheduled time',
+            style: TextStyle(
+              decoration: TextDecoration.underline,
+              color: Colors.blue,
+              fontSize: 20,              
+            ),
+          ),
+        ),
+      SizedBox(height: 10,),
+
+    
+     GestureDetector(
+          onTap: () {
+            Get.to(ReportHorse())!.then((value) {});
+          },
+          child: Text(
+            'Report with attachment',
+            style: TextStyle(
+              decoration: TextDecoration.underline,
+              color: Colors.blue,
+              fontSize: 20,              
+            ),
+          ),
+        ),
+      SizedBox(height: 10,),
+
+        GestureDetector(
+          onTap: () {
+            Get.to(ReportSchedule())!.then((value) {});
+          },
+          child: Text(
+            'Scheduled Notification',
+            style: TextStyle(
+              decoration: TextDecoration.underline,
+              color: Colors.blue,
+              fontSize: 20,              
+            ),
+          ),
+        ),
+      SizedBox(height: 10,),
+
+       GestureDetector(
+          onTap: () {
+            Get.to(ReportSchedule())!.then((value) {});
+          },
+          child: Text(
+            'Sent Notification',
+            style: TextStyle(
+              decoration: TextDecoration.underline,
+              color: Colors.blue,
+              fontSize: 20,              
+            ),
+          ),
+        ),
+      SizedBox(height: 10,),
     ],);
 
     

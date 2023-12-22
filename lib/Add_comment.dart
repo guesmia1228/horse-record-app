@@ -16,6 +16,7 @@ import 'package:horse/helper/Praf_handler.dart';
 import 'package:horse/helper/my_helper.dart';
 import 'package:horse/model/Horse_model.dart';
 import 'package:horse/model/Shedule_model.dart';
+import 'package:horse/model/Horse_info_model.dart';
 import 'package:horse/helper/Icon_Button.dart';
 
 import 'package:intl/intl.dart';
@@ -1026,7 +1027,11 @@ class _Add_commentState extends State<Add_comment> {
                             time_of_cmnt: selectedDate.millisecondsSinceEpoch, img_picked: 2);
 //                                            praf_handler.add_list(horse_model.name+horse_model.age, jsonEncode(horse_cmnt_model.toJson()));
                                             praf_handler.add_list_sort(name, jsonEncode(horse_cmnt_model.toJson()),"horse_sort");
-                                            
+ //                         praf_handler.add_list_sort("horse"+selectedDate.millisecondsSinceEpoch, jsonEncode(horse_cmnt_model.toJson()), "horseForReport");                                            
+                           Horse_info_model horse_cmnt_model_report=Horse_info_model(name: name, cmnt: cmnt.text, img: xfile?.path ?? '',record: record_path!,  owner_name: shedule_modle.owner_name,
+                            time_of_cmnt: selectedDate.millisecondsSinceEpoch, img_picked: 2);
+
+                         await praf_handler.add_list("horse"+selectedDate.millisecondsSinceEpoch.toString(), jsonEncode(horse_cmnt_model_report.toJson()));                          
                                             EasyLoading.showSuccess('added');                          
                           cmnt.text="";
                          record_flag=0;

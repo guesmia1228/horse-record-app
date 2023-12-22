@@ -25,7 +25,6 @@ class Report extends StatefulWidget {
 
 class _ReportState extends State<Report> {
   Contact ?contact;
-  int sum=0;
 //  final w1=TextEditingController(),w2=TextEditingController(),w3=TextEditingController();
   TextEditingController dateController = TextEditingController(text: DateFormat.yMd().format(DateTime.now()));
   String fixed_digital_time='09:30 AM';
@@ -65,28 +64,24 @@ class _ReportState extends State<Report> {
   }
   _getDataAndDisplaySchedule() async
   {
+//    List<Shedule_modle> total_list = [];
+
+              print("formmatedate");
+  print(startDate);
+  print(endDate);
     if(startDate!=null && endDate!=null )
-                {
-                    sum=0;
-                    total_list=[];
-                    for (DateTime i = startDate; i.isBefore(endDate); i = i.add(Duration(days: 1))) {
-                        String formattedDate = DateFormat('yyyy-MM-dd 00:00:00.000').format(i);
-                        DateTime date = DateTime.parse(formattedDate);                      
-                        print("formmatedate");
-                        print(my_helper.shedule + date.millisecondsSinceEpoch.toString());
-                        List<Shedule_modle> list=[];
-                        list =  await praf_handler.get_shedule_list(my_helper.shedule + date.millisecondsSinceEpoch.toString());
-                        for(int i=0;i<list.length;i++)
-                          sum+=list[i].horse;
+    {
+      for (DateTime i = startDate; i.isBefore(endDate); i = i.add(Duration(days: 1))) 
+      {
+              String formattedDate = DateFormat('yyyy-MM-dd 00:00:00.000').format(i);
+              print("formmatedate");
+              print(formattedDate);
+          total_list.add(
+            await praf_handler.get_shedule_list(my_helper.shedule + formattedDate));
+      }
+    }
 
-                        total_list.addAll(list);
-                    }
-                    print(total_list);
-                 
-                }
-              setState(() {
-
-              });
+    print(total_list);
 
     // You can now use the total_list in your application as needed
     // For example, you can display it in a ListView or process the data further.
@@ -95,8 +90,6 @@ class _ReportState extends State<Report> {
   void initState() {
     endDate =  DateTime.now();
     startDate = DateTime.now().subtract(Duration(days: 15));
-
-
     // TODO: implement initState
     super.initState();
     getFixedDigitalTime();
@@ -225,7 +218,7 @@ class _ReportState extends State<Report> {
              Text(
               'Report',
               style: TextStyle(
-                fontSize: 30,
+                fontSize: 50,
               ),
             ),
  
@@ -248,7 +241,7 @@ class _ReportState extends State<Report> {
             ),    
     
             SizedBox(height: 20,),
-           Text(sum.toString()+'head'),
+    
       // _getDataAndDisplaySchedule(),
          Container(
                 height: 25, // Replace with your desired height
@@ -288,7 +281,7 @@ class _ReportState extends State<Report> {
                     ),
                     Expanded(
                       flex: 1,
-                        child: Text("Head"),
+                        child: Text("CN"),
                     ),
                      Expanded(
                       flex: 2,
@@ -376,27 +369,20 @@ class _ReportState extends State<Report> {
             onApplyClick: (start, end) async{
                 if(startDate!=null && endDate!=null )
                 {
-                    sum=0;
-                    total_list=[];
-                    for (DateTime i = startDate; i.isBefore(endDate); i = i.add(Duration(days: 1))) {
-                        String formattedDate = DateFormat('yyyy-MM-dd 00:00:00.000').format(i);
-                        DateTime date = DateTime.parse(formattedDate);                      
-                        print("formmatedate");
-                        print(my_helper.shedule + date.millisecondsSinceEpoch.toString());
-                        List<Shedule_modle> list=[];
-                        list =  await praf_handler.get_shedule_list(my_helper.shedule + date.millisecondsSinceEpoch.toString());
-                        for(int i=0;i<list.length;i++)
-                          sum+=list[i].horse;
-
-                        total_list.addAll(list);
-                    }
-                    print(total_list);
-                 
+                  for (DateTime i = startDate; i.isBefore(endDate); i = i.add(Duration(days: 1))) {
+                      String formattedDate = DateFormat('yyyy-MM-dd 00:00:00.000').format(i);
+                      DateTime date = DateTime.parse(formattedDate);                      
+                      print("formmatedate");
+                      print(my_helper.shedule + date.millisecondsSinceEpoch.toString());
+                      List<Shedule_modle> list=[];
+                      list =  await praf_handler.get_shedule_list(my_helper.shedule + date.millisecondsSinceEpoch.toString());
+                      total_list.addAll(list);
+                  }
+                  print(total_list);
                 }
               setState(() {
                 endDate = end;
                 startDate = start;
-                sum=sum;
               });
             },
             onCancelClick: () {

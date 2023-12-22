@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:horse/model/Horse_coment_model.dart';
+import 'package:horse/model/Horse_info_model.dart';
 import 'package:horse/model/Horse_model.dart';
 import 'package:horse/model/Shedule_model.dart';
+import 'package:horse/model/Horse_info_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 class praf_handler{
@@ -261,9 +263,28 @@ class praf_handler{
     return my_list;
 
   }
+  static get_noti(String key) async{
+    String val=await get_list_json(key);
+    return val;
+  }
 
 
+  static get_horse_report(String key)async{
 
+
+    List<String> list=await get_list_json(key);
+
+    List<Horse_info_model> my_list=[];
+
+    list.forEach((element) {
+//      print(element);
+      my_list.add(Horse_info_model.fromJson(jsonDecode(element)));
+    });
+
+//    print(my_list.length);
+    return my_list;
+
+  }
 
 
 

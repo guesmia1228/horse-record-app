@@ -2,40 +2,45 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:horse/Home.dart';
-import 'package:horse/Report.dart';
+import 'package:horse/ReportHorse.dart';
 import 'package:horse/Setting.dart';
 import 'package:horse/helper/My_Button.dart';
 import 'package:horse/helper/My_Text.dart';
 import 'package:horse/helper/Praf_handler.dart';
 import 'package:horse/helper/my_helper.dart';
+import 'package:horse/model/Horse_info_model.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
 import 'package:horse/OwnerPage.dart';
 import 'package:horse/model/Shedule_model.dart';
+import 'package:horse/model/Horse_coment_model.dart';
 import 'package:horse/helper/My_Text_Field.dart';
+import 'package:horse/model/Horse_coment_model.dart';
+import 'package:horse/model/Horse_info_model.dart';
 import 'package:flutter_date_range_picker/flutter_date_range_picker.dart';
 import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 import 'package:custom_date_range_picker/custom_date_range_picker.dart';
-class Report extends StatefulWidget {
-  const Report({super.key});
+class ReportHorse extends StatefulWidget {
+  const ReportHorse({super.key});
 
   @override
-  State<Report> createState() => _ReportState();
+  State<ReportHorse> createState() => _ReportState();
 }
 
-class _ReportState extends State<Report> {
+class _ReportState extends State<ReportHorse> {
   Contact ?contact;
-  int sum=0;
 //  final w1=TextEditingController(),w2=TextEditingController(),w3=TextEditingController();
   TextEditingController dateController = TextEditingController(text: DateFormat.yMd().format(DateTime.now()));
   String fixed_digital_time='09:30 AM';
-        List<Shedule_modle> total_list = [];
+        List<Horse_info_model> total_list = [];
   bool isAscendingName = true;
   bool isAscendingDate = true;
 
    DateTime endDate= DateTime.now();
   DateTime startDate = DateTime.now().subtract(Duration(days: 14));
   DateRange? selectedDateRange;
+  
+  _ReportState();
   // Future<void> _selectDateRange(BuildContext context) async {
   //   final List<DateTime> picked = await DateRangePicker.showDatePicker(
   //     context: context,
@@ -65,29 +70,28 @@ class _ReportState extends State<Report> {
   }
   _getDataAndDisplaySchedule() async
   {
-    if(startDate!=null && endDate!=null )
+//    List<Shedule_modle> total_list = [];
+
+              if(startDate!=null && endDate!=null )
                 {
-                    sum=0;
-                    total_list=[];
+
+            
+
                     for (DateTime i = startDate; i.isBefore(endDate); i = i.add(Duration(days: 1))) {
                         String formattedDate = DateFormat('yyyy-MM-dd 00:00:00.000').format(i);
                         DateTime date = DateTime.parse(formattedDate);                      
                         print("formmatedate");
                         print(my_helper.shedule + date.millisecondsSinceEpoch.toString());
-                        List<Shedule_modle> list=[];
-                        list =  await praf_handler.get_shedule_list(my_helper.shedule + date.millisecondsSinceEpoch.toString());
-                        for(int i=0;i<list.length;i++)
-                          sum+=list[i].horse;
-
+                        List<Horse_info_model> list=[];
+                        list =  await praf_handler.get_horse_report("horse" + date.millisecondsSinceEpoch.toString());
                         total_list.addAll(list);
-                    }
+                    }                    
                     print(total_list);
-                 
+
                 }
               setState(() {
 
               });
-
     // You can now use the total_list in your application as needed
     // For example, you can display it in a ListView or process the data further.
   }
@@ -95,8 +99,6 @@ class _ReportState extends State<Report> {
   void initState() {
     endDate =  DateTime.now();
     startDate = DateTime.now().subtract(Duration(days: 15));
-
-
     // TODO: implement initState
     super.initState();
     getFixedDigitalTime();
@@ -248,7 +250,7 @@ class _ReportState extends State<Report> {
             ),    
     
             SizedBox(height: 20,),
-           Text(sum.toString()+'head'),
+    
       // _getDataAndDisplaySchedule(),
          Container(
                 height: 25, // Replace with your desired height
@@ -288,7 +290,7 @@ class _ReportState extends State<Report> {
                     ),
                     Expanded(
                       flex: 1,
-                        child: Text("Head"),
+                        child: Text("Horse"),
                     ),
                      Expanded(
                       flex: 2,
@@ -296,7 +298,7 @@ class _ReportState extends State<Report> {
                         onTap: () {
                           setState(() {
                             isAscendingDate = !isAscendingDate;
-                            total_list.sort((a, b) => isAscendingDate ? a.shedule_time.compareTo(b.shedule_time) : b.shedule_time.compareTo(a.shedule_time));
+                            total_list.sort((a, b) => isAscendingDate ? a.time_of_cmnt.compareTo(b.time_of_cmnt) : b.time_of_cmnt.compareTo(a.time_of_cmnt));
                           });
                         },
                         child: Row(
@@ -322,7 +324,7 @@ class _ReportState extends State<Report> {
       itemCount: total_list.length,
         shrinkWrap: true,
         itemBuilder: (context, index) {
-          Shedule_modle model=total_list[index];
+          Horse_info_model model=total_list[index];
            return Container(
                 height: 25, // Replace with your desired height
                 padding: EdgeInsets.all(4),
@@ -343,12 +345,12 @@ class _ReportState extends State<Report> {
                     ),
                     Expanded(
                       flex: 1,
-                      child: Text(model.horse.toString()),
+                      child: Text(model.name),
                     ),
                     Expanded(
                       flex: 2,
                       child: Text(DateFormat('yyyy-MM-dd')
-                          .format(DateTime.fromMillisecondsSinceEpoch(model.shedule_time))),
+                          .format(DateTime.fromMillisecondsSinceEpoch(model.time_of_cmnt))),
                     ),
                   ],
                 ),
@@ -376,27 +378,24 @@ class _ReportState extends State<Report> {
             onApplyClick: (start, end) async{
                 if(startDate!=null && endDate!=null )
                 {
-                    sum=0;
-                    total_list=[];
+
+            
+
                     for (DateTime i = startDate; i.isBefore(endDate); i = i.add(Duration(days: 1))) {
                         String formattedDate = DateFormat('yyyy-MM-dd 00:00:00.000').format(i);
                         DateTime date = DateTime.parse(formattedDate);                      
                         print("formmatedate");
                         print(my_helper.shedule + date.millisecondsSinceEpoch.toString());
-                        List<Shedule_modle> list=[];
-                        list =  await praf_handler.get_shedule_list(my_helper.shedule + date.millisecondsSinceEpoch.toString());
-                        for(int i=0;i<list.length;i++)
-                          sum+=list[i].horse;
-
+                        List<Horse_info_model> list=[];
+                        list =  await praf_handler.get_horse_report("horse" + date.millisecondsSinceEpoch.toString());
                         total_list.addAll(list);
-                    }
+                    }                    
                     print(total_list);
-                 
+
                 }
               setState(() {
                 endDate = end;
                 startDate = start;
-                sum=sum;
               });
             },
             onCancelClick: () {

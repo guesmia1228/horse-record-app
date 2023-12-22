@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:horse/Home.dart';
-import 'package:horse/Report.dart';
+import 'package:horse/ReportSchedule.dart';
 import 'package:horse/Setting.dart';
 import 'package:horse/helper/My_Button.dart';
 import 'package:horse/helper/My_Text.dart';
@@ -16,14 +16,14 @@ import 'package:horse/helper/My_Text_Field.dart';
 import 'package:flutter_date_range_picker/flutter_date_range_picker.dart';
 import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 import 'package:custom_date_range_picker/custom_date_range_picker.dart';
-class Report extends StatefulWidget {
-  const Report({super.key});
+class ReportSchedule extends StatefulWidget {
+  const ReportSchedule({super.key});
 
   @override
-  State<Report> createState() => _ReportState();
+  State<ReportSchedule> createState() => _ReportState();
 }
 
-class _ReportState extends State<Report> {
+class _ReportState extends State<ReportSchedule> {
   Contact ?contact;
   int sum=0;
 //  final w1=TextEditingController(),w2=TextEditingController(),w3=TextEditingController();
@@ -248,7 +248,6 @@ class _ReportState extends State<Report> {
             ),    
     
             SizedBox(height: 20,),
-           Text(sum.toString()+'head'),
       // _getDataAndDisplaySchedule(),
          Container(
                 height: 25, // Replace with your desired height
@@ -265,7 +264,7 @@ class _ReportState extends State<Report> {
                         child: Text("No"),
                     ),
                     Expanded(
-                      flex: 4,
+                      flex: 2,
                       child: GestureDetector(
                         onTap: () {
                           setState(() {
@@ -275,7 +274,7 @@ class _ReportState extends State<Report> {
                         },
                         child: Row(
                           children: [
-                            Text("Name"),
+                            Text("Owner"),
                              Align(
                                 alignment: Alignment.center,
                                 child: Icon(
@@ -286,10 +285,7 @@ class _ReportState extends State<Report> {
                         ),
                       ),
                     ),
-                    Expanded(
-                      flex: 1,
-                        child: Text("Head"),
-                    ),
+
                      Expanded(
                       flex: 2,
                       child: GestureDetector(
@@ -301,7 +297,7 @@ class _ReportState extends State<Report> {
                         },
                         child: Row(
                           children: [
-                            Text("Date"),
+                            Text("Scheduled"),
                             SizedBox(height: 4),
                              Align(
                                 alignment: Alignment.center,
@@ -338,17 +334,13 @@ class _ReportState extends State<Report> {
                       child: Text((index + 1).toString()),
                     ),
                     Expanded(
-                      flex: 4,
+                      flex: 2,
                       child: Text(model.owner_name),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Text(model.horse.toString()),
                     ),
                     Expanded(
                       flex: 2,
                       child: Text(DateFormat('yyyy-MM-dd')
-                          .format(DateTime.fromMillisecondsSinceEpoch(model.shedule_time))),
+                          .format(DateTime.fromMillisecondsSinceEpoch(model.shedule_time))+" " +model.time),
                     ),
                   ],
                 ),
@@ -386,12 +378,13 @@ class _ReportState extends State<Report> {
                         List<Shedule_modle> list=[];
                         list =  await praf_handler.get_shedule_list(my_helper.shedule + date.millisecondsSinceEpoch.toString());
                         for(int i=0;i<list.length;i++)
+                        {
                           sum+=list[i].horse;
-
-                        total_list.addAll(list);
+                          if(praf_handler.get_noti("noti"+list[i].owner_name+list[i].shedule_time.toString())!="1")
+                            total_list.add(list[i]);
+                        }
                     }
-                    print(total_list);
-                 
+                    print(total_list);                 
                 }
               setState(() {
                 endDate = end;
