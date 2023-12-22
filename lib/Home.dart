@@ -44,8 +44,9 @@ class _HomeState extends State<Home> {
   int full=0;
   List<int> horse_num =    List<int>.filled(7, 0);
   getWeekDays() async{
-    weekDays=await my_Methods.get_days_in_week(selected_date,week_showing);
 
+    weekDays=await my_Methods.get_days_in_week(selected_date,week_showing);
+    print(weekDays);
     d1h=await praf_handler.get_int(my_helper.hourse+weekDays[0].millisecondsSinceEpoch.toString());
     d2h=await praf_handler.get_int(my_helper.hourse+weekDays[1].millisecondsSinceEpoch.toString());
     d3h=await praf_handler.get_int(my_helper.hourse+weekDays[2].millisecondsSinceEpoch.toString());
@@ -292,10 +293,11 @@ class _HomeState extends State<Home> {
   }
 
   Widget days_view(DateTime dateTime,int hours,bool mode,int index_num){
-    print(dateTime);
+    // print("dateTime");
+    // print(dateTime);
       String formattedDate = DateFormat('yyyy-MM-dd 00:00:00.000').format(dateTime);
       String formattedDate1 = DateFormat('yyyy-MM-dd 00:00:00.000').format(DateTime.now());
-  print(formattedDate);
+  // print(formattedDate);
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -327,24 +329,56 @@ class _HomeState extends State<Home> {
                   if(dateTime.millisecondsSinceEpoch==weekDays[0].millisecondsSinceEpoch) {
                     shedule_list_d1=await praf_handler.get_shedule_list(my_helper.shedule+dateTime.millisecondsSinceEpoch.toString());
                     show_d1_list=!show_d1_list;
+                    print("-====");
+                    print(dateTime);
+                    print(my_helper.shedule+dateTime.millisecondsSinceEpoch.toString());
+
                   }else if(dateTime.millisecondsSinceEpoch==weekDays[1].millisecondsSinceEpoch) {
                     shedule_list_d2=await praf_handler.get_shedule_list(my_helper.shedule+dateTime.millisecondsSinceEpoch.toString());
+                    print("-====");
+                    print(dateTime);
+                    print(my_helper.shedule+dateTime.millisecondsSinceEpoch.toString());
                     show_d2_list=!show_d2_list;
                   }else if(dateTime.millisecondsSinceEpoch==weekDays[2].millisecondsSinceEpoch) {
                     shedule_list_d3=await praf_handler.get_shedule_list(my_helper.shedule+dateTime.millisecondsSinceEpoch.toString());
                     show_d3_list=!show_d3_list;
+                    print("-====");
+                    print(dateTime);
+
+                    print(my_helper.shedule+dateTime.millisecondsSinceEpoch.toString());
+                    
                   }else if(dateTime.millisecondsSinceEpoch==weekDays[3].millisecondsSinceEpoch) {
                     shedule_list_d4=await praf_handler.get_shedule_list(my_helper.shedule+dateTime.millisecondsSinceEpoch.toString());
                     show_d4_list=!show_d4_list;
+                    print("-====");
+                    print(dateTime);
+
+                    print(my_helper.shedule+dateTime.millisecondsSinceEpoch.toString());
+
                   }else if(dateTime.millisecondsSinceEpoch==weekDays[4].millisecondsSinceEpoch) {
                     shedule_list_d5=await praf_handler.get_shedule_list(my_helper.shedule+dateTime.millisecondsSinceEpoch.toString());
                     show_d5_list=!show_d5_list;
+                    print("-====");
+                    print(dateTime);
+
+                    print(my_helper.shedule+dateTime.millisecondsSinceEpoch.toString());
+
                   }else if(dateTime.millisecondsSinceEpoch==weekDays[5].millisecondsSinceEpoch) {
                     shedule_list_d6=await praf_handler.get_shedule_list(my_helper.shedule+dateTime.millisecondsSinceEpoch.toString());
                     show_d6_list=!show_d6_list;
+                    print("-====");
+                    print(dateTime);
+
+                    print(my_helper.shedule+dateTime.millisecondsSinceEpoch.toString());
+
                   }else if(dateTime.millisecondsSinceEpoch==weekDays[6].millisecondsSinceEpoch) {
                     shedule_list_d7=await praf_handler.get_shedule_list(my_helper.shedule+dateTime.millisecondsSinceEpoch.toString());
                     show_d7_list=!show_d7_list;
+                    print("-====");
+                    print(dateTime);
+
+                    print(my_helper.shedule+dateTime.millisecondsSinceEpoch.toString());
+
                   }
 
                   setState(() {});

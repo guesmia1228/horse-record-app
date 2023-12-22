@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:horse/Home.dart';
+import 'package:horse/Report.dart';
 import 'package:horse/helper/My_Button.dart';
 import 'package:horse/helper/My_Text.dart';
 import 'package:horse/helper/Praf_handler.dart';
@@ -213,8 +214,9 @@ bottomNavigationBar: BottomNavigationBar(
 //          Navigator.pop(context,true);
         }
 
-      },),txt_color: Colors.white,)
+      },),txt_color: Colors.white,),
 
+  
     ],);
   }
 
@@ -355,8 +357,17 @@ bottomNavigationBar: BottomNavigationBar(
 //          Navigator.pop(context,true);
         }
 
-      },),txt_color: Colors.white,)
+      },),txt_color: Colors.white,),
 
+      My_Btn(txt: 'Report', btn_color: Colors.blue, btn_size: 200, gestureDetector: GestureDetector(onTap: () {
+
+       Get.to(Report())!.then((value){
+
+            });
+
+      },),txt_color: Colors.white,)
     ],);
+
+    
   }
 }

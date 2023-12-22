@@ -71,8 +71,13 @@ class my_Methods
     }               
 
     for (var i = 0; i < 7; i++) {
-      var newDate = dates_after.add(Duration(days: i));
-      weekdays.add(newDate);
+      DateTime newDate = dates_after.add(Duration(days: i));
+  
+  String formattedNewDate = DateFormat('yyyy-MM-dd 00:00:00.000').format(newDate);
+  
+  // Parse the formatted date string back into a DateTime object
+  DateTime newDateTime = DateTime.parse(formattedNewDate);
+    weekdays.add(newDateTime);
    //   print(DateFormat.yMMMMEEEEd().format(newDate));
       // if(DateFormat('E').format(newDate) == 'Mon')print('Monday:'+newDate.toString());
       // else if(DateFormat('EEEE').format(newDate) == 'Tuesday')print('Tuesday:'+newDate.toString());

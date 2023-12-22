@@ -4,7 +4,7 @@ import 'dart:ui';
 import 'package:get/get.dart';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
-
+import 'package:custom_date_range_picker/custom_date_range_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
@@ -43,8 +43,8 @@ void main() async{
 
   WidgetsFlutterBinding.ensureInitialized();
   final int _selectedIndex;
-    await initializeService();
-   init(_onDidReceiveLocalNotification);
+//    await initializeService();
+//   init(_onDidReceiveLocalNotification);
 
   // NotificationService().initNotification();
   // tz.initializeTimeZones();
