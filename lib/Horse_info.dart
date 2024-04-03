@@ -153,10 +153,6 @@ class _Horse_infoState extends State<Horse_info> {
                   return;
                 }
 
-
-
-
-
                 if(recording){
 
                   final path = await record.stop();

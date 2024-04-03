@@ -5,6 +5,7 @@ import 'package:horse/Add_comment.dart';
 import 'package:horse/Appointment.dart';
 import 'package:horse/Date_added_horse.dart';
 import 'package:horse/OwnerPage.dart';
+import 'package:horse/Payment.dart';
 import 'package:horse/Setting.dart';
 import 'package:horse/Shedulaining.dart';
 import 'package:horse/helper/My_Button.dart';
@@ -20,7 +21,7 @@ import 'package:horse/Appointment.dart';
 import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 import 'package:horse/OwnerPage.dart';
 import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
-
+import 'package:horse/main.dart';
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -584,6 +585,15 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         backgroundColor: Colors.red,
         title: MyText(txt: 'Home', color: Colors.white, txtSize: 18,fontWeight: FontWeight.bold),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.add), // Use the icon you want here
+              onPressed: () {
+                Get.to(Payment());
+                // Add your button's action here
+              },
+            ),
+          ],        
       ),
   bottomNavigationBar: BottomNavigationBar(
           items: const [
@@ -659,7 +669,17 @@ class _HomeState extends State<Home> {
           SizedBox(height: 30,),
           */
         ],
-      )
+      ),
+        floatingActionButton: FloatingActionButton(
+        onPressed: () {
+                        Get.to(MyHomePage());
+  
+        },
+        tooltip: 'choose date Range',
+        child: const Icon(Icons.logout, color: Colors.white),
+      ),
+      
     );
+    
   }
 }

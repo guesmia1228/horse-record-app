@@ -329,8 +329,6 @@ bottomNavigationBar: BottomNavigationBar(
               ),
             ),
           ),
-
-
         ],
       ),
 

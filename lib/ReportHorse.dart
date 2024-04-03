@@ -75,8 +75,7 @@ class _ReportState extends State<ReportHorse> {
               if(startDate!=null && endDate!=null )
                 {
 
-            
-
+          
                     for (DateTime i = startDate; i.isBefore(endDate); i = i.add(Duration(days: 1))) {
                         String formattedDate = DateFormat('yyyy-MM-dd 00:00:00.000').format(i);
                         DateTime date = DateTime.parse(formattedDate);                      
@@ -237,17 +236,73 @@ class _ReportState extends State<ReportHorse> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 40,right: 40,top: 10,bottom: 10),
                 
-                child: Row(mainAxisAlignment: MainAxisAlignment.center,children: [
-                  if(startDate!=null)
-                    MyText(txt:'Date Range('+ DateFormat('M-d-yyyy').format(startDate!), color: Colors.black, txtSize: 14,fontWeight: FontWeight.bold),
-                  if(endDate!=null)
-                    MyText(txt: ' to ' + DateFormat('M-d-yyyy').format(endDate!)+')', color: Colors.black, txtSize: 14,fontWeight: FontWeight.bold),
+                child: GestureDetector(
+                    onTap: () {
+                       showCustomDateRangePicker(
+                          context,
+                          dismissible: true,
+                          minimumDate: DateTime.now().subtract(const Duration(days: 1330)),
+                          maximumDate: DateTime.now().add(const Duration(days: 1330)),
+                          endDate: endDate,
+                          startDate: startDate,
+                          backgroundColor: Colors.white,
+                          primaryColor: Colors.green,
+                          onApplyClick: (start, end) async{
+                              if(startDate!=null && endDate!=null )
+                              {
 
-                  Spacer(),
-//                  MyText(txt: shedule_modle.horse.toString()+' hd', color: Colors.black, txtSize: 20,fontWeight: FontWeight.bold),
-                ],),
+                          
+
+                                  for (DateTime i = startDate; i.isBefore(endDate); i = i.add(Duration(days: 1))) {
+                                      String formattedDate = DateFormat('yyyy-MM-dd 00:00:00.000').format(i);
+                                      DateTime date = DateTime.parse(formattedDate);                      
+                                      print("formmatedate");
+                                      print(my_helper.shedule + date.millisecondsSinceEpoch.toString());
+                                      List<Horse_info_model> list=[];
+                                      list =  await praf_handler.get_horse_report("horse" + date.millisecondsSinceEpoch.toString());
+                                      total_list.addAll(list);
+                                  }                    
+                                  print(total_list);
+
+                              }
+                            setState(() {
+                              endDate = end;
+                              startDate = start;
+                            });
+                          },
+                          onCancelClick: () {
+                            setState(() {
+                              // endDate = null;
+                              // startDate = null;
+                            });
+                          },
+                        );
+                      // Add the action to be performed when the row is clicked
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (startDate != null)
+                          MyText(
+                            txt: 'Date Range(' + DateFormat('M-d-yyyy').format(startDate!),
+                            color: Colors.black,
+                            txtSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        if (endDate != null)
+                          MyText(
+                            txt: ' to ' + DateFormat('M-d-yyyy').format(endDate!) + ')',
+                            color: Colors.black,
+                            txtSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        Spacer(),
+                        // Add any other child widgets here
+                      ],
+                    ),
+                  )
               ),
-            ),    
+            ),     
     
             SizedBox(height: 20,),
     
@@ -364,51 +419,7 @@ class _ReportState extends State<ReportHorse> {
         ),
       ),
 
-       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showCustomDateRangePicker(
-            context,
-            dismissible: true,
-            minimumDate: DateTime.now().subtract(const Duration(days: 1330)),
-            maximumDate: DateTime.now().add(const Duration(days: 1330)),
-            endDate: endDate,
-            startDate: startDate,
-            backgroundColor: Colors.white,
-            primaryColor: Colors.green,
-            onApplyClick: (start, end) async{
-                if(startDate!=null && endDate!=null )
-                {
-
-            
-
-                    for (DateTime i = startDate; i.isBefore(endDate); i = i.add(Duration(days: 1))) {
-                        String formattedDate = DateFormat('yyyy-MM-dd 00:00:00.000').format(i);
-                        DateTime date = DateTime.parse(formattedDate);                      
-                        print("formmatedate");
-                        print(my_helper.shedule + date.millisecondsSinceEpoch.toString());
-                        List<Horse_info_model> list=[];
-                        list =  await praf_handler.get_horse_report("horse" + date.millisecondsSinceEpoch.toString());
-                        total_list.addAll(list);
-                    }                    
-                    print(total_list);
-
-                }
-              setState(() {
-                endDate = end;
-                startDate = start;
-              });
-            },
-            onCancelClick: () {
-              setState(() {
-                // endDate = null;
-                // startDate = null;
-              });
-            },
-          );
-        },
-        tooltip: 'choose date Range',
-        child: const Icon(Icons.calendar_today_outlined, color: Colors.white),
-      ),
+      
     );
     
   }

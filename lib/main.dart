@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 import 'package:get/get.dart';
-
+import 'package:http/http.dart' as http;
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:custom_date_range_picker/custom_date_range_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,20 +22,17 @@ import 'package:horse/model/Horse_model.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:telephony/telephony.dart';
-
 import 'helper/notifi_service.dart';
 import 'model/Shedule_model.dart';
-
 import 'package:timezone/data/latest.dart' as tz;
-
 import 'dart:convert';
 import 'dart:io' show Platform;
-
-
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
   final String applicationName= "Appointment Calender";
 const String channel_id = "123";
 
@@ -43,8 +40,8 @@ void main() async{
 
   WidgetsFlutterBinding.ensureInitialized();
   final int _selectedIndex;
-   await initializeService();
-  init(_onDidReceiveLocalNotification);
+  //  await initializeService();
+  // init(_onDidReceiveLocalNotification);
 
   // NotificationService().initNotification();
   // tz.initializeTimeZones();
@@ -65,6 +62,9 @@ void main() async{
     ),
   );
   AudioPlayer.global.setGlobalAudioContext(audioContext);
+  
+  Stripe.publishableKey = "pk_test_mEk3SpdSiKRzNQADwueQKbpR";
+  await dotenv.load(fileName: "assets/.env");
   runApp(const MyApp());
 }
 class MyApp extends StatelessWidget {
@@ -108,37 +108,268 @@ class MyHomePage extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                _showPasswordDialog(context);
-              },
-              child: Text('Enter Password'),
-            ),
+        Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly, // You can use other values like MainAxisAlignment.spaceAround based on your layout preferences
+            children: [
+              ElevatedButton(
+                onPressed: () {
+                  _showPasswordDialog(context);
+                },
+                child: Text('Login'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  // Add functionality for the second button here
+                  _showSignupDialog(context);
+                  
+                },
+                child: Text('Signup'),
+              ),
+            ],
+          ),
+        )
+
           ],
         ),
       ),
-
+     
     );
   }
+  Future<void> fetchData(String email, String password) async {
+    final String url = 'http://10.0.2.2:443/login'; // Replace with your API URL
 
+    // Define the body parameters
+    print(email);
+    print(password);
+    Map<String, dynamic> body = {
+      "email": email,
+      "password": password,
+      // Add your other body parameters here
+    };
+
+    try {
+      var response = await http.post(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(body),
+      );
+
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        // Handle the response data
+
+        if (data is Map<String, dynamic> && data.containsKey('message')) {
+            if (data['message'] == "success") {
+               _proceedToNextPart(); 
+              // Handle success case here
+            } else {
+              // Handle other cases if needed
+            }
+          } else {
+            // Handle unexpected data structure or missing 'message' key
+          }
+        // if(data.message=="success")
+        //   _proceedToNextPart(); 
+        // if(data.message=="password incorrect")
+        //     {
+        //         print("incorrect");
+        //     }
+        print(data);
+      } else {
+        // Handle any error from the API call
+        print('Failed to load data');
+      }
+    } catch (error) {
+      // Handle potential error from the HTTP request
+      print('Error: $error');
+    }
+  }
+
+  Future<void> fetchDataSignUp(String email, String password,String first, String last) async {
+    final String url = 'http://10.0.2.2:443/signup'; // Replace with your API URL
+
+    // Define the body parameters
+    print(email);
+    print(password);
+    Map<String, dynamic> body = {
+      "email": email,
+      "password": password,
+      "firstname": first,
+      "lastname": last
+      // Add your other body parameters here
+    };
+
+    try {
+      var response = await http.post(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(body),
+      );
+
+      if (response.statusCode == 200) {
+        var data = json.decode(response.body);
+        // Handle the response data
+               _proceedToNextPart(); 
+
+        // if (data is Map<String, dynamic> && data.containsKey('message')) {
+        //     if (data['message'] == "success") {
+        //        _proceedToNextPart(); 
+        //       // Handle success case here
+        //     } else {
+        //       // Handle other cases if needed
+        //     }
+        //   } else {
+        //     // Handle unexpected data structure or missing 'message' key
+        //   }
+        // if(data.message=="success")
+        //   _proceedToNextPart(); 
+        // if(data.message=="password incorrect")
+        //     {
+        //         print("incorrect");
+        //     }
+        print(data);
+      } else {
+        // Handle any error from the API call
+        print('Failed to load data');
+      }
+    } catch (error) {
+      // Handle potential error from the HTTP request
+      print('Error: $error');
+    }
+  }
   Future<void> _showPasswordDialog(BuildContext context) async {
-    String enteredPassword = '';
+    String enteredPassword = '', enteredMail = '';
     return showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Enter Password'),
-          content: TextField(
-            obscureText: true,
-            onChanged: (value) {
-              enteredPassword = value;
-            },
+          title: Text('Login'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextField(
+                decoration: InputDecoration(labelText: 'Email'),
+                onChanged: (value) {
+                   enteredMail = value;
+                },
+              ),
+              SizedBox(height: 20),
+              TextField(
+                obscureText: true,
+                decoration: InputDecoration(labelText: 'Password'),
+                onChanged: (value) {
+                  enteredPassword = value;
+                },
+              )
+            ],
           ),
           actions: <Widget>[
+             TextButton(
+                  child: Text('Sign Up'),
+                  onPressed: () {
+                    // Add your sign-up logic here
+                  },
+                ),
+
+            TextButton(
+              child: Text('Login'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                print("login");
+                fetchData(enteredMail, enteredPassword);
+              /*  if (enteredPassword == 'Wayne') {
+                  _proceedToNextPart();
+                } else {
+                  // Password incorrect, handle accordingly (e.g., show error message)
+                }*/
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+Future<void> _showSignupDialog(BuildContext context) async {
+    String enteredPassword = '',EnteredEmail = '',first='',last='';
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Signup'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextField(
+                decoration: InputDecoration(labelText: 'Email'),
+                onChanged: (value) {
+                   EnteredEmail = value;
+                },
+              ),
+              SizedBox(height: 20),
+
+              Row(
+                children: [
+                  Expanded(
+
+                      child: TextField(
+                        decoration: InputDecoration(labelText: 'First Name'),
+                        onChanged: (value) {
+                          first = value;
+                        },
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextField(
+                        decoration: InputDecoration(labelText: 'Last Name'),
+                        onChanged: (value) {
+                          last = value;
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+                mainAxisSize: MainAxisSize.min,
+              ),
+
+              TextField(
+                obscureText: true,
+                decoration: InputDecoration(labelText: 'Password'),
+                onChanged: (value) {
+                  enteredPassword = value;
+                },
+              ),
+              SizedBox(height: 20),
+              TextField(
+                obscureText: true,
+                decoration: InputDecoration(labelText: 'Confirm New Password'),
+                onChanged: (value) {
+                  enteredPassword = value;
+                },
+              ),
+              
+            ],
+          ),
+          actions: <Widget>[
+              TextButton(
+                  child: Text('Login'),
+                  onPressed: () {
+                    // Add your sign-up logic here
+                  },
+                ),
             TextButton(
               child: Text('Submit'),
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
+                fetchDataSignUp(EnteredEmail, enteredPassword,first,last);
+
                 if (enteredPassword == 'Wayne') {
                   _proceedToNextPart();
                 } else {
@@ -157,6 +388,7 @@ class MyHomePage extends StatelessWidget {
     // Your code to proceed to the next part after password validation
   }
 }
+
  Future<dynamic> _onDidReceiveLocalNotification(
       int id,
       String? title,
@@ -495,9 +727,6 @@ hour_timer(var service)async{
           }
         });
 
-
-
-
         int noti_duration=await praf_handler.get_int(my_helper.noti_duration);
         int noti_time=await praf_handler.get_int(my_helper.noti_time);
         String noti_msg=await praf_handler.get_string(my_helper.noti_txt);
@@ -555,14 +784,6 @@ day_timer(var service)async{
             send_noti(element.time, 'day before alert');
           }
         });
-
-
-
-
-
-
-
-
 
       }
     /// you can see this log in logcat
